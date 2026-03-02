@@ -211,12 +211,28 @@ Most portfolio sites display architecture work as a grid of thumbnails → click
 
 **Deliverable:** `research/01-asimov-collective-analysis.md` — a comprehensive design analysis that becomes the design brief for the site.
 
-### Phase 1: Visual Inspiration & AI Graphics Pipeline
+### Phase 1: Visual Inspiration, Interactivity Research & AI Graphics Pipeline
 
-**Goal:** Establish a workflow for creating original visual assets in a style that fits the Asimov aesthetic.
+**Goal:** Establish visual and interactive references for the site, and build a workflow for creating original assets.
+
+#### 1a: Porter Robinson & Interactive/Playful Web Research
+
+Asimov Collective defines the *polish* — Porter Robinson's web presence defines the *play*. His sites treat the browser as a game engine: interactive, surprising, rewarding exploration. This maps directly to Julianna's interest in video game design.
 
 **Activities:**
-- Julianna gathers graphics, illustrations, textures, and visual motifs she loves (from Asimov and elsewhere)
+- Deep study of Porter Robinson's websites (Julianna will provide links) — catalog what makes them feel playful: WebGL, canvas interactions, easter eggs, sound design, cursor effects, parallax, particle systems, etc.
+- Reverse-engineer the tech: Three.js? GSAP? Custom shaders? What frameworks enable this?
+- Research other interactive/game-like personal sites for additional inspiration
+- Identify which interactive elements could work within the Asimov aesthetic restraint — the goal is *play within polish*, not chaos
+- Explore how Julianna's interest in video game design could manifest in the site itself (the site as a playable space, not just a viewable one)
+- Define a spectrum: what's the minimum interactivity (subtle, rewarding hover states and transitions) vs. maximum (a full interactive experience on one page)?
+
+**Deliverable:** `research/02-interactive-web-research.md` — Porter Robinson analysis, tech stack breakdown, interactive element catalog, and recommendations for what fits this project.
+
+#### 1b: Gathering Visual Inspiration & AI Graphics Pipeline
+
+**Activities:**
+- Julianna gathers graphics, illustrations, textures, and visual motifs she loves (from Asimov, Porter Robinson, and elsewhere)
 - Compile an inspiration board / moodboard
 - Research AI graphics generation platforms:
   - **Midjourney** — style replication, illustration generation
@@ -227,7 +243,7 @@ Most portfolio sites display architecture work as a grid of thumbnails → click
 - Determine which tool(s) best reproduce the restrained, editorial, Art Nouveau/Art Deco-meets-digital aesthetic
 - Establish a repeatable workflow: reference images → prompt → refinement → export → site-ready asset
 
-**Deliverable:** `research/02-ai-graphics-pipeline.md` — platform comparison, prompt templates, and established workflow. Plus an initial set of generated assets.
+**Deliverable:** `research/03-ai-graphics-pipeline.md` — platform comparison, prompt templates, and established workflow. Plus an initial set of generated assets.
 
 ### Phase 2: Brand Identity & Naming
 
