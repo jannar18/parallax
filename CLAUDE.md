@@ -32,7 +32,7 @@ Code will emerge in Phase 3 (Design & Build) after research, branding, and tech 
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
 | Quality target | Asimov Collective level | PRD §2 — restrained, typographic, editorial |
-| Interactivity model | "Play within polish" | Porter Robinson research — site as a space, not a page, but within Asimov restraint |
+| Interactivity model | Asimov-first; interactive later | Porter Robinson research is banked for future phases. V1 targets Asimov restraint — architecture the site so interactive layers can be added later, but don't build them now. |
 | Daily updates | Claude skill (`/update-site`) | PRD §7 — quick mode + developed mode, generates MDX content |
 | Content format | MDX (or similar) | Must support mixing rich content with components |
 | Deployment | Static/hybrid (Vercel or Netlify likely) | PRD §11 — no heavy server infrastructure |
@@ -41,17 +41,17 @@ Code will emerge in Phase 3 (Design & Build) after research, branding, and tech 
 
 ## Design Language References
 
-- **Polish:** Asimov Collective — restrained typography, editorial pacing, quiet navigation, generous whitespace
-- **Play:** Porter Robinson / Active Theory — browser as portal, WebGL, physics sim, exploration over scrolling
+- **V1 target:** Asimov Collective — restrained typography, editorial pacing, quiet navigation, generous whitespace. This is the quality bar for launch.
+- **Future (banked):** Porter Robinson / Active Theory — browser as portal, WebGL, physics sim, exploration over scrolling. Research is complete (Doc 02) and available when we're ready. Architecture the site so these layers can be added without a rewrite.
 - **Content:** "Studio desk" metaphor — populated but not messy, daily entries that feel like looking at a designer's desk
 
 ## Research Deliverables
 
 | Phase | Deliverable | Status |
 |-------|-------------|--------|
-| 0 | `research/01-asimov-collective-analysis.md` | Not started |
-| 1a | `research/02-porter-robinson-interactive-research.md` | Complete |
-| 1b | `research/03-ai-graphics-pipeline.md` | Not started |
+| 0 | `research/01-asimov-collective-analysis.md` | Complete |
+| 1a | `research/02-porter-robinson-interactive-research.md` | Complete (banked for future — V1 is Asimov-first) |
+| 1b | `research/03-computational-graphics-pipeline.md` | In progress |
 
 ## Essential Commands
 
@@ -129,3 +129,4 @@ When building portfolio pages, follow these principles:
 
 - **Porter Robinson research depth:** The deep research format (tech stack breakdown + "why it matters" + design principles extracted) works well. Use this format for future research deliverables.
 - **Lattice initialized early:** Task tracking was set up before code exists — good for maintaining phase discipline. Tasks map 1:1 to PRD phases.
+- **Scope discipline (2026-03-02):** Active Theory / Porter Robinson interactive work is inspiring but out of scope for V1. The research is banked. V1 = Asimov-level quality (typography, restraint, editorial pacing). Architecture the codebase so interactive layers (WebGL, shaders, physics) can be added later without a rewrite. Don't let "play within polish" become scope creep — nail the polish first.
