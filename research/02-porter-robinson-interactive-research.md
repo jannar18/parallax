@@ -137,12 +137,54 @@ The Nurture production shows how the same aesthetic (digital/organic blend, emot
 
 ## Key Studio: Active Theory
 
-Active Theory is the recurring name across Porter Robinson's web work. They are the team that turns these visions into browser-based realities.
+Active Theory is the recurring name across Porter Robinson's web work. They are the team that turns these visions into browser-based realities. Venice Beach-based, founded in 2012, on Fast Company's 2022 Most Innovative Companies list.
 
-- **Dreamwave Platform** — their proprietary tool for immersive web experiences
-- Specialize in WebGL, 3D web, virtual events
-- Performance-obsessed — frustum culling, device adaptation, custom tooling
-- Portfolio includes Secret Sky, SMILE! :D site, and likely nurture.art
+**URL:** https://activetheory.net/
+
+### Their Own Site Design
+- **Pitch-black canvas** (#0B0B0B) with full-bleed WebGL reels
+- **Monument Grotesk XXL** headlines on a 12-column grid
+- Hover tiles that bloom into 60fps in-place trailers
+- Accent violet (#A970FF) for CTAs
+- Performance: LCP ~1.3s desktop / ~1.7s on 4G
+- **Radial menu** functioning as both navigation and progress tracker
+- NBArchitekt font family (Regular, Light, Bold)
+- Entirely JS-dependent — no content in static markup, everything rendered via their engine
+
+### Hydra Framework (Custom, In-House)
+- **Custom 3D engine** built in-house since 2012, optimized for maximum graphics throughput with reduced CPU usage
+- Started as a way to stay agile during the Flash-to-HTML5 transition
+- Grown into a full 3D engine with a **visual GUI (Hydra GUI)** that lets designers build entire 3D scenes without writing code
+- State-based, functional programming style — modular and fast
+- Runs on: web, native iOS, native Android, desktop, desktop VR (Vive/Oculus), mobile VR (Daydream/Oculus Go), Magic Leap
+- Core of everything they build
+
+### Tech Stack
+- **Hydra** — their custom JS/WebGL framework (replaces Three.js for most work)
+- **Three.js** — used on every 3D project before mid-2018, then supplemented by Hydra
+- **GLSL** — custom shaders
+- **Electron** — native wrapper for physical installations
+- **Node.js + C++** — for native API access on desktop (GLFW for OpenGL contexts)
+- **Draco compression** — for mesh delivery
+- **requestIdleCallback** — lazy-loading videos for performance
+- **Dreamwave Platform** — proprietary tool for virtual events (Secret Sky, etc.)
+- **Google App Engine** — backend
+
+### Major Clients
+- **Google** — Chrome experiments, Google I/O interactive experiences, B2B virtual events
+- **NASA**
+- **Spotify**
+- **Apple** — Mira prototype (web, native mobile, Apple TV, Kinect installation)
+- **Porter Robinson** — SMILE! :D, Secret Sky, likely nurture.art
+- **Pottermore** — 3D tour of Hogwarts (Awwwards Site of the Month)
+- **HubSpot** — virtual conference with avatar-based roaming
+
+### Why Active Theory Matters for This Project
+They represent the ceiling of what's possible in the browser. We're not building at Active Theory scale, but studying their work reveals:
+1. **Performance patterns** that apply at any scale (culling, lazy loading, device adaptation)
+2. **The Hydra GUI concept** — designers building scenes without code. Relevant if Julianna wants to update interactive elements without dev work.
+3. **Cross-platform thinking** — same experience across devices, graceful degradation
+4. **The radial menu as nav** — a non-traditional navigation pattern that could inspire the site's own nav design
 
 ---
 
