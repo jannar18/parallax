@@ -1,0 +1,6 @@
+# OS
+.DS_Store
+
+# Pinterest board images (98 pins, ~50MB)
+# Downloaded for visual analysis — reference only, not source code
+research/pinterest-board/
