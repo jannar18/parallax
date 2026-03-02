@@ -1,0 +1,41 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 0,
+  "complexity": null,
+  "created_at": "2026-03-02T20:04:30Z",
+  "created_by": "agent:claude-cli",
+  "custom_fields": {},
+  "description": "Phase 3: Build all pages \u2014 Home (with Now page preview + portfolio highlights), About, Work: Architecture, Work: Software & AI, Writing, Now (studio desk). Implement smooth scroll, interaction patterns from Asimov research. Architecture portfolio with intentional sequencing and scale. Deliverable: all pages built and functional.",
+  "done_at": null,
+  "evidence_refs": [],
+  "id": "task_01KJR2DYVBSCQ0ZHPWX4PEN4FG",
+  "last_event_id": "ev_01KJR2F05WR91YMFKZ2T8826BJ",
+  "last_status_changed_at": "2026-03-02T20:04:30Z",
+  "priority": "critical",
+  "relationships_out": [
+    {
+      "created_at": "2026-03-02T20:05:03Z",
+      "created_by": "agent:claude-cli",
+      "note": null,
+      "target_task_id": "task_01KJR2DWAQEZATQMNTMFRRQGFY",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-03-02T20:05:04Z",
+      "created_by": "agent:claude-cli",
+      "note": null,
+      "target_task_id": "task_01KJR2DT7H011JR7N4BB7WVZ02",
+      "type": "depends_on"
+    }
+  ],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-6",
+  "status": "backlog",
+  "tags": null,
+  "title": "Design & build site pages",
+  "type": "task",
+  "updated_at": "2026-03-02T20:05:04Z",
+  "urgency": null
+}

@@ -1,0 +1,41 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 0,
+  "complexity": null,
+  "created_at": "2026-03-02T20:04:48Z",
+  "created_by": "agent:claude-cli",
+  "custom_fields": {},
+  "description": "Phase 6: Side-by-side comparison with Asimov Collective sites. Typography refinement, animation polish, mobile responsiveness, performance optimization, cross-browser testing. Deliverable: site at ship quality.",
+  "done_at": null,
+  "evidence_refs": [],
+  "id": "task_01KJR2EG88NSJBTD9DRT2VEHH2",
+  "last_event_id": "ev_01KJR2F5YX15TQCHJESXHRVN84",
+  "last_status_changed_at": "2026-03-02T20:04:48Z",
+  "priority": "medium",
+  "relationships_out": [
+    {
+      "created_at": "2026-03-02T20:05:09Z",
+      "created_by": "agent:claude-cli",
+      "note": null,
+      "target_task_id": "task_01KJR2ED00JEHAV9ETE998NEQX",
+      "type": "depends_on"
+    },
+    {
+      "created_at": "2026-03-02T20:05:10Z",
+      "created_by": "agent:claude-cli",
+      "note": null,
+      "target_task_id": "task_01KJR2EEF23WVYBCD19JM1F35R",
+      "type": "depends_on"
+    }
+  ],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-9",
+  "status": "backlog",
+  "tags": null,
+  "title": "Refinement & polish to Asimov quality",
+  "type": "task",
+  "updated_at": "2026-03-02T20:05:10Z",
+  "urgency": null
+}
