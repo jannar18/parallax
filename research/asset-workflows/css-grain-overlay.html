@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS Grain Overlay -- Mission Asimov</title>
+
+  <!--
+    css-grain-overlay.html
+    ======================
+    Demonstrates the CSS grainy gradient technique using SVG feTurbulence
+    filters combined with layered CSS gradients, all in the Mission Asimov
+    warm palette.
+
+    Technique (from CSS-Tricks' "Grainy Gradients"):
+      1. An SVG <filter> uses feTurbulence to generate procedural noise
+      2. feColorMatrix boosts the contrast of the noise
+      3. The filter is applied to a pseudo-element overlaying the gradient
+      4. Layered radial-gradient() creates organic color zones
+      5. mix-blend-mode merges the grain into the gradient
+
+    The result looks like risograph printing or film grain -- exactly the
+    "stipple and grain over smooth gradients" quality from the design DNA.
+
+    This is a zero-dependency, zero-JS technique. Open in any browser.
+
+    Color palette from visual-analysis-notes.md:
+      Terracotta:    #C4724E
+      Amber:         #D4A76A
+      Cream:         #F5F0E8
+      Warm gray:     #B5AFA6
+      Sage:          #8B9E7E
+      Dusty rose:    #C9A5A0
+      Slate blue:    #7A8B9A
+      Coral accent:  #C95D45
+  -->
+
+  <style>
+    /* ------------------------------------------------------------------ */
+    /* Reset & base                                                        */
+    /* ------------------------------------------------------------------ */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #3a3632;
+      line-height: 1.6;
+      /* The warm off-white background -- "never pure white" */
+      background-color: #F5F0E8;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* SVG filter definition (hidden, referenced by CSS)                   */
+    /* ------------------------------------------------------------------ */
+    /* This SVG lives in the DOM but is invisible (0x0). Its filter is
+       referenced by url(#grain) in the CSS below. */
+
+    .svg-filters {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Section: Full-bleed grainy gradient                                  */
+    /* ------------------------------------------------------------------ */
+    /* This is the primary technique: layered radial gradients with a
+       noise texture overlay. */
+
+    .grain-section {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+
+      /*
+        Layered radial gradients create organic color zones.
+        Each gradient is a soft ellipse of color, positioned off-center
+        for asymmetry. The overlap creates subtle blending.
+
+        Think: watercolor wash on wet paper -- colors pool and merge.
+      */
+      background:
+        /* Layer 1: Terracotta warmth, lower-left */
+        radial-gradient(
+          ellipse at 25% 70%,
+          rgba(196, 114, 78, 0.25),    /* Terracotta, 25% opacity */
+          transparent 65%
+        ),
+        /* Layer 2: Dusty rose, upper-right */
+        radial-gradient(
+          ellipse at 75% 20%,
+          rgba(201, 165, 160, 0.2),    /* Dusty rose, 20% opacity */
+          transparent 55%
+        ),
+        /* Layer 3: Amber glow, center */
+        radial-gradient(
+          ellipse at 50% 50%,
+          rgba(212, 167, 106, 0.15),   /* Amber, 15% opacity */
+          transparent 70%
+        ),
+        /* Layer 4: Sage hint, top-left */
+        radial-gradient(
+          ellipse at 15% 15%,
+          rgba(139, 158, 126, 0.1),    /* Sage, 10% opacity */
+          transparent 50%
+        ),
+        /* Layer 5: Slate blue-gray, bottom-right corner */
+        radial-gradient(
+          ellipse at 85% 85%,
+          rgba(122, 139, 154, 0.08),   /* Slate, 8% opacity */
+          transparent 45%
+        );
+
+      background-color: #F5F0E8;     /* Cream base underneath everything */
+    }
+
+    /*
+      The grain overlay: a pseudo-element with the feTurbulence filter.
+      This is the key trick -- the noise texture is generated entirely
+      by the SVG filter, requiring no image files.
+    */
+    .grain-section::before {
+      content: '';
+      position: absolute;
+      inset: -20%;       /* Extend beyond edges to avoid edge artifacts */
+      z-index: 1;
+
+      /*
+        The filter generates procedural noise. The feColorMatrix
+        increases contrast so the noise becomes visible grain rather
+        than a uniform gray fog.
+      */
+      filter: url(#grain);
+
+      /*
+        Blend the grain into the gradient below.
+        - "multiply" darkens: grain particles darken the gradient
+        - "soft-light" is subtler: grain adds texture without
+          darkening as aggressively
+        - "overlay" adds both light and dark grain
+
+        soft-light is recommended for the Asimov aesthetic -- the
+        grain should be felt, not dominate.
+      */
+      mix-blend-mode: soft-light;
+
+      /*
+        Opacity controls grain intensity. Lower = subtler.
+        0.3-0.5 is the sweet spot for "paper grain" quality.
+      */
+      opacity: 0.4;
+
+      pointer-events: none; /* Don't block interactions */
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Content overlay                                                     */
+    /* ------------------------------------------------------------------ */
+
+    .content {
+      position: relative;
+      z-index: 2;       /* Above the grain */
+      max-width: 600px;
+      padding: 3rem;
+      text-align: center;
+    }
+
+    .content h1 {
+      font-size: 2.5rem;
+      font-weight: 300;      /* Light weight -- "quiet, refined" */
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+      text-transform: lowercase;
+      color: #3a3632;
+    }
+
+    .content p {
+      font-size: 1.125rem;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      color: #6b6560;
+      max-width: 32em;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Section 2: Darker variant                                           */
+    /* ------------------------------------------------------------------ */
+
+    .grain-section--dark {
+      background:
+        radial-gradient(
+          ellipse at 30% 40%,
+          rgba(196, 114, 78, 0.35),
+          transparent 60%
+        ),
+        radial-gradient(
+          ellipse at 70% 60%,
+          rgba(212, 167, 106, 0.2),
+          transparent 55%
+        ),
+        radial-gradient(
+          ellipse at 50% 90%,
+          rgba(201, 93, 69, 0.15),
+          transparent 50%
+        );
+      background-color: #3a3632;      /* Dark warm base */
+    }
+
+    .grain-section--dark .content h1,
+    .grain-section--dark .content p {
+      color: #F5F0E8;
+    }
+
+    .grain-section--dark .content p {
+      color: rgba(245, 240, 232, 0.7);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Section 3: Stipple-density variant                                   */
+    /* ------------------------------------------------------------------ */
+    /* Uses a different feTurbulence configuration for coarser grain.      */
+
+    .grain-section--coarse::before {
+      filter: url(#grain-coarse);
+      opacity: 0.5;
+      mix-blend-mode: multiply;
+    }
+
+    .grain-section--coarse {
+      background:
+        radial-gradient(
+          ellipse at 40% 30%,
+          rgba(139, 158, 126, 0.2),
+          transparent 55%
+        ),
+        radial-gradient(
+          ellipse at 60% 70%,
+          rgba(181, 175, 166, 0.15),
+          transparent 50%
+        );
+      background-color: #F5F0E8;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Controls panel                                                      */
+    /* ------------------------------------------------------------------ */
+
+    .controls {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 100;
+      background: rgba(58, 54, 50, 0.9);
+      color: #F5F0E8;
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.75rem;
+      line-height: 1.8;
+      backdrop-filter: blur(8px);
+    }
+
+    .controls label {
+      display: block;
+      cursor: pointer;
+    }
+
+    .controls input[type="range"] {
+      width: 100%;
+      margin-top: 0.25rem;
+      accent-color: #C4724E;
+    }
+
+    .controls .label-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Scroll hint                                                         */
+    /* ------------------------------------------------------------------ */
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #B5AFA6;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================================================================== -->
+  <!-- SVG Filter Definitions                                              -->
+  <!-- ================================================================== -->
+  <!-- These are invisible SVG elements whose <filter> definitions are
+       referenced by CSS url(#id). The feTurbulence primitive generates
+       procedural Perlin noise on the GPU -- no images needed.             -->
+
+  <svg class="svg-filters">
+    <defs>
+      <!--
+        Standard grain filter.
+        - type="fractalNoise" produces smoother, cloud-like noise
+          (vs "turbulence" which is more jagged)
+        - baseFrequency controls grain size:
+          0.65 = fine grain (like 35mm film)
+          0.3  = coarser grain (like risograph)
+          0.1  = very coarse (visible blobs)
+        - numOctaves: more octaves = more detail layers
+        - stitchTiles: "stitch" makes the noise tileable
+
+        The feColorMatrix increases contrast. The matrix:
+        [0 0 0 9 -4]  means:  output = input * 9 - 4
+        This pushes mid-gray noise toward black and white,
+        making the grain visible against the gradient.
+      -->
+      <filter id="grain" x="0%" y="0%" width="100%" height="100%">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.65"
+          numOctaves="3"
+          stitchTiles="stitch"
+          result="noise"
+        />
+        <feColorMatrix
+          type="saturate"
+          values="0"
+          in="noise"
+          result="desaturated"
+        />
+        <feComponentTransfer in="desaturated">
+          <feFuncR type="linear" slope="3" intercept="-1" />
+          <feFuncG type="linear" slope="3" intercept="-1" />
+          <feFuncB type="linear" slope="3" intercept="-1" />
+        </feComponentTransfer>
+      </filter>
+
+      <!-- Coarser grain: lower frequency, fewer octaves.
+           Creates a visible stipple/risograph quality. -->
+      <filter id="grain-coarse" x="0%" y="0%" width="100%" height="100%">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.35"
+          numOctaves="2"
+          stitchTiles="stitch"
+          result="noise"
+        />
+        <feColorMatrix
+          type="saturate"
+          values="0"
+          in="noise"
+          result="desaturated"
+        />
+        <feComponentTransfer in="desaturated">
+          <feFuncR type="linear" slope="4" intercept="-1.5" />
+          <feFuncG type="linear" slope="4" intercept="-1.5" />
+          <feFuncB type="linear" slope="4" intercept="-1.5" />
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ================================================================== -->
+  <!-- Section 1: Light variant                                            -->
+  <!-- ================================================================== -->
+
+  <section class="grain-section">
+    <div class="content">
+      <h1>mission asimov</h1>
+      <p>Warm, earthen, atmospheric. Stipple and grain over smooth gradients. The surface always matters.</p>
+    </div>
+    <div class="scroll-hint">scroll for variants</div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- Section 2: Dark variant                                             -->
+  <!-- ================================================================== -->
+
+  <section class="grain-section grain-section--dark">
+    <div class="content">
+      <h1>dark variant</h1>
+      <p>The same grain technique on a dark warm base. Terracotta and amber glow through the noise. For hero sections, dark mode, or dramatic contrast.</p>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- Section 3: Coarse stipple variant                                   -->
+  <!-- ================================================================== -->
+
+  <section class="grain-section grain-section--coarse">
+    <div class="content">
+      <h1>coarse stipple</h1>
+      <p>Lower feTurbulence frequency, higher contrast. Creates a visible risograph/monoprint quality rather than subtle film grain. Closer to the stipple fields in the Pinterest references.</p>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- Interactive controls                                                -->
+  <!-- ================================================================== -->
+
+  <div class="controls">
+    <label>
+      <div class="label-row">
+        <span>grain opacity</span>
+        <span id="opacity-value">0.4</span>
+      </div>
+      <input type="range" id="opacity-slider" min="0" max="1" step="0.05" value="0.4" />
+    </label>
+    <label style="margin-top: 0.5rem;">
+      <div class="label-row">
+        <span>blend mode</span>
+        <span id="blend-value">soft-light</span>
+      </div>
+      <select id="blend-select" style="width: 100%; margin-top: 0.25rem; font-family: inherit; font-size: inherit;">
+        <option value="soft-light" selected>soft-light (recommended)</option>
+        <option value="multiply">multiply</option>
+        <option value="overlay">overlay</option>
+        <option value="hard-light">hard-light</option>
+        <option value="color-burn">color-burn</option>
+        <option value="luminosity">luminosity</option>
+      </select>
+    </label>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- Interactivity (minimal JS for parameter exploration)                -->
+  <!-- ================================================================== -->
+  <!-- This JS is purely for the demo -- exploring different opacity and
+       blend mode values. The grain technique itself is 100% CSS/SVG. -->
+
+  <script>
+    const sections = document.querySelectorAll('.grain-section');
+    const opacitySlider = document.getElementById('opacity-slider');
+    const opacityValue = document.getElementById('opacity-value');
+    const blendSelect = document.getElementById('blend-select');
+    const blendValue = document.getElementById('blend-value');
+
+    opacitySlider.addEventListener('input', (e) => {
+      const val = e.target.value;
+      opacityValue.textContent = val;
+      sections.forEach(s => {
+        s.style.setProperty('--grain-opacity', val);
+        // Apply to the ::before pseudo-element via a CSS custom property
+        // We need to update the stylesheet rule instead
+      });
+      // Update the actual ::before elements via stylesheet injection
+      updateGrainStyles();
+    });
+
+    blendSelect.addEventListener('change', (e) => {
+      blendValue.textContent = e.target.value;
+      updateGrainStyles();
+    });
+
+    function updateGrainStyles() {
+      let style = document.getElementById('dynamic-grain');
+      if (!style) {
+        style = document.createElement('style');
+        style.id = 'dynamic-grain';
+        document.head.appendChild(style);
+      }
+      const opacity = opacitySlider.value;
+      const blend = blendSelect.value;
+      style.textContent = `
+        .grain-section::before {
+          opacity: ${opacity} !important;
+          mix-blend-mode: ${blend} !important;
+        }
+      `;
+    }
+  </script>
+
+</body>
+</html>

@@ -30,8 +30,8 @@ Code will emerge in Phase 3 (Design & Build) after research, branding, and tech 
 │       └── gpt-image-prompts.md                # 8 API prompt templates + code
 ├── notes/                 # Code review artifacts and working notes
 └── .lattice/              # Task tracking (Lattice)
-    ├── config.json        # Project: ASMV, classic workflow
-    ├── context.md         # Lattice instance purpose
+    ├── config.json
+    ├── context.md
     └── tasks/             # 9 tasks (ASMV-1 through ASMV-9)
 ```
 

@@ -4,3 +4,10 @@
 # Pinterest board images (98 pins, ~50MB)
 # Downloaded for visual analysis — reference only, not source code
 research/pinterest-board/
+
+# ASMV-3 source research — consolidated into 03-graphics-pipeline-final.md
+# Kept locally for reference, not tracked in repo
+research/03-computational-graphics-pipeline.md
+research/03-platform-research-notes.md
+research/03-visual-analysis-notes.md
+research/03-gemini-imagen-research.md
