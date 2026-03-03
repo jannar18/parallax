@@ -6,7 +6,8 @@ A personal website for Julianna at the quality level of an Asimov Collective sit
 
 **Phase 0–1: Research & Inspiration.** No source code exists yet. The repo contains:
 - `PRD.md` — comprehensive product requirements (6 phases, from research through polish)
-- `research/` — deep dives on interactive web (Porter Robinson, Active Theory, WebXR)
+- `research/` — Asimov Collective analysis, Porter Robinson interactive web, graphics pipeline & AI platforms, asset workflow scripts
+- `notes/` — code review artifacts and working notes
 - `.lattice/` — task tracking (9 tasks mapped from PRD phases)
 
 Code will emerge in Phase 3 (Design & Build) after research, branding, and tech stack decisions.
@@ -21,17 +22,13 @@ Code will emerge in Phase 3 (Design & Build) after research, branding, and tech 
 │   ├── 01-asimov-collective-analysis.md        # Phase 0 — Asimov Collective reverse-engineering
 │   ├── 02-porter-robinson-interactive-research.md  # Phase 1a — banked for future interactive phases
 │   ├── 03-graphics-pipeline-final.md           # Phase 1b — ★ THE KEY REFERENCE for visual/graphics decisions
-│   ├── 03-computational-graphics-pipeline.md   # Source: computational tools research
-│   ├── 03-platform-research-notes.md           # Source: AI platform comparison notes
-│   ├── 03-visual-analysis-notes.md             # Source: Julianna's design DNA analysis
-│   ├── 03-gemini-imagen-research.md            # Source: Gemini/Imagen deep dive
 │   └── asset-workflows/                        # Runnable scripts & prompt templates
-│       ├── README.md
 │       ├── canvas-paper-texture.mjs            # Node.js paper texture generator
 │       ├── svg-stipple-field.mjs               # SVG stipple dot field generator
 │       ├── css-grain-overlay.html              # CSS grain technique demo
 │       ├── midjourney-prompts.md               # 8 prompt templates + --sref strategy
 │       └── gpt-image-prompts.md                # 8 API prompt templates + code
+├── notes/                 # Code review artifacts and working notes
 └── .lattice/              # Task tracking (Lattice)
     ├── config.json
     ├── context.md
@@ -49,12 +46,13 @@ Code will emerge in Phase 3 (Design & Build) after research, branding, and tech 
 | Daily updates | Claude skill (`/update-site`) | PRD §7 — quick mode + developed mode, generates MDX content |
 | Content format | MDX (or similar) | Must support mixing rich content with components |
 | Deployment | Static/hybrid (Vercel or Netlify likely) | PRD §11 — no heavy server infrastructure |
-| Tech stack | TBD — pending Asimov research | PRD §11 — likely Next.js or Astro |
+| Tech stack | TBD — pending ASMV-5 (tech stack selection) | PRD §11 — likely Next.js or Astro |
 | Design philosophy | "The site IS the bridge" | PRD §8 — architecture × software demonstrated, not explained |
 
 ## Design Language References
 
 - **V1 target:** Asimov Collective — restrained typography, editorial pacing, quiet navigation, generous whitespace. This is the quality bar for launch.
+- **Visual language:** Defined in `research/03-graphics-pipeline-final.md` §2. Warm earth palette (terracotta, amber, ochre, cream, sage), stipple/grain textures, watercolor-wash edges, collage/layering as the central design move. Transparency support is a first-class requirement.
 - **Future (banked):** Porter Robinson / Active Theory — browser as portal, WebGL, physics sim, exploration over scrolling. Research is complete (Doc 02) and available when we're ready. Architecture the site so these layers can be added without a rewrite.
 - **Content:** "Studio desk" metaphor — populated but not messy, daily entries that feel like looking at a designer's desk
 
