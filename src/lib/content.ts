@@ -18,6 +18,10 @@ export interface NowEntry {
   date: string;
   mood?: string;
   tags?: string[];
+  summary?: string;
+  image?: string;
+  imageAlt?: string;
+  developed?: boolean;
   content: string;
 }
 
@@ -91,6 +95,48 @@ export function getNowEntry(slug: string): NowEntry | undefined {
   const file = files.find((f) => f.replace(/\.mdx?$/, "") === slug);
   if (!file) return undefined;
   return parseFile<NowEntry>("now", file);
+}
+
+/**
+ * Returns the N most recent now entries (default 5).
+ * Useful for homepage preview and feed-style displays.
+ */
+export function getRecentNowEntries(count = 5): NowEntry[] {
+  return getAllNowEntries().slice(0, count);
+}
+
+/**
+ * Returns a summary string for a NowEntry.
+ * Uses the explicit `summary` frontmatter field if present,
+ * otherwise extracts the first line of the MDX content body
+ * (stripped of markdown formatting).
+ */
+export function getNowEntrySummary(entry: NowEntry): string {
+  if (entry.summary) return entry.summary;
+
+  // Strip markdown formatting and extract first meaningful line
+  const lines = entry.content
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0 && !line.startsWith("import "));
+
+  if (lines.length === 0) return "";
+
+  // Remove markdown syntax: headings, bold, italic, links, images
+  const firstLine = lines[0]
+    .replace(/^#{1,6}\s+/, "")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/\[(.+?)\]\(.+?\)/g, "$1")
+    .replace(/!\[.*?\]\(.+?\)/g, "")
+    .trim();
+
+  // Truncate at 160 characters for preview contexts
+  if (firstLine.length > 160) {
+    return firstLine.slice(0, 157) + "...";
+  }
+
+  return firstLine;
 }
 
 /* ── Writing ── */

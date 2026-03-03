@@ -83,6 +83,68 @@ const config: Config = {
         content: "72rem",
         text: "40rem",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            color: "#2C2824",
+            maxWidth: "40rem",
+            fontFamily: 'var(--font-serif), "Cormorant Garamond", Georgia, serif',
+            lineHeight: "1.75",
+            a: {
+              color: "#C4724E",
+              textDecoration: "none",
+              "&:hover": {
+                color: "#C95D45",
+              },
+            },
+            strong: {
+              color: "#2C2824",
+              fontWeight: "600",
+            },
+            em: {
+              fontStyle: "italic",
+            },
+            blockquote: {
+              color: "#5C554E",
+              borderLeftColor: "#C4724E",
+              fontStyle: "italic",
+              quotes: "none",
+            },
+            h2: {
+              color: "#2C2824",
+              fontFamily: 'var(--font-sans), "Futura PT", Jost, system-ui, sans-serif',
+              fontWeight: "500",
+              letterSpacing: "-0.02em",
+            },
+            h3: {
+              color: "#2C2824",
+              fontFamily: 'var(--font-sans), "Futura PT", Jost, system-ui, sans-serif',
+              fontWeight: "500",
+              letterSpacing: "-0.02em",
+            },
+            h4: {
+              color: "#2C2824",
+              fontFamily: 'var(--font-sans), "Futura PT", Jost, system-ui, sans-serif',
+              fontWeight: "500",
+            },
+            code: {
+              color: "#2C2824",
+              fontFamily: 'var(--font-mono), "Degular Mono", "DM Mono", monospace',
+              fontWeight: "400",
+              fontSize: "0.875em",
+            },
+            "code::before": {
+              content: '""',
+            },
+            "code::after": {
+              content: '""',
+            },
+            hr: {
+              borderColor: "#E2DCD5",
+            },
+          },
+        },
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],
