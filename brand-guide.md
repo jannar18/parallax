@@ -252,7 +252,7 @@ export const fontSerif = Cormorant_Garamond({  // final
   subsets: ["latin"],
   variable: "--font-serif",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
 });
 
 export const fontMono = DM_Mono({       // → Degular Mono
