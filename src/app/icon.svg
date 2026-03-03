@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="4" fill="#F5F0E8"/>
+  <text
+    x="16"
+    y="24"
+    text-anchor="middle"
+    font-family="'Futura PT', 'Jost', system-ui, sans-serif"
+    font-size="22"
+    font-weight="500"
+    fill="#C4724E"
+    letter-spacing="-0.02em"
+  >P</text>
+</svg>
