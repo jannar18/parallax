@@ -322,6 +322,10 @@ The layout reads like a **publication or monograph**. Key characteristics:
 
 The core design unit is the **full-window view**. The scroll is single-column, but pacing is built around viewport-sized "slides" — each a complete composition with subtle boundaries (whitespace, tonal shifts, image edges). Design as a sequence of these moments, not a continuous stream.
 
+### Moment of Arrival
+
+Some Asimov sites have a considered first-load experience — a "moment of arrival" before the scroll begins. Terrain (terrain.vc) and Venice AI (venice.ai) both use this approach. Even in V1, a simple arrival moment (a held hero composition, a brief pause before content) can set the tone. This doesn't require WebGL — it's about pacing and intention.
+
 ### Header Behavior
 
 Headers hide on scroll-down, reappear on scroll-up. Variants: persistent small icon only, opaque nav bar, translucent bar/logo, or hidden entirely until first scroll (Monumental Labs). The principle: **the header never competes with content on initial view.**

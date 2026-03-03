@@ -23,6 +23,7 @@ Code will emerge in Phase 3 (Design & Build) after research, branding, and tech 
 │   ├── 02-porter-robinson-interactive-research.md  # Phase 1a — banked for future interactive phases
 │   ├── 03-graphics-pipeline-final.md           # Phase 1b — ★ THE KEY REFERENCE for visual/graphics decisions
 │   └── asset-workflows/                        # Runnable scripts & prompt templates
+│       ├── README.md                           # Workflow guide
 │       ├── canvas-paper-texture.mjs            # Node.js paper texture generator
 │       ├── svg-stipple-field.mjs               # SVG stipple dot field generator
 │       ├── css-grain-overlay.html              # CSS grain technique demo
