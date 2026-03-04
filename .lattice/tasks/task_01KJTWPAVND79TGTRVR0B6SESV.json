@@ -1,7 +1,7 @@
 {
   "assigned_to": null,
   "branch_links": [],
-  "comment_count": 1,
+  "comment_count": 2,
   "complexity": null,
   "created_at": "2026-03-03T22:21:56Z",
   "created_by": "agent:claude-opus-4",
@@ -10,8 +10,8 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KJTWPAVND79TGTRVR0B6SESV",
-  "last_event_id": "ev_01KJTWQM40XAMZTMPNN19BKW9F",
-  "last_status_changed_at": "2026-03-03T22:21:56Z",
+  "last_event_id": "ev_01KJVCSFEFK6W8FGHGNY3BPQRS",
+  "last_status_changed_at": "2026-03-04T03:03:16Z",
   "priority": "critical",
   "relationships_out": [
     {
@@ -25,10 +25,10 @@
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-13",
-  "status": "backlog",
+  "status": "needs_human",
   "tags": null,
   "title": "Design system & component foundation",
   "type": "task",
-  "updated_at": "2026-03-03T22:22:39Z",
+  "updated_at": "2026-03-04T03:03:17Z",
   "urgency": null
 }

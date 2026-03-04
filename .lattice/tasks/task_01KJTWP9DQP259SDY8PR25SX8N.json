@@ -1,7 +1,7 @@
 {
   "assigned_to": null,
   "branch_links": [],
-  "comment_count": 1,
+  "comment_count": 2,
   "complexity": null,
   "created_at": "2026-03-03T22:21:55Z",
   "created_by": "agent:claude-opus-4",
@@ -10,8 +10,8 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KJTWP9DQP259SDY8PR25SX8N",
-  "last_event_id": "ev_01KJTWQK2Z63FEBWDK8XNYS9GM",
-  "last_status_changed_at": "2026-03-03T22:21:55Z",
+  "last_event_id": "ev_01KJVCSG5VY92HRF5TAJT4JSNP",
+  "last_status_changed_at": "2026-03-04T03:03:17Z",
   "priority": "high",
   "relationships_out": [
     {
@@ -25,10 +25,10 @@
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-11",
-  "status": "backlog",
+  "status": "needs_human",
   "tags": null,
   "title": "Texture & pattern generation (stipple, grain, watercolor, favicon)",
   "type": "task",
-  "updated_at": "2026-03-03T22:22:38Z",
+  "updated_at": "2026-03-04T03:03:17Z",
   "urgency": null
 }
