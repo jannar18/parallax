@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className="bg-background text-ink font-serif antialiased">
         <GrainOverlay />
         <Header />
-        <main className="min-h-screen pt-20">{children}</main>
+        <main className="min-h-screen">{children}</main>
         <Footer />
       </body>
     </html>

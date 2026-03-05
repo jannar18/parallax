@@ -10,8 +10,8 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KJR2DYVBSCQ0ZHPWX4PEN4FG",
-  "last_event_id": "ev_01KJTWP5SJXN5YQNJEQQ9VQJ29",
-  "last_status_changed_at": "2026-03-03T22:21:51Z",
+  "last_event_id": "ev_01KJZJHQ1DYME7C582VB7VK41S",
+  "last_status_changed_at": "2026-03-05T18:00:52Z",
   "priority": "critical",
   "relationships_out": [
     {
@@ -39,10 +39,10 @@
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-6",
-  "status": "needs_human",
+  "status": "cancelled",
   "tags": null,
   "title": "Design & build site pages",
   "type": "task",
-  "updated_at": "2026-03-03T22:21:51Z",
+  "updated_at": "2026-03-05T18:00:52Z",
   "urgency": null
 }
