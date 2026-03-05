@@ -10,16 +10,22 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border mt-24 pt-12 pb-16">
+    <footer className="mt-24 border-t border-border bg-surface">
       <div className="mx-auto max-w-content px-5 font-sans">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="border-b border-border py-14 md:py-20">
+          <p className="text-sm uppercase text-ink-lighter">Parallax</p>
+          <p className="mt-4 max-w-3xl text-4xl font-light leading-tight text-ink md:text-6xl">
+            A studio where architecture and software inform each other.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between">
           <p
             className="text-sm text-ink-lighter"
             style={{ letterSpacing: "var(--tracking-wide)" }}
           >
             &copy; {currentYear} Parallax
           </p>
-
           <nav className="flex gap-6">
             <Link
               href="/about"

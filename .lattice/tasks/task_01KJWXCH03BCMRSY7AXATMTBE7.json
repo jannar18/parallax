@@ -1,0 +1,32 @@
+{
+  "assigned_to": "agent:codex",
+  "branch_links": [],
+  "comment_count": 1,
+  "complexity": null,
+  "created_at": "2026-03-04T17:12:33Z",
+  "created_by": "agent:codex",
+  "custom_fields": {},
+  "description": null,
+  "done_at": "2026-03-04T17:24:16Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KJWY0RAAF0KHF1BBXBFH04AV",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
+  "id": "task_01KJWXCH03BCMRSY7AXATMTBE7",
+  "last_event_id": "ev_01KJWY1ZJGGDX6VRCWDCM1HEHP",
+  "last_status_changed_at": "2026-03-04T17:24:16Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-19",
+  "status": "done",
+  "tags": null,
+  "title": "Homepage wireframe v2: statement footer + larger hero image containers",
+  "type": "task",
+  "updated_at": "2026-03-04T17:24:16Z",
+  "urgency": null
+}
