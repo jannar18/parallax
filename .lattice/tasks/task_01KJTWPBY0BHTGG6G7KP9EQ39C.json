@@ -1,6 +1,13 @@
 {
   "assigned_to": null,
-  "branch_links": [],
+  "branch_links": [
+    {
+      "branch": "feature/asmv-15-daily-update-blueprint",
+      "linked_at": "2026-03-05T02:34:04Z",
+      "linked_by": "agent:claude-opus-4",
+      "repo": null
+    }
+  ],
   "comment_count": 2,
   "complexity": null,
   "created_at": "2026-03-03T22:21:58Z",
@@ -10,8 +17,8 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KJTWPBY0BHTGG6G7KP9EQ39C",
-  "last_event_id": "ev_01KJVCSGVPA5S8ZGX7EWH8ASCC",
-  "last_status_changed_at": "2026-03-04T03:03:18Z",
+  "last_event_id": "ev_01KJXXGPGYT2DM1HBJTEGJNMBD",
+  "last_status_changed_at": "2026-03-05T02:34:03Z",
   "priority": "critical",
   "relationships_out": [
     {
@@ -22,13 +29,13 @@
       "type": "subtask_of"
     }
   ],
-  "reopened_count": 0,
+  "reopened_count": 1,
   "schema_version": 1,
   "short_id": "ASMV-15",
-  "status": "needs_human",
+  "status": "planned",
   "tags": null,
   "title": "Daily update content design (format, schema, examples)",
   "type": "task",
-  "updated_at": "2026-03-04T03:03:18Z",
+  "updated_at": "2026-03-05T02:34:04Z",
   "urgency": null
 }
