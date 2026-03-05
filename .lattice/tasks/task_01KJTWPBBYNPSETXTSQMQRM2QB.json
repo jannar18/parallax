@@ -1,17 +1,23 @@
 {
   "assigned_to": null,
   "branch_links": [],
-  "comment_count": 1,
+  "comment_count": 2,
   "complexity": null,
   "created_at": "2026-03-03T22:21:57Z",
   "created_by": "agent:claude-opus-4",
   "custom_fields": {},
   "description": null,
-  "done_at": null,
-  "evidence_refs": [],
+  "done_at": "2026-03-05T17:57:54Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KJZJC9KN6W2ZD4KTPR9F8V17",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
   "id": "task_01KJTWPBBYNPSETXTSQMQRM2QB",
-  "last_event_id": "ev_01KJTWQSC19067J5GCCDJT1CEH",
-  "last_status_changed_at": "2026-03-03T22:21:57Z",
+  "last_event_id": "ev_01KJZJC9ZQQ9BNDAZPN1FJ27JJ",
+  "last_status_changed_at": "2026-03-05T17:57:54Z",
   "priority": "critical",
   "relationships_out": [
     {
@@ -53,10 +59,10 @@
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-14",
-  "status": "backlog",
+  "status": "done",
   "tags": null,
   "title": "Homepage frontend build",
   "type": "task",
-  "updated_at": "2026-03-03T22:22:44Z",
+  "updated_at": "2026-03-05T17:57:54Z",
   "urgency": null
 }

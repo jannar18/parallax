@@ -10,8 +10,8 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KJTWPAVND79TGTRVR0B6SESV",
-  "last_event_id": "ev_01KJVCSFEFK6W8FGHGNY3BPQRS",
-  "last_status_changed_at": "2026-03-04T03:03:16Z",
+  "last_event_id": "ev_01KJZJJKQDCM6ZWHS8S8EBHG7B",
+  "last_status_changed_at": "2026-03-05T18:01:21Z",
   "priority": "critical",
   "relationships_out": [
     {
@@ -25,10 +25,10 @@
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-13",
-  "status": "needs_human",
+  "status": "cancelled",
   "tags": null,
   "title": "Design system & component foundation",
   "type": "task",
-  "updated_at": "2026-03-04T03:03:17Z",
+  "updated_at": "2026-03-05T18:01:21Z",
   "urgency": null
 }
