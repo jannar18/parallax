@@ -123,11 +123,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── Section 5: Transition ───
-          TODO: Scroll transition from split sections → full block.
-          This is a future design task — will hold animated or
-          parallax transition between the split grid and the
-          full-width statement block below. ─── */}
+      {/* ─── Section 5: Merged — architecture + software overlap ─── */}
+      <section className="relative h-screen overflow-hidden">
+        {/* Dusty-rose from left, sage from right, overlapping in the center */}
+        <div className="absolute inset-0 bg-dusty-rose" />
+        <div className="absolute inset-y-0 right-0 w-[55%] bg-sage mix-blend-multiply" />
+        {/* The overlap zone creates a muted blend of both colors */}
+      </section>
 
       {/* ─── Sections 7+8: Text → Links (shared) → Studio Desk ───
           This is ONE continuous block, not two h-screen sections.
