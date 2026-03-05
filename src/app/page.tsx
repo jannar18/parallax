@@ -123,12 +123,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── Section 5: Merged — architecture + software converged ─── */}
-      <section className="grid h-screen grid-cols-3">
-        <div className="bg-dusty-rose" />
-        <div className="bg-warm-gray" />
-        <div className="bg-sage" />
-      </section>
+      {/* ─── Section 5: Merged — architecture + software as one ─── */}
+      <section className="h-screen" style={{ backgroundColor: "#B0A08F" }} />
 
       {/* ─── Sections 7+8: Text → Links (shared) → Studio Desk ───
           This is ONE continuous block, not two h-screen sections.
