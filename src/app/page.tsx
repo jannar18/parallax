@@ -123,12 +123,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── Section 5: Merged — architecture + software overlap ─── */}
-      <section className="relative h-screen overflow-hidden">
-        {/* Dusty-rose from left, sage from right, overlapping in the center */}
-        <div className="absolute inset-0 bg-dusty-rose" />
-        <div className="absolute inset-y-0 right-0 w-[55%] bg-sage mix-blend-multiply" />
-        {/* The overlap zone creates a muted blend of both colors */}
+      {/* ─── Section 5: Merged — architecture + software converged ─── */}
+      <section className="grid h-screen grid-cols-3">
+        <div className="bg-dusty-rose" />
+        <div className="bg-warm-gray" />
+        <div className="bg-sage" />
       </section>
 
       {/* ─── Sections 7+8: Text → Links (shared) → Studio Desk ───
