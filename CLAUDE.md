@@ -205,6 +205,9 @@ When building portfolio pages, follow these principles:
 - **Ship visible output first (2026-03-03):** Build the page, create components as needed along the way. Don't build a component library for a page that doesn't exist. Infrastructure-first is the wrong priority for this project — the MVP is a visible homepage.
 - **One task = one branch = one PR (2026-03-03):** Never bundle multiple tasks into a single branch or PR. Each Lattice task gets its own feature branch and its own pull request.
 - **Stay in scope (2026-03-03):** If a task says "create design system components," don't also refactor every page file. That's a different task. Touching files outside your task's scope is scope creep.
+- **Visual-first design (2026-03-04):** Agents must SEE visual references (images) before designing or wireframing — written descriptions of aesthetics produce generic output. The workflow: (1) assemble moodboard images in `research/moodboard/`, (2) agent views every image via Read tool, (3) wireframe as HTML or in-app at wireframe fidelity, (4) iterate visually. You can't hit a visual target you've never seen.
+- **The design formula (2026-03-04):** Soul/vibe comes from Julianna's work (portfolio, mae graphics, pinterest board) — warm textures, stipple, watercolor, handcraft, materiality, architectural drawing language. Structure/execution comes from Asimov Collective sites — editorial pacing, typographic hierarchy, bento grids, full-bleed sections, strong branding, restrained nav, scroll flow. The goal is NOT an Asimov clone — it's pouring Julianna's visual DNA into Asimov's level of web craft.
+- **Wireframes = HTML, not text (2026-03-04):** Build wireframes as standalone HTML files or directly in the Next.js app. Text/ASCII wireframes don't give the human enough to react to. The human needs to see real proportions, real type hierarchy, real spacing in a browser.
 
 ## Lattice
 

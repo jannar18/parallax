@@ -334,6 +334,36 @@ Asimov Collective defines the *polish* — Porter Robinson's web presence define
 
 ---
 
+## 11b. Design Process — Visual-First Workflow
+
+**Core principle:** Agents must *see* visual references before designing or wireframing. Written descriptions of aesthetics are not sufficient — they produce generic output that misses the actual visual language. This was learned the hard way: text-only context leads to agents designing from abstractions instead of from reality.
+
+**The workflow:**
+
+1. **Moodboard first.** Before any wireframing or visual design work begins, assemble a local moodboard of images the agent can view directly:
+   - Asimov Collective screenshots (key pages, not just homepages)
+   - Pinterest board exports (saved pins as images)
+   - Julianna's architecture portfolio samples
+   - Any other visual references that define the target aesthetic
+   - Location: `research/moodboard/` — images, not links
+
+2. **Agent reviews every image.** The agent uses the Read tool to view each image and builds an understanding of the visual language from direct observation — color, spacing, typography in practice, imagery treatment, pacing.
+
+3. **Wireframe as HTML.** Wireframes are built as standalone HTML files (or directly in the Next.js app at wireframe fidelity), not as text descriptions or ASCII art. This produces something the human can see at real scale in a browser and react to visually.
+
+4. **Iterate visually.** Feedback happens on things you can see, not on descriptions of things.
+
+**Why this matters:** The quality bar is Asimov Collective. You can't hit a visual target you've never seen. Text descriptions of "restrained typography" and "generous whitespace" are necessary context but not sufficient input for design work.
+
+**The design formula:**
+
+- **Soul / vibe** ← Julianna's work: portfolio, mae graphics, pinterest board. Warm textures, stipple, watercolor washes, handcraft, materiality, architectural drawing language. This is what makes the site *hers*, not a generic Asimov clone.
+- **Structure / execution** ← Asimov Collective sites: editorial pacing, typographic hierarchy, bento grids, full-bleed sections, strong branding, restrained navigation, scroll flow. This is the level of web craft we're targeting.
+
+The goal: pour Julianna's visual DNA into Asimov's structural rigor. The site should feel like an architecture portfolio that happens to be as well-built as an Asimov Collective site — not an Asimov site with architecture content dropped in.
+
+---
+
 ## 12. Risks & Open Questions
 
 | Risk / Question | Impact | Mitigation | Status |
@@ -364,3 +394,4 @@ Asimov Collective defines the *polish* — Porter Robinson's web presence define
 | Date | Change | Author |
 |------|--------|--------|
 | 2026-03-02 | Initial draft from PRD interview | Julianna + Claude |
+| 2026-03-04 | Added §11b: Visual-first design workflow — agents must see references before designing | Julianna + Claude |
