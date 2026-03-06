@@ -1,26 +1,39 @@
 {
   "assigned_to": null,
-  "branch_links": [],
-  "comment_count": 0,
+  "branch_links": [
+    {
+      "branch": "feature/asmv-42-artifact-hover",
+      "linked_at": "2026-03-06T22:46:32Z",
+      "linked_by": "agent:claude-opus-4-asmv42",
+      "repo": null
+    }
+  ],
+  "comment_count": 1,
   "complexity": null,
   "created_at": "2026-03-06T21:21:02Z",
   "created_by": "human:jules",
   "custom_fields": {},
   "description": "ArtifactBar.tsx:168 uses text-vermillion hover:text-vermillion-light but both resolve to #f65058 in tailwind.config.ts:21. The hover is a no-op \u2014 zero visual change. Fix: use text-scarlet hover:text-scarlet-dark for actual hover feedback.",
-  "done_at": null,
-  "evidence_refs": [],
+  "done_at": "2026-03-06T22:47:15Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KK2NANNHZACVWPTFJJXRQN60",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
   "id": "task_01KK2GCYHPM1TXNKQ15XCMW881",
-  "last_event_id": "ev_01KK2N0CXQ31C1PNNBHYBXG2TT",
-  "last_status_changed_at": "2026-03-06T22:41:33Z",
+  "last_event_id": "ev_01KK2NATKGAV8MCF2ZRRMHJ3Y3",
+  "last_status_changed_at": "2026-03-06T22:47:15Z",
   "priority": "medium",
   "relationships_out": [],
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-42",
-  "status": "in_progress",
+  "status": "done",
   "tags": null,
   "title": "Fix ArtifactBar hover state (vermillion-light = vermillion, no visual feedback)",
   "type": "task",
-  "updated_at": "2026-03-06T22:41:33Z",
+  "updated_at": "2026-03-06T22:47:15Z",
   "urgency": null
 }
