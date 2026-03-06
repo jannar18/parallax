@@ -41,3 +41,7 @@ research/03-computational-graphics-pipeline.md
 research/03-platform-research-notes.md
 research/03-visual-analysis-notes.md
 research/03-gemini-imagen-research.md
+
+# Raw photo inbox (contents never committed, only .gitkeep tracked)
+_raw/*
+!_raw/.gitkeep
