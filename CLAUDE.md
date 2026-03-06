@@ -19,6 +19,7 @@ Research, PRD, and task tracking remain in their original locations.
 ```
 .
 ├── CLAUDE.md                # This file — project context for agents
+├── AGENTS.md                # Thin wrapper pointing to CLAUDE.md (for non-Claude agents)
 ├── .gitignore               # OS, Node, Next.js, pinterest board, ASMV-3 source research
 ├── PRD.md                   # Product requirements document
 ├── brand-guide.md           # Brand identity — name, domain, colors, typography, voice
@@ -49,9 +50,9 @@ Research, PRD, and task tracking remain in their original locations.
 │   │   └── now/page.tsx             # Now / studio desk
 │   │
 │   ├── components/
-│   │   ├── global/          # Header (hide-on-scroll), Footer
+│   │   ├── global/          # Header (axis nav), Footer, SmoothScroll
 │   │   ├── ui/              # GrainOverlay
-│   │   └── interactive/     # Future: WebGL, Three.js, shader components (.gitkeep)
+│   │   └── interactive/     # HeroBrandVisual, ArtifactBar, StudioDeskScroll
 │   │
 │   ├── content/             # MDX content collections
 │   │   ├── now/             # YYYY-MM-DD.mdx — daily entries
@@ -62,6 +63,7 @@ Research, PRD, and task tracking remain in their original locations.
 │   ├── lib/
 │   │   ├── content.ts       # Content loading utilities (MDX + frontmatter)
 │   │   ├── fonts.ts         # Brand fonts (Jost/Cormorant Garamond/DM Mono)
+│   │   ├── hero-canvas.ts   # Hero section canvas rendering
 │   │   └── metadata.ts      # Shared metadata helpers
 │   │
 │   └── styles/
@@ -70,12 +72,15 @@ Research, PRD, and task tracking remain in their original locations.
 │
 ├── public/
 │   ├── fonts/               # Self-hosted WOFF2 files (when brand fonts arrive)
-│   └── textures/            # Build-time generated textures
+│   ├── images/              # Hero photos, now entry images
+│   └── textures/            # Generated textures (paper.png, stipple.svg)
 │
 ├── research/                # Existing research (unchanged)
 │   ├── 01-asimov-collective-analysis.md
 │   ├── 02-porter-robinson-interactive-research.md
 │   ├── 03-graphics-pipeline-final.md  # ★ THE KEY REFERENCE for visual/graphics decisions
+│   ├── 03-gemini-imagen-research.md
+│   ├── 04-brand-identity-notes.md
 │   └── asset-workflows/
 ├── notes/                   # Code review artifacts and working notes
 └── .lattice/                # Task tracking (Lattice)
@@ -100,7 +105,7 @@ Research, PRD, and task tracking remain in their original locations.
 
 - **V1 target:** Asimov Collective — restrained typography, editorial pacing, quiet navigation, generous whitespace. This is the quality bar for launch.
 - **How Asimov actually ships:** No WebGL, Three.js, shaders, or Canvas on any production client site. Rich motion is pre-rendered video (MP4), not runtime graphics. The web layer is CSS transitions + smooth scroll + optimized images. The impressive visuals come from pre-production, not from heavy frontend tech.
-- **Visual language:** Defined in `research/03-graphics-pipeline-final.md` §2. Warm earth palette (terracotta, amber, ochre, cream, sage), stipple/grain textures, watercolor-wash edges, collage/layering as the central design move. Transparency support is a first-class requirement.
+- **Visual language:** Defined in `research/03-graphics-pipeline-final.md` §2. Riso palette (paper, oxblood, scarlet, olive, moss, spruce — see `tokens.css`), stipple/grain textures, watercolor-wash edges, collage/layering as the central design move. Transparency support is a first-class requirement.
 - **Future (banked):** Porter Robinson / Active Theory — browser as portal, WebGL, physics sim, exploration over scrolling. Research is complete (Doc 02) and available when we're ready. Architecture the site so these layers can be added without a rewrite.
 - **Content:** "Studio desk" metaphor — populated but not messy, daily entries that feel like looking at a designer's desk
 
@@ -111,10 +116,16 @@ Research, PRD, and task tracking remain in their original locations.
 | 0 | `research/01-asimov-collective-analysis.md` | Complete |
 | 1a | `research/02-porter-robinson-interactive-research.md` | Complete (banked for future — V1 is Asimov-first) |
 | 1b | **`research/03-graphics-pipeline-final.md`** | Complete |
+| — | `research/03-gemini-imagen-research.md` | Complete |
+| — | `research/04-brand-identity-notes.md` | Complete |
 
 **`03-graphics-pipeline-final.md` is the primary reference for all visual and graphics decisions.** It consolidates design DNA (Julianna's color palette, texture vocabulary, typography), computational tools (SVG, shaders, Canvas, CSS), AI platforms (GPT Image, Midjourney, Gemini), and the recommended hybrid pipeline. Key insight: **transparency support is a first-class requirement** for the collage/layering design language — GPT Image API and generative code (SVG/Canvas) are the two paths that support it; Midjourney and Gemini do not.
 
 The `research/asset-workflows/` directory contains runnable starter scripts and prompt templates for testing each pipeline.
+
+## Current Sprint
+
+**`notes/sprint-plan-20260306.md`** is the active sprint plan. It maps every open Lattice task to a wave with dependencies and ownership (agent vs human). Read it before picking up work.
 
 ## Essential Commands
 
@@ -214,7 +225,8 @@ When building portfolio pages, follow these principles:
 - **Wireframes = HTML, not text (2026-03-04):** Build wireframes as standalone HTML files or directly in the Next.js app. Text/ASCII wireframes don't give the human enough to react to. The human needs to see real proportions, real type hierarchy, real spacing in a browser.
 - **NowEntry has artifact fields (2026-03-06):** `image?`, `project?`, `description?` on NowEntry. Entries with `image` appear in the homepage ArtifactBar. Entries without `image` still work (text-only).
 - **Content pipeline spec exists (2026-03-06):** `notes/update-skill-steps.md` documents the full manual content pipeline — this is the implementation spec for the `/update-site` skill (ASMV-18). Read it before building that skill.
-- **Texture generation deps (2026-03-06):** `simplex-noise` + `@napi-rs/canvas` installed as devDeps. Scripts in `research/asset-workflows/` produce real output. Run with `node <script> --output <path> --seed <n>`.
+- **Texture generation scripts (2026-03-06):** Scripts in `research/asset-workflows/` produce real output. Run with `node <script> --output <path> --seed <n>`. Note: `simplex-noise` and `@napi-rs/canvas` are NOT in package.json — install them before running these scripts.
+- **Worktree agent cleanup (2026-03-06):** After worktree agents finish, you must manually `git worktree remove <path>` + `git branch -d <scaffold-branch>`. The scaffold branches (e.g., `worktree-agent-*`) have no unique commits and are safe to delete. Also: `gh pr merge --delete-branch` deletes the remote branch on GitHub but doesn't prune local remote-tracking refs — run `git remote prune origin` to clean those up.
 
 ## Lattice
 

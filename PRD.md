@@ -323,8 +323,8 @@ Asimov Collective defines the *polish* — Porter Robinson's web presence define
 - Static or hybrid deployment (no heavy server infrastructure)
 
 ### Constraints
-- Tech stack: TBD pending Asimov research (Phase 0). Likely Next.js or Astro.
-- Hosting: TBD. Likely Vercel or Netlify.
+- Tech stack: Next.js 15 (App Router) + Tailwind CSS 3 + pnpm. Decided after Asimov research (Phase 0) — matches Asimov Collective's actual stack.
+- Hosting: Vercel. First-party Next.js support, image optimization CDN, preview deploys.
 - Must support MDX or similar for mixing rich content with components
 - Claude skill must work within Claude Code's existing skill/command system
 

@@ -10,10 +10,18 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KK2E1M9QK21BVSTGQ8MP9AWC",
-  "last_event_id": "ev_01KK2E1M9TGW3639E4CW21GG1X",
+  "last_event_id": "ev_01KK2JV325GVN9ZRHF2A4ZBNSS",
   "last_status_changed_at": "2026-03-06T20:39:53Z",
   "priority": "high",
-  "relationships_out": [],
+  "relationships_out": [
+    {
+      "created_at": "2026-03-06T22:03:42Z",
+      "created_by": "human:jules",
+      "note": null,
+      "target_task_id": "task_01KK2JTY5BCZZ9EC463XKQ1NNT",
+      "type": "depends_on"
+    }
+  ],
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-25",
@@ -21,6 +29,6 @@
   "tags": null,
   "title": "Review /update skill & artifact generation pipeline",
   "type": "task",
-  "updated_at": "2026-03-06T20:39:53Z",
+  "updated_at": "2026-03-06T22:03:42Z",
   "urgency": null
 }

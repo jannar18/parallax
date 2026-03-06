@@ -1,26 +1,32 @@
 {
   "assigned_to": null,
   "branch_links": [],
-  "comment_count": 0,
+  "comment_count": 1,
   "complexity": null,
   "created_at": "2026-03-06T20:39:51Z",
   "created_by": "human:jules",
   "custom_fields": {},
   "description": "Full repo audit. Look for: duplicate information across files, outdated research references, stale CLAUDE.md entries, outdated agents.md, anything misaligned with the PRD or MVP scope. Update or remove what's wrong. Ensure all docs reflect current state.",
-  "done_at": null,
-  "evidence_refs": [],
+  "done_at": "2026-03-06T21:50:50Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KK2G530AN3Q22W2VHQWTM2KF",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
   "id": "task_01KK2E1HZH85JN6GCFTBK9XE02",
-  "last_event_id": "ev_01KK2E1HZMCV7TTPF84TDAGG0Q",
-  "last_status_changed_at": "2026-03-06T20:39:51Z",
+  "last_event_id": "ev_01KK2J3HDM60NJRCFTJ0QNZ8Z9",
+  "last_status_changed_at": "2026-03-06T21:50:50Z",
   "priority": "critical",
   "relationships_out": [],
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-24",
-  "status": "backlog",
+  "status": "done",
   "tags": null,
   "title": "Code review: prune outdated info, align with PRD & MVP",
   "type": "task",
-  "updated_at": "2026-03-06T20:39:51Z",
+  "updated_at": "2026-03-06T21:50:50Z",
   "urgency": null
 }

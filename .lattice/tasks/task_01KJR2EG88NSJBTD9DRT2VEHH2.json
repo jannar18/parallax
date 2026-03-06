@@ -10,8 +10,8 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KJR2EG88NSJBTD9DRT2VEHH2",
-  "last_event_id": "ev_01KJTWZXC8C0Q2HXYQK86PFK99",
-  "last_status_changed_at": "2026-03-02T20:04:48Z",
+  "last_event_id": "ev_01KK2KBYRA6EWJ6ZCKCA1K61YQ",
+  "last_status_changed_at": "2026-03-06T22:12:55Z",
   "priority": "medium",
   "relationships_out": [
     {
@@ -60,10 +60,10 @@
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-9",
-  "status": "backlog",
+  "status": "cancelled",
   "tags": null,
   "title": "Refinement & polish to Asimov quality",
   "type": "task",
-  "updated_at": "2026-03-03T22:27:10Z",
+  "updated_at": "2026-03-06T22:12:55Z",
   "urgency": null
 }

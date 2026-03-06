@@ -1,7 +1,7 @@
 {
   "assigned_to": null,
   "branch_links": [],
-  "comment_count": 0,
+  "comment_count": 1,
   "complexity": null,
   "created_at": "2026-03-06T20:41:52Z",
   "created_by": "human:jules",
@@ -10,9 +10,9 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KK2E57QRM1QKRC1WYWFPVZ4W",
-  "last_event_id": "ev_01KK2E57QZKFB6NM6K5ZD0790Z",
+  "last_event_id": "ev_01KK2JS1JDP1GJWP2DEGWQFBAP",
   "last_status_changed_at": "2026-03-06T20:41:52Z",
-  "priority": "critical",
+  "priority": "high",
   "relationships_out": [],
   "reopened_count": 0,
   "schema_version": 1,
@@ -21,6 +21,6 @@
   "tags": null,
   "title": "Set up software portfolio page",
   "type": "task",
-  "updated_at": "2026-03-06T20:41:52Z",
+  "updated_at": "2026-03-06T22:02:35Z",
   "urgency": null
 }
