@@ -30,7 +30,7 @@ export default function WritingPage() {
                 href={`/writing/${post.slug}`}
                 className="group block"
               >
-                <h2 className="text-2xl font-light text-ink transition-colors group-hover:text-terracotta">
+                <h2 className="text-2xl font-light text-ink transition-colors group-hover:text-coral">
                   {post.title}
                 </h2>
                 {post.description && (

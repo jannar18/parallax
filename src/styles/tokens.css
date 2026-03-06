@@ -59,19 +59,10 @@
   --content-max-width: 72rem;    /* 1152px */
   --text-max-width:    40rem;    /* 640px — text column narrower than images */
 
-  /* ── Color: Primary Warmth ── */
-  --color-terracotta:    #C4724E;  /* Primary accent — the "one color" */
-  --color-amber:         #D4A76A;  /* Warm secondary */
+  /* ── Color: Brand ── */
+  --color-coral:         #C95D45;  /* Primary accent — the "one color" */
   --color-cream:         #F5F0E8;  /* Background — warm off-white */
-  --color-warm-gray:     #B5AFA6;  /* Neutral mid-tone */
-
-  /* ── Color: Secondary Earth ── */
-  --color-sage:          #8B9E7E;  /* Nature accent */
-  --color-dusty-rose:    #C9A5A0;  /* Subtle warmth */
-  --color-slate:         #7A8B9A;  /* Cool contrast */
-
-  /* ── Color: Accent (sparingly) ── */
-  --color-coral:         #C95D45;  /* High-contrast accent */
+  --color-sage:          #8B9E7E;  /* Secondary accent — nature, calm */
 
   /* ── Color: Neutrals ── */
   --color-ink:           #2C2824;  /* Primary text — warm near-black */
@@ -85,8 +76,8 @@
   --color-text-primary:    var(--color-ink);
   --color-text-secondary:  var(--color-ink-light);
   --color-text-tertiary:   var(--color-ink-lighter);
-  --color-accent:          var(--color-terracotta);
-  --color-accent-hover:    var(--color-coral);
+  --color-accent:          var(--color-coral);
+  --color-accent-hover:    #B5513C;  /* coral darkened for hover */
   --color-bg:              var(--color-background);
   --color-bg-surface:      var(--color-surface);
 }

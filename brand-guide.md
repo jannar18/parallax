@@ -102,36 +102,21 @@ The three statements marked in **bold** above (1, 3, and 7) are recommended as f
 
 ### Palette Overview
 
-The palette is drawn from Julianna's own work: warm earth tones rooted in terracotta, amber, and ochre, grounded by a cream background that reads as aged paper rather than clinical white. The palette follows the Asimov "one accent color" philosophy — Terracotta is the defining accent, used sparingly against warm neutrals.
+A reduced, intentional palette: three brand colors plus warm neutrals. Coral is the primary accent, Cream is the ground, and Sage provides a natural counterpoint. The ink neutrals handle all text hierarchy. Every other color was cut for clarity.
 
-### Primary Warmth
+### Brand Colors
 
 | Name | Hex | HSL | RGB | Role |
 |------|-----|-----|-----|------|
-| **Terracotta** | `#C4724E` | `19°, 47%, 54%` | `196, 114, 78` | Primary accent — the "one color." Links, active states, emphasis. |
-| **Amber** | `#D4A76A` | `34°, 55%, 62%` | `212, 167, 106` | Warm secondary. Hover backgrounds, highlights, decorative warmth. |
+| **Coral** | `#C95D45` | `11°, 52%, 53%` | `201, 93, 69` | Primary accent — the "one color." Links, active states, emphasis, hover highlights. |
 | **Cream** | `#F5F0E8` | `37°, 46%, 93%` | `245, 240, 232` | Page background. Warm off-white — aged paper, never pure white. |
-| **Warm Gray** | `#B5AFA6` | `36°, 8%, 68%` | `181, 175, 166` | Neutral mid-tone. Borders, metadata text, subtle UI elements. |
-
-### Secondary Earth
-
-| Name | Hex | HSL | RGB | Role |
-|------|-----|-----|-----|------|
-| **Sage** | `#8B9E7E` | `100°, 13%, 55%` | `139, 158, 126` | Nature accent. Used for landscape/environment content. |
-| **Dusty Rose** | `#C9A5A0` | `7°, 25%, 71%` | `201, 165, 160` | Soft warmth. Used very sparingly — portfolio highlights, decorative. |
-| **Slate** | `#7A8B9A` | `208°, 12%, 54%` | `122, 139, 154` | Cool contrast. Technical content, code blocks, software-related sections. |
-
-### Accent
-
-| Name | Hex | HSL | RGB | Role |
-|------|-----|-----|-----|------|
-| **Coral** | `#C95D45` | `11°, 52%, 53%` | `201, 93, 69` | High-contrast accent. Error states, critical emphasis. Terracotta's louder sibling — use only when Terracotta doesn't carry enough weight. |
+| **Sage** | `#8B9E7E` | `100°, 13%, 55%` | `139, 158, 126` | Secondary accent. Section backgrounds, decorative elements, nature. |
 
 ### Neutrals
 
 | Name | Hex | HSL | RGB | Role |
 |------|-----|-----|-----|------|
-| **Ink** | `#2C2824` | `30°, 10%, 16%` | `44, 40, 36` | Primary text. Warm near-black — never pure `#000`. |
+| **Ink** | `#2C2824` | `30°, 10%, 16%` | `44, 40, 36` | Primary text, dark backgrounds. Warm near-black — never pure `#000`. |
 | **Ink Light** | `#5C554E` | `30°, 9%, 33%` | `92, 85, 78` | Secondary text, subheadings, less prominent body copy. |
 | **Ink Lighter** | `#8A847D` | `32°, 5%, 51%` | `138, 132, 125` | Tertiary text, metadata, timestamps, labels. |
 | **Border** | `#E2DCD5` | `32°, 18%, 86%` | `226, 220, 213` | Subtle dividers, card edges, table borders. |
@@ -139,7 +124,7 @@ The palette is drawn from Julianna's own work: warm earth tones rooted in terrac
 
 ### WCAG AA Contrast Ratios
 
-All text-on-background combinations tested. WCAG AA requires 4.5:1 for normal text, 3.0:1 for large text (18px+ or 14px+ bold).
+WCAG AA requires 4.5:1 for normal text, 3.0:1 for large text (18px+ or 14px+ bold).
 
 #### Text Colors on Cream Background (`#F5F0E8`)
 
@@ -148,65 +133,29 @@ All text-on-background combinations tested. WCAG AA requires 4.5:1 for normal te
 | Ink | `#2C2824` | **10.3:1** | Pass | Pass |
 | Ink Light | `#5C554E` | **5.2:1** | Pass | Pass |
 | Ink Lighter | `#8A847D` | **3.2:1** | Fail | Pass |
-| Terracotta | `#C4724E` | **3.1:1** | Fail | Pass |
 | Coral | `#C95D45` | **3.2:1** | Fail | Pass |
-| Sage | `#8B9E7E` | **2.8:1** | Fail | Fail |
-| Slate | `#7A8B9A` | **2.9:1** | Fail | Fail |
-| Warm Gray | `#B5AFA6` | **2.0:1** | Fail | Fail |
-| Amber | `#D4A76A` | **2.1:1** | Fail | Fail |
-| Dusty Rose | `#C9A5A0` | **2.2:1** | Fail | Fail |
 
-#### Text Colors on Surface (`#FAF8F5`)
-
-| Text Color | Hex | Contrast Ratio | Normal Text (AA) | Large Text (AA) |
-|------------|-----|---------------|------------------|-----------------|
-| Ink | `#2C2824` | **11.5:1** | Pass | Pass |
-| Ink Light | `#5C554E` | **5.8:1** | Pass | Pass |
-| Ink Lighter | `#8A847D` | **3.5:1** | Fail | Pass |
-| Terracotta | `#C4724E` | **3.4:1** | Fail | Pass |
-
-#### Ink on Accent Backgrounds
-
-| Background | Hex | Contrast (Ink on bg) | Normal Text (AA) | Large Text (AA) |
-|------------|-----|---------------------|------------------|-----------------|
-| Terracotta | `#C4724E` | **3.3:1** | Fail | Pass |
-| Amber | `#D4A76A` | **2.3:1** | Fail | Fail |
-| Sage | `#8B9E7E` | **2.7:1** | Fail | Fail |
-
-#### Cream (`#F5F0E8`) on Accent Backgrounds
+#### Cream (`#F5F0E8`) on Color Backgrounds
 
 | Background | Hex | Contrast (Cream on bg) | Normal Text (AA) | Large Text (AA) |
 |------------|-----|----------------------|------------------|-----------------|
 | Ink | `#2C2824` | **10.3:1** | Pass | Pass |
 | Ink Light | `#5C554E` | **5.2:1** | Pass | Pass |
-| Terracotta | `#C4724E` | **3.1:1** | Fail | Pass |
+| Coral | `#C95D45` | **3.2:1** | Fail | Pass |
+| Sage | `#8B9E7E` | **2.8:1** | Fail | Fail |
 
 ### Usage Rules
 
-1. **Body text** must always be Ink (`#2C2824`) or Ink Light (`#5C554E`) on Cream/Surface backgrounds. These are the only combinations that pass WCAG AA for normal text.
-2. **Terracotta as text** is permitted only at large sizes (18px+ regular, 14px+ bold) — headings, pull quotes, highlighted words. Never for body text.
-3. **Ink Lighter** (`#8A847D`) is permitted for metadata, timestamps, and labels only at sizes where it functions as large text (14px+ bold or 18px+). For smaller metadata, use Ink Light instead.
-4. **Sage, Slate, Warm Gray, Amber, Dusty Rose** are decorative/structural colors — backgrounds, borders, icons, illustrations. Not for text on light backgrounds.
-5. **Terracotta on Cream** works for interactive elements (links, buttons) because these are typically large enough and gain additional affordance from underlines, hover states, or button shapes.
-6. **Dark text on accent backgrounds:** When placing text on Terracotta or other accent backgrounds, use Cream (`#F5F0E8`) for the text, and keep it large.
+1. **Body text** must always be Ink (`#2C2824`) or Ink Light (`#5C554E`) on Cream/Surface backgrounds.
+2. **Coral as text** is permitted only at large sizes (18px+ regular, 14px+ bold) — headings, pull quotes, highlighted words. Never for body text.
+3. **Ink Lighter** (`#8A847D`) is for metadata, timestamps, and labels at 14px+ bold or 18px+ only.
+4. **Sage** is a background/decorative color. Cream text on Sage fails AA — use Ink on Sage, or use Sage only as a section background with Ink text overlaid.
+5. **Coral on Cream** works for interactive elements (links, buttons) at large sizes with additional affordance (underlines, hover states, button shapes).
+6. **Cream on Ink** is the primary dark-on-light inversion — use for dark sections, footer, hero.
 
-### Primary Accent — Terracotta
+### Primary Accent — Coral
 
-**Why Terracotta:** It is warm, architectural (fired earth, clay, the material vocabulary of building), distinctive against cream, and carries the palette's core character. It references the physical world — kilns, ceramics, Mediterranean construction — without being literal. Against the cream background, it reads as confident and grounded. Following the Asimov "one color" philosophy, Terracotta defines Parallax the way Reserve Blue defines Reserve.
-
-### Terracotta Tint Scale (on Cream `#F5F0E8`)
-
-Tints created by mixing Terracotta with the Cream background at varying opacity:
-
-| Opacity | Visual Effect | Approximate Hex | Use Case |
-|---------|--------------|-----------------|----------|
-| 100% | Full Terracotta | `#C4724E` | Links, active states, primary accent |
-| 80% | Rich warm | `#CC8A6A` | Hover backgrounds, selected states |
-| 60% | Soft warm | `#D5A288` | Subtle highlights, card accents |
-| 40% | Gentle blush | `#DEBAA6` | Background tints, section dividers |
-| 20% | Whisper | `#E7D2C4` | Very subtle backgrounds, hover hints |
-| 10% | Ghost | `#EEE1D6` | Barely-there warmth, page sections |
-| 5% | Near-cream | `#F2E8DF` | Alternate section backgrounds |
+**Why Coral:** Warm, architectural (fired earth, clay, kiln-fired ceramics), bold enough to anchor the brand against cream. It carries physical-world materiality without being literal. Following the Asimov "one color" philosophy, Coral defines Parallax.
 
 ---
 

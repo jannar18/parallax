@@ -9,19 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        /* Primary warmth */
-        terracotta: "#C4724E",
-        amber: "#D4A76A",
-        cream: "#F5F0E8",
-        "warm-gray": "#B5AFA6",
-
-        /* Secondary earth */
-        sage: "#8B9E7E",
-        "dusty-rose": "#C9A5A0",
-        slate: "#7A8B9A",
-
-        /* Accent */
+        /* Brand */
         coral: "#C95D45",
+        cream: "#F5F0E8",
+        sage: "#8B9E7E",
 
         /* Neutrals */
         ink: {
