@@ -14,11 +14,11 @@
   "created_by": "agent:claude-opus-4",
   "custom_fields": {},
   "description": null,
-  "done_at": null,
+  "done_at": "2026-03-06T20:34:58Z",
   "evidence_refs": [],
   "id": "task_01KJTWPBY0BHTGG6G7KP9EQ39C",
-  "last_event_id": "ev_01KJZNDDKCET2JA787QB7M3JB9",
-  "last_status_changed_at": "2026-03-05T02:34:03Z",
+  "last_event_id": "ev_01KK2DRM3VY1HDXRP99X97VF5M",
+  "last_status_changed_at": "2026-03-06T20:34:58Z",
   "priority": "critical",
   "relationships_out": [
     {
@@ -32,10 +32,10 @@
   "reopened_count": 1,
   "schema_version": 1,
   "short_id": "ASMV-15",
-  "status": "planned",
+  "status": "done",
   "tags": null,
   "title": "Daily update content design (format, schema, examples)",
   "type": "task",
-  "updated_at": "2026-03-05T18:50:57Z",
+  "updated_at": "2026-03-06T20:34:58Z",
   "urgency": null
 }

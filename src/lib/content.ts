@@ -18,6 +18,9 @@ export interface NowEntry {
   date: string;
   mood?: string;
   tags?: string[];
+  image?: string;
+  project?: string;
+  description?: string;
   content: string;
 }
 

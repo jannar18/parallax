@@ -187,6 +187,10 @@ When building portfolio pages, follow these principles:
 - **Font not loading:** Check `src/lib/fonts.ts` — the font must be imported and its `.variable` class applied to `<html>` in `layout.tsx`.
 - **Research-phase debugging:** If a research doc seems incomplete, check the PRD for the original deliverable spec before expanding scope.
 - **Lattice task confusion:** Check `.lattice/config.json` for workflow states. Valid transitions are documented there — don't invent statuses.
+- **Don't `pnpm build` while dev server is running:** It overwrites `.next/` and causes 404s on all chunks. Kill the dev server first, or clean-restart after.
+- **ChunkLoadError on cold start:** Webpack initial compilation takes 16+ seconds, causing browser chunk load timeouts. Wait for compilation to finish, then hard refresh (Cmd+Shift+R). Consider Turbopack (`next dev --turbo`) for faster cold starts.
+- **Kill old dev server before starting new:** Otherwise the new one grabs a different port and the broken one lingers on 3000.
+- **Clean `.next/` when switching build modes:** Run `rm -r .next` before restarting dev after a production build, or you get `_document.js` ENOENT errors from mixed artifacts.
 
 ## Self-Improvement
 
@@ -208,6 +212,9 @@ When building portfolio pages, follow these principles:
 - **Visual-first design (2026-03-04):** Agents must SEE visual references (images) before designing or wireframing — written descriptions of aesthetics produce generic output. The workflow: (1) assemble moodboard images in `research/moodboard/`, (2) agent views every image via Read tool, (3) wireframe as HTML or in-app at wireframe fidelity, (4) iterate visually. You can't hit a visual target you've never seen.
 - **The design formula (2026-03-04):** Soul/vibe comes from Julianna's work (portfolio, mae graphics, pinterest board) — warm textures, stipple, watercolor, handcraft, materiality, architectural drawing language. Structure/execution comes from Asimov Collective sites — editorial pacing, typographic hierarchy, bento grids, full-bleed sections, strong branding, restrained nav, scroll flow. The goal is NOT an Asimov clone — it's pouring Julianna's visual DNA into Asimov's level of web craft.
 - **Wireframes = HTML, not text (2026-03-04):** Build wireframes as standalone HTML files or directly in the Next.js app. Text/ASCII wireframes don't give the human enough to react to. The human needs to see real proportions, real type hierarchy, real spacing in a browser.
+- **NowEntry has artifact fields (2026-03-06):** `image?`, `project?`, `description?` on NowEntry. Entries with `image` appear in the homepage ArtifactBar. Entries without `image` still work (text-only).
+- **Content pipeline spec exists (2026-03-06):** `notes/update-skill-steps.md` documents the full manual content pipeline — this is the implementation spec for the `/update-site` skill (ASMV-18). Read it before building that skill.
+- **Texture generation deps (2026-03-06):** `simplex-noise` + `@napi-rs/canvas` installed as devDeps. Scripts in `research/asset-workflows/` produce real output. Run with `node <script> --output <path> --seed <n>`.
 
 ## Lattice
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAllNowEntries } from "@/lib/content";
 import HeroBrandVisual from "@/components/interactive/HeroBrandVisual";
+import ArtifactBar from "@/components/interactive/ArtifactBar";
 /**
  * Home page — viewport-fitted sections ("slides").
  *
@@ -9,11 +10,17 @@ import HeroBrandVisual from "@/components/interactive/HeroBrandVisual";
  * Typography and spacing use viewport units to scale with the window.
  */
 export default function HomePage() {
-  const nowEntries = getAllNowEntries().map(({ slug, date, mood }) => ({
-    slug,
-    date,
-    mood,
-  }));
+  const nowEntries = getAllNowEntries();
+  const artifacts = nowEntries
+    .filter((e) => e.image)
+    .map(({ slug, date, mood, image, project, description }) => ({
+      slug,
+      date,
+      mood,
+      image: image!,
+      project,
+      description,
+    }));
 
   return (
     <div>
@@ -180,43 +187,8 @@ export default function HomePage() {
           </nav>
         </div>
 
-        {/* Studio desk cards — lower 2/3 of virtual slide 8
-            Cards don't touch the bottom — ~1/6vh padding below */}
-        <div className="flex h-[66.67vh] items-stretch gap-[1vw] pt-[2vh] pb-[11vh]">
-          {(nowEntries.length > 0 ? nowEntries.slice(0, 3) : [
-            { slug: "placeholder-0", date: "2026-03-01", mood: undefined },
-            { slug: "placeholder-1", date: "2026-03-02", mood: undefined },
-            { slug: "placeholder-2", date: "2026-03-03", mood: undefined },
-          ]).map((entry) => (
-            <Link
-              key={entry.slug}
-              href="/now"
-              className="group flex-1 block"
-            >
-              <div className="h-full rounded-xl bg-forest/20 flex flex-col justify-end overflow-hidden transition-colors group-hover:bg-forest/35">
-                <div className="p-[clamp(1rem,1.5vw,1.5rem)]">
-                  <p
-                    className="font-sans text-ink-lighter uppercase"
-                    style={{
-                      fontSize: "clamp(0.65rem, 0.8vw, 0.8rem)",
-                      letterSpacing: "var(--tracking-wider)",
-                    }}
-                  >
-                    {entry.date}
-                  </p>
-                  {entry.mood && (
-                    <p
-                      className="mt-[0.5vh] text-ink-light font-serif italic"
-                      style={{ fontSize: "clamp(0.8rem, 1vw, 0.95rem)" }}
-                    >
-                      {entry.mood}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+        {/* Studio desk — artifact bar (lower 2/3 of virtual slide 8) */}
+        <ArtifactBar artifacts={artifacts} />
       </section>
     </div>
   );

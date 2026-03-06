@@ -1,0 +1,1 @@
+Merged to main via PR #15. Hero visual, font system, brand research all shipped.

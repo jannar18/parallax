@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getAllNowEntries } from "@/lib/content";
 
@@ -31,6 +32,28 @@ export default function NowPage() {
                 <time className="text-sm text-ink-lighter tracking-wide">
                   {entry.date}
                 </time>
+                {entry.mood && (
+                  <span className="ml-3 text-sm text-ink-light font-serif italic">
+                    {entry.mood}
+                  </span>
+                )}
+                {entry.image && (
+                  <div className="mt-4">
+                    <Image
+                      src={entry.image}
+                      alt={entry.description || `Artifact from ${entry.date}`}
+                      width={640}
+                      height={640}
+                      className="w-full max-w-md h-auto rounded-sm"
+                      unoptimized
+                    />
+                    {entry.description && (
+                      <p className="mt-2 text-xs text-ink-lighter">
+                        {entry.description}
+                      </p>
+                    )}
+                  </div>
+                )}
                 <div className="prose mt-4">
                   <MDXRemote source={entry.content} />
                 </div>

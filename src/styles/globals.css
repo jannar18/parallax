@@ -91,6 +91,15 @@
   animation: breathe 4s ease-in-out infinite;
 }
 
+/* ── Scrollbar Hide (artifact bar) ── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 .grain-overlay::before {
   content: "";
   position: absolute;
