@@ -1,0 +1,32 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 1,
+  "complexity": null,
+  "created_at": "2026-03-06T20:25:14Z",
+  "created_by": "agent:claude-opus-4-orchestrator",
+  "custom_fields": {},
+  "description": null,
+  "done_at": "2026-03-06T20:34:58Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KK2DRJTR66BCHWYF8JNX94HQ",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
+  "id": "task_01KK2D6SGYQTSS26MA46V715H1",
+  "last_event_id": "ev_01KK2DRKAHA5JGVATWMCAB3MV9",
+  "last_status_changed_at": "2026-03-06T20:34:58Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-22",
+  "status": "done",
+  "tags": null,
+  "title": "Create /update skill command",
+  "type": "task",
+  "updated_at": "2026-03-06T20:34:58Z",
+  "urgency": null
+}

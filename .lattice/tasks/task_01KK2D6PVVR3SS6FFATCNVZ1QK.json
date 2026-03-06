@@ -1,0 +1,33 @@
+{
+  "assigned_to": null,
+  "branch_links": [
+    {
+      "branch": "feature/riso-palette",
+      "linked_at": "2026-03-06T20:34:48Z",
+      "linked_by": "agent:claude-opus-4-orchestrator",
+      "repo": null
+    }
+  ],
+  "comment_count": 1,
+  "complexity": null,
+  "created_at": "2026-03-06T20:25:11Z",
+  "created_by": "agent:claude-opus-4-orchestrator",
+  "custom_fields": {},
+  "description": null,
+  "done_at": null,
+  "evidence_refs": [],
+  "id": "task_01KK2D6PVVR3SS6FFATCNVZ1QK",
+  "last_event_id": "ev_01KK2DRA8Q7QFZJXKBZS4MEJX6",
+  "last_status_changed_at": "2026-03-06T20:34:47Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-20",
+  "status": "review",
+  "tags": null,
+  "title": "Site palette update \u2014 Riso colors replace existing palette",
+  "type": "task",
+  "updated_at": "2026-03-06T20:34:48Z",
+  "urgency": null
+}
