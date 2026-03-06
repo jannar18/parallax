@@ -31,8 +31,9 @@
 
   /* ── Heading defaults ── */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-sans), system-ui, sans-serif;
-    font-weight: var(--font-medium);
+    font-family: var(--font-serif), "Cormorant Garamond", Georgia, serif;
+    font-weight: var(--font-semibold);
+    font-style: italic;
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
@@ -63,7 +64,7 @@
 
   /* ── Selection ── */
   ::selection {
-    background-color: var(--color-terracotta);
+    background-color: var(--color-coral);
     color: var(--color-cream);
   }
 }
@@ -79,6 +80,15 @@
   pointer-events: none;
   opacity: 0.03;
   mix-blend-mode: multiply;
+}
+
+/* ── Breathe Animation (hero hint text) ── */
+@keyframes breathe {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.3; }
+}
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
 }
 
 .grain-overlay::before {

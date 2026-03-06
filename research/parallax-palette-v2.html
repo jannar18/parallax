@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARALLAX Palette v2 — Extracted from Photos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #F5F0E8;
+      font-family: 'Jost', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: #2C2824;
+      padding: 2rem;
+    }
+
+    .title {
+      text-align: center;
+      padding: 1rem 0 2.5rem;
+    }
+    .title h1 {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #5C554E;
+    }
+    .title p {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: #5C554E;
+      max-width: 40rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── Palette Swatches ── */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5C554E;
+      margin: 2rem 0 0.75rem;
+    }
+
+    .swatches {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 1rem;
+    }
+
+    .swatch {
+      flex: 1;
+      aspect-ratio: 1;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0.75rem 0.5rem;
+      position: relative;
+      min-height: 140px;
+    }
+
+    .swatch-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-align: center;
+    }
+    .swatch-hex {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.5rem;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      margin-top: 0.2rem;
+      opacity: 0.7;
+      text-align: center;
+    }
+    .swatch-source {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.4rem;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      margin-top: 0.15rem;
+      opacity: 0.45;
+      text-align: center;
+    }
+
+    .light-text .swatch-name,
+    .light-text .swatch-hex,
+    .light-text .swatch-source { color: #F5F0E8; }
+
+    .dark-text .swatch-name,
+    .dark-text .swatch-hex,
+    .dark-text .swatch-source { color: #2C2824; }
+
+    /* ── Combo Tester ── */
+    .combos {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+      margin-top: 2rem;
+    }
+
+    .combo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1rem;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .combo-word {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+      letter-spacing: 0.05em;
+      line-height: 1.1;
+    }
+
+    .combo-sub {
+      margin-top: 0.5rem;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.04em;
+      opacity: 0.5;
+    }
+
+    .combo-label {
+      margin-top: 0.75rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.4rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      opacity: 0.3;
+    }
+
+    /* ── Full-width bands ── */
+    .bands {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-top: 2rem;
+    }
+
+    .band {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .band-word {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: clamp(3rem, 6vw, 6rem);
+      letter-spacing: 0.08em;
+      line-height: 1;
+    }
+
+    @media (max-width: 900px) {
+      .swatches { flex-wrap: wrap; }
+      .swatch { min-width: calc(33% - 3px); }
+      .combos { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="title">
+    <h1>Parallax Palette v2 &mdash; Extracted from Julianna's Photos</h1>
+    <p>Ranunculus flowers, Portuguese stone house collages, Scandinavian brick, Japanese temple vermillion, weathered timber.</p>
+  </div>
+
+  <!-- ── BURGUNDY / BRICK ── -->
+  <div class="section-label">Burgundy — brick, dark tile, shadow</div>
+  <div class="swatches">
+    <div class="swatch light-text" style="background: #3C2A28;">
+      <div class="swatch-name">Oxblood</div>
+      <div class="swatch-hex">#3C2A28</div>
+      <div class="swatch-source">darkest brick shadow (4142)</div>
+    </div>
+    <div class="swatch light-text" style="background: #5C3D38;">
+      <div class="swatch-name">Burgundy</div>
+      <div class="swatch-hex">#5C3D38</div>
+      <div class="swatch-source">brick field (4142 + 3535 tile)</div>
+    </div>
+    <div class="swatch light-text" style="background: #7A5650;">
+      <div class="swatch-name">Brick</div>
+      <div class="swatch-hex">#7A5650</div>
+      <div class="swatch-source">mid-tone brick</div>
+    </div>
+  </div>
+
+  <!-- ── REDS / ORANGES ── -->
+  <div class="section-label">Vermillion Family — flowers, ink marks, temple red</div>
+  <div class="swatches">
+    <div class="swatch light-text" style="background: #CC4422;">
+      <div class="swatch-name">Vermillion</div>
+      <div class="swatch-hex">#CC4422</div>
+      <div class="swatch-source">ranunculus deep + collage ink</div>
+    </div>
+    <div class="swatch light-text" style="background: #D86838;">
+      <div class="swatch-name">Vermillion Light</div>
+      <div class="swatch-hex">#D86838</div>
+      <div class="swatch-source">temple red wall (3783)</div>
+    </div>
+    <div class="swatch dark-text" style="background: #E8944A;">
+      <div class="swatch-name">Apricot</div>
+      <div class="swatch-hex">#E8944A</div>
+      <div class="swatch-source">lighter ranunculus petals</div>
+    </div>
+    <div class="swatch dark-text" style="background: #EDB872;">
+      <div class="swatch-name">Amber Light</div>
+      <div class="swatch-hex">#EDB872</div>
+      <div class="swatch-source">inner petals, sandstone glow</div>
+    </div>
+  </div>
+
+  <!-- ── GREENS ── -->
+  <div class="section-label">Greens — collage washes, foliage, mortar</div>
+  <div class="swatches">
+    <div class="swatch light-text" style="background: #2B3A22;">
+      <div class="swatch-name">Forest</div>
+      <div class="swatch-hex">#2B3A22</div>
+      <div class="swatch-source">dark shadow grass</div>
+    </div>
+    <div class="swatch light-text" style="background: #4E6430;">
+      <div class="swatch-name">Moss</div>
+      <div class="swatch-hex">#4E6430</div>
+      <div class="swatch-source">deep meadow green</div>
+    </div>
+    <div class="swatch dark-text" style="background: #98AA52;">
+      <div class="swatch-name">Meadow</div>
+      <div class="swatch-hex">#98AA52</div>
+      <div class="swatch-source">sunlit grass</div>
+    </div>
+    <div class="swatch dark-text" style="background: #CDDA82;">
+      <div class="swatch-name">Chartreuse</div>
+      <div class="swatch-hex">#CDDA82</div>
+      <div class="swatch-source">light meadow, spring grass</div>
+    </div>
+  </div>
+
+  <!-- ── TANS / CREAMS / BROWNS ── -->
+  <div class="section-label">Earth — caramel, amber glass, honey</div>
+  <div class="swatches">
+    <div class="swatch light-text" style="background: #7A4400;">
+      <div class="swatch-name">Dark Caramel</div>
+      <div class="swatch-hex">#7A4400</div>
+      <div class="swatch-source">burnt caramel, dark amber glass</div>
+    </div>
+    <div class="swatch dark-text" style="background: #B06A10;">
+      <div class="swatch-name">Amber</div>
+      <div class="swatch-hex">#B06A10</div>
+      <div class="swatch-source">amber glass, warm resin</div>
+    </div>
+    <div class="swatch dark-text" style="background: #C89858;">
+      <div class="swatch-name">Honey</div>
+      <div class="swatch-hex">#C89858</div>
+      <div class="swatch-source">light caramel, warm gold</div>
+    </div>
+    <div class="swatch dark-text" style="background: #DCBC8A;">
+      <div class="swatch-name">Wheat</div>
+      <div class="swatch-hex">#DCBC8A</div>
+      <div class="swatch-source">pale caramel, warm parchment</div>
+    </div>
+    <div class="swatch dark-text" style="background: #F5F0E8;">
+      <div class="swatch-name">Cream</div>
+      <div class="swatch-hex">#F5F0E8</div>
+      <div class="swatch-source">paper ground (kept)</div>
+    </div>
+  </div>
+
+  <!-- ── INK / DARKS ── -->
+  <div class="section-label">Ink — text, dark backgrounds</div>
+  <div class="swatches">
+    <div class="swatch light-text" style="background: #2C2824;">
+      <div class="swatch-name">Ink</div>
+      <div class="swatch-hex">#2C2824</div>
+      <div class="swatch-source">kept — primary text</div>
+    </div>
+    <div class="swatch light-text" style="background: #5C554E;">
+      <div class="swatch-name">Ink Light</div>
+      <div class="swatch-hex">#5C554E</div>
+      <div class="swatch-source">kept — secondary text</div>
+    </div>
+    <div class="swatch light-text" style="background: #8A847D;">
+      <div class="swatch-name">Ink Lighter</div>
+      <div class="swatch-hex">#8A847D</div>
+      <div class="swatch-source">kept — metadata</div>
+    </div>
+  </div>
+
+  <!-- ── PARALLAX on every background ── -->
+  <div class="section-label" style="margin-top: 3rem;">Wordmark combinations</div>
+  <div class="combos">
+    <!-- Vermillion on Cream -->
+    <div class="combo" style="background: #F5F0E8;">
+      <div class="combo-word" style="color: #CC4422;">PARALLAX</div>
+      <div class="combo-sub" style="color: #5C554E;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #8A847D;">vermillion on cream</div>
+    </div>
+    <!-- Cream on Vermillion -->
+    <div class="combo" style="background: #CC4422;">
+      <div class="combo-word" style="color: #F5F0E8;">PARALLAX</div>
+      <div class="combo-sub" style="color: #F5F0E8;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #F5F0E8;">cream on vermillion</div>
+    </div>
+    <!-- Cream on Forest -->
+    <div class="combo" style="background: #2B3A22;">
+      <div class="combo-word" style="color: #F5F0E8;">PARALLAX</div>
+      <div class="combo-sub" style="color: #F5F0E8;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #F5F0E8;">cream on forest</div>
+    </div>
+    <!-- Ink on Sage -->
+    <div class="combo" style="background: #98AA52;">
+      <div class="combo-word" style="color: #2C2824;">PARALLAX</div>
+      <div class="combo-sub" style="color: #2C2824;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #2C2824;">ink on sage</div>
+    </div>
+    <!-- Cream on Burgundy -->
+    <div class="combo" style="background: #5C3D38;">
+      <div class="combo-word" style="color: #F5F0E8;">PARALLAX</div>
+      <div class="combo-sub" style="color: #F5F0E8;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #F5F0E8;">cream on burgundy</div>
+    </div>
+    <!-- Vermillion on Ink -->
+    <div class="combo" style="background: #2C2824;">
+      <div class="combo-word" style="color: #CC4422;">PARALLAX</div>
+      <div class="combo-sub" style="color: #8A847D;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #5C554E;">vermillion on ink</div>
+    </div>
+    <!-- Ink on Tan -->
+    <div class="combo" style="background: #C89858;">
+      <div class="combo-word" style="color: #2C2824;">PARALLAX</div>
+      <div class="combo-sub" style="color: #5C554E;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #7A4400;">ink on tan</div>
+    </div>
+    <!-- Cream on Moss -->
+    <div class="combo" style="background: #4E6430;">
+      <div class="combo-word" style="color: #F5F0E8;">PARALLAX</div>
+      <div class="combo-sub" style="color: #F5F0E8;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #F5F0E8;">cream on moss</div>
+    </div>
+    <!-- Apricot on Ink -->
+    <div class="combo" style="background: #2C2824;">
+      <div class="combo-word" style="color: #E8944A;">PARALLAX</div>
+      <div class="combo-sub" style="color: #8A847D;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #5C554E;">apricot on ink</div>
+    </div>
+    <!-- Ink on Caramel -->
+    <div class="combo" style="background: #C89858;">
+      <div class="combo-word" style="color: #2C2824;">PARALLAX</div>
+      <div class="combo-sub" style="color: #5C554E;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #5C554E;">ink on caramel</div>
+    </div>
+    <!-- Cream on Oxblood -->
+    <div class="combo" style="background: #3C2A28;">
+      <div class="combo-word" style="color: #F5F0E8;">PARALLAX</div>
+      <div class="combo-sub" style="color: #F5F0E8;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #F5F0E8;">cream on oxblood</div>
+    </div>
+    <!-- Vermillion on Cream w/ green sub -->
+    <div class="combo" style="background: #F5F0E8;">
+      <div class="combo-word" style="color: #2B3A22;">PARALLAX</div>
+      <div class="combo-sub" style="color: #CC4422;">Depth revealed through perspective.</div>
+      <div class="combo-label" style="color: #8A847D;">forest + vermillion on cream</div>
+    </div>
+  </div>
+
+  <!-- ── Full-width hero bands ── -->
+  <div class="section-label" style="margin-top: 3rem;">Hero-scale bands</div>
+  <div class="bands">
+    <div class="band" style="background: #F5F0E8; min-height: 30vh;">
+      <div>
+        <div class="band-word" style="color: #CC4422;">PARALLAX</div>
+      </div>
+    </div>
+    <div class="band" style="background: #2C2824; min-height: 30vh;">
+      <div>
+        <div class="band-word" style="color: #E8944A;">PARALLAX</div>
+      </div>
+    </div>
+    <div class="band" style="background: #2B3A22; min-height: 30vh;">
+      <div>
+        <div class="band-word" style="color: #F5F0E8;">PARALLAX</div>
+      </div>
+    </div>
+    <div class="band" style="background: #5C3D38; min-height: 30vh;">
+      <div>
+        <div class="band-word" style="color: #EDB872;">PARALLAX</div>
+      </div>
+    </div>
+    <div class="band" style="background: #CC4422; min-height: 30vh;">
+      <div>
+        <div class="band-word" style="color: #F5F0E8;">PARALLAX</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

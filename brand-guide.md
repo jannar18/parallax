@@ -212,23 +212,23 @@ Tints created by mixing Terracotta with the Cream background at varying opacity:
 
 ## 4. Typography — Final Decision
 
-**Futura PT + Cormorant Garamond + Degular Mono.** Three voices, each with a distinct role. The geometric sans leads at display scale (headings, navigation, wordmark), the serif carries the body (long-form reading, descriptions), and the mono provides the technical accent (code, labels, metadata). This inverts the typical Asimov formula: where Asimov leads with geometric sans across the board, Parallax splits the duties — geometric precision for structure, humanist warmth for substance.
+**Cormorant Garamond + Futura PT + Degular Mono.** Three voices, each with a distinct role. The serif leads at display scale (headings — semibold italic, with calligraphic warmth and character), the geometric sans carries the body and structural UI (navigation, wordmark, body text, labels), and the mono provides the technical accent (code, metadata). This inverts the typical Asimov formula twice: where Asimov leads with geometric sans for everything, Parallax gives the headings to a serif italic — warmth and craft at the loudest moments, geometric precision everywhere else.
 
 ### The Typefaces
 
 | Role | Typeface | Weight(s) | Source | Stand-in (dev) |
 |------|----------|-----------|--------|----------------|
-| Headings / Nav / Wordmark | **Futura PT** | Light (300), Book (400), Medium (500), Demi (600) | Adobe Fonts (Creative Cloud) | Jost (Google Fonts) |
-| Body text | **Cormorant Garamond** | Light (300), Regular (400), Medium (500), SemiBold (600) | Google Fonts (free, OFL) | — (final font, live) |
+| Headings | **Cormorant Garamond** | SemiBold (600), Bold (700), italic | Google Fonts (free, OFL) | — (final font, live) |
+| Body / Nav / Wordmark | **Futura PT** | Light (300), Book (400), Medium (500), Demi (600) | Adobe Fonts (Creative Cloud) | Jost (Google Fonts) |
 | Code / Labels / Metadata | **Degular Mono** | Light (300), Regular (400), Medium (500) | Adobe Fonts (Creative Cloud) | DM Mono (Google Fonts) |
 
 ### Why These Three
 
-**Futura PT** — Paul Renner's Futura is the defining geometric sans-serif. Futura PT (Paratype's digital revival, available through Adobe Fonts) preserves the geometric purity — perfect circles in the "o", consistent stroke width, no humanist quirks. At heading scale, it reads as architectural and modern without being cold. The light weight creates elegant white space; the medium weight carries authority for the wordmark.
+**Cormorant Garamond** — Christian Thalmann's open-source take on Claude Garamond's 16th-century designs. Tall x-height for screen readability, generous ascenders for elegance, and a stunning italic that brings headings alive with calligraphic warmth and personality. At semibold italic, it commands attention without shouting — the kind of confident, expressive voice that makes a heading feel like it was lettered by hand. The serif at display scale creates the emotional center of each page.
 
-**Cormorant Garamond** — Christian Thalmann's open-source take on Claude Garamond's 16th-century designs. Tall x-height for screen readability, generous ascenders for elegance, beautiful italic for emphasis. The contrast between Futura's geometry and Cormorant's calligraphic warmth creates the tension the brand lives in: precision and craft, computational and humanist.
+**Futura PT** — Paul Renner's Futura is the defining geometric sans-serif. Futura PT (Paratype's digital revival, available through Adobe Fonts) preserves the geometric purity — perfect circles in the "o", consistent stroke width, no humanist quirks. As the body and UI font, it provides clean, effortless readability. The light weight creates elegant white space in the wordmark; the regular weight carries body text with quiet precision. Navigation, labels, and structural elements all speak in this voice.
 
-**Degular Mono** — OH no Type Company's geometric monospace. Where JetBrains Mono is designed for code editors (optimized for character disambiguation), Degular Mono is designed for display use (optimized for aesthetics). Its geometric construction echoes Futura, creating family cohesion between the heading and mono voices. Used by Shinkei Systems — a reference point for Julianna's aesthetic.
+**Degular Mono** — OH no Type Company's geometric monospace. Where JetBrains Mono is designed for code editors (optimized for character disambiguation), Degular Mono is designed for display use (optimized for aesthetics). Its geometric construction echoes Futura, creating family cohesion between the body and mono voices. Used by Shinkei Systems — a reference point for Julianna's aesthetic.
 
 ### Adobe Fonts Upgrade Path
 
@@ -241,18 +241,19 @@ Futura PT and Degular Mono are available at no additional cost through Adobe Cre
 ```typescript
 import { Cormorant_Garamond, Jost, DM_Mono } from "next/font/google";
 
-export const fontSans = Jost({          // → Futura PT
+export const fontSans = Jost({          // → Futura PT (body/nav/wordmark)
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
   weight: ["300", "400", "500", "600"],
 });
 
-export const fontSerif = Cormorant_Garamond({  // final
+export const fontSerif = Cormorant_Garamond({  // final (headings — semibold/bold italic)
   subsets: ["latin"],
   variable: "--font-serif",
   display: "swap",
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 export const fontMono = DM_Mono({       // → Degular Mono
@@ -281,7 +282,7 @@ Regardless of which pairing is chosen, the type scale follows a minor third rati
 | `--text-6xl` | 3.75rem (60px) | Display / project titles |
 | `--text-7xl` | 4.5rem (72px) | Maximum display |
 
-**Weight usage:** Light (300) for display text, Regular (400) for body, Medium (500) for emphasis. Semibold (600) used only when Regular doesn't create enough contrast (e.g., bold within body text). Bold (700) is not used.
+**Weight usage:** Headings use SemiBold (600) italic in Cormorant Garamond — rich and expressive. Body text uses Regular (400) in Jost/Futura PT. Light (300) for the wordmark and display text in the sans. Medium (500) for emphasis in body. Bold (700) available for Cormorant headings when extra weight is needed at smaller heading sizes.
 
 **Letter spacing:**
 - Display text (3xl+): `-0.02em` (tracking-tight) — large type needs tightening
@@ -563,11 +564,11 @@ The following token system is the brand standard. The values below match `src/st
 
 | Variable | Typeface | Role | Tailwind class |
 |----------|----------|------|----------------|
-| `--font-sans` | Futura PT (Jost stand-in) | Headings, navigation, wordmark, UI elements | `font-sans` |
-| `--font-serif` | Cormorant Garamond | Body text, descriptions, long-form content | `font-serif` |
+| `--font-sans` | Futura PT (Jost stand-in) | Body text, navigation, wordmark, UI elements | `font-sans` |
+| `--font-serif` | Cormorant Garamond | Headings (semibold italic), decorative accents | `font-serif` |
 | `--font-mono` | Degular Mono (DM Mono stand-in) | Code, labels, metadata, technical accent | `font-mono` |
 
-**Body default is serif.** The `<body>` uses `font-serif` (Cormorant Garamond). Headings get `font-sans` (Futura PT) via CSS defaults in `globals.css`. Navigation and structural UI use `font-sans` explicitly.
+**Body default is sans.** The `<body>` uses `font-sans` (Jost/Futura PT). Headings get `font-serif` (Cormorant Garamond) at semibold italic via CSS defaults in `globals.css`. The wordmark and structural UI remain in `font-sans`.
 
 ---
 

@@ -18,7 +18,7 @@ export default function RootLayout({
       lang="en"
       className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable}`}
     >
-      <body className="bg-background text-ink font-serif antialiased">
+      <body className="bg-background text-ink font-sans antialiased">
         <GrainOverlay />
         <Header />
         <main className="min-h-screen">{children}</main>

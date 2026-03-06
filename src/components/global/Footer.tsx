@@ -109,7 +109,7 @@ export default function Footer() {
         {/* Bottom: wordmark + year */}
         <div className="flex flex-col gap-[2vh] sm:flex-row sm:items-end sm:justify-between">
           <p
-            className="font-light text-cream/20 tracking-tighter"
+            className="font-sans font-light not-italic text-cream/20 tracking-tighter"
             style={{
               fontSize: "clamp(2.5rem, 5vw, 5rem)",
               letterSpacing: "var(--tracking-tight)",

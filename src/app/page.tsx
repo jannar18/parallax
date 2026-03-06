@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllNowEntries } from "@/lib/content";
+import HeroBrandVisual from "@/components/interactive/HeroBrandVisual";
 /**
  * Home page — viewport-fitted sections ("slides").
  *
@@ -17,35 +18,17 @@ export default function HomePage() {
   return (
     <div>
       {/* ─── Section 1: Hero ─── */}
-      <section className="relative flex h-screen items-center justify-center bg-slate px-[5vw]">
-        <div className="text-center">
-          <h1
-            className="font-light tracking-tighter text-cream"
-            style={{
-              fontSize: "clamp(3rem, 6vw, 7rem)",
-              letterSpacing: "var(--tracking-tight)",
-            }}
-          >
-            Parallax
-          </h1>
-          <p
-            className="mx-auto mt-[2vh] max-w-text text-cream/80 leading-relaxed"
-            style={{ fontSize: "clamp(1rem, 1.5vw, 1.25rem)" }}
-          >
-            Depth revealed through perspective.
-          </p>
-        </div>
-      </section>
+      <HeroBrandVisual />
 
       {/* ─── Section 2: Split A — visual left, text right ─── */}
       <section className="grid h-screen grid-cols-1 md:grid-cols-2">
-        <div className="flex items-center justify-center bg-dusty-rose px-[5vw] py-[5vh]">
+        <div className="flex items-center justify-center bg-sage px-[5vw] py-[5vh]">
           {/* Visual / image placeholder */}
         </div>
         <div className="flex items-center bg-cream px-[5vw] py-[5vh]">
           <div>
             <h2
-              className="font-light text-ink"
+              className="text-ink"
               style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)" }}
             >
               Heading placeholder
@@ -66,7 +49,7 @@ export default function HomePage() {
         <div className="flex items-center bg-cream px-[5vw] py-[5vh]">
           <div>
             <h2
-              className="font-light text-ink"
+              className="text-ink"
               style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)" }}
             >
               Heading placeholder
@@ -87,10 +70,10 @@ export default function HomePage() {
 
       {/* ─── Section 4: Split C (50/50) — text in both columns ─── */}
       <section className="grid h-screen grid-cols-1 md:grid-cols-2">
-        <div className="flex items-center bg-dusty-rose px-[5vw] py-[5vh]">
+        <div className="flex items-center bg-sage px-[5vw] py-[5vh]">
           <div>
             <h2
-              className="font-light text-ink"
+              className="text-ink"
               style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)" }}
             >
               Heading placeholder
@@ -107,7 +90,7 @@ export default function HomePage() {
         <div className="flex items-center bg-sage px-[5vw] py-[5vh]">
           <div>
             <h2
-              className="font-light text-ink"
+              className="text-ink"
               style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)" }}
             >
               Heading placeholder
@@ -124,7 +107,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── Section 5: Merged — architecture + software as one ─── */}
-      <section className="h-screen" style={{ backgroundColor: "#B0A08F" }} />
+      <section className="h-screen bg-ink" />
 
       {/* ─── Sections 7+8: Text → Links (shared) → Studio Desk ───
           This is ONE continuous block, not two h-screen sections.
@@ -157,7 +140,7 @@ export default function HomePage() {
           <nav className="flex gap-[4vw]">
             <Link
               href="/work/architecture"
-              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-terracotta"
+              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-coral"
               style={{
                 fontSize: "clamp(1rem, 1.5vw, 1.5rem)",
                 letterSpacing: "var(--tracking-wide)",
@@ -170,7 +153,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/work/software"
-              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-terracotta"
+              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-coral"
               style={{
                 fontSize: "clamp(1rem, 1.5vw, 1.5rem)",
                 letterSpacing: "var(--tracking-wide)",
@@ -183,7 +166,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/writing"
-              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-terracotta"
+              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-coral"
               style={{
                 fontSize: "clamp(1rem, 1.5vw, 1.5rem)",
                 letterSpacing: "var(--tracking-wide)",
@@ -210,7 +193,7 @@ export default function HomePage() {
               href="/now"
               className="group flex-1 block"
             >
-              <div className="h-full rounded-xl bg-warm-gray/30 flex flex-col justify-end overflow-hidden transition-colors group-hover:bg-warm-gray/50">
+              <div className="h-full rounded-xl bg-sage/20 flex flex-col justify-end overflow-hidden transition-colors group-hover:bg-sage/35">
                 <div className="p-[clamp(1rem,1.5vw,1.5rem)]">
                   <p
                     className="font-sans text-ink-lighter uppercase"

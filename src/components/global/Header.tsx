@@ -6,10 +6,13 @@ import Link from "next/link";
 /**
  * Header — Axis navigation.
  *
- * A thin vertical axis line centered at the top of the viewport.
- * On hover, click, or scroll-up it expands outward to reveal nav links:
- *   Architecture — Now — [axis] — Writing — Software
- * No background — the links float over the page content.
+ * Flow:
+ *   1. Page load: just the cross, centered top. Nothing else.
+ *   2. Start scrolling into hero: nav links expand from cross,
+ *      "Parallax" wordmark fades in. Nav stays open through hero.
+ *   3. After hero (scroll past ~200vh): nav closes.
+ *   4. Cross + wordmark persist for the entire scroll experience.
+ *   5. After hero, nav is toggleable by hover/click on the cross.
  */
 
 const leftLinks = [
@@ -23,76 +26,80 @@ const rightLinks = [
 ];
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const [navOpen, setNavOpen] = useState(false);
+  const [brandRevealed, setBrandRevealed] = useState(false);
+  const inHeroRef = useRef(true);
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      const scrollY = window.scrollY;
+      const vh = window.innerHeight;
+      const heroEnd = vh * 1; // 200vh section minus 100vh viewport
 
-      if (currentScrollY < 80) {
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY) {
-        // Scrolling down — hide and close
-        setIsVisible(false);
-        setIsOpen(false);
+      // Reveal wordmark once scrolling starts — never hides again
+      if (scrollY > 30) setBrandRevealed(true);
+
+      // Nav open during hero scroll range
+      if (scrollY > 30 && scrollY < heroEnd) {
+        inHeroRef.current = true;
+        setNavOpen(true);
+      } else if (scrollY >= heroEnd) {
+        inHeroRef.current = false;
+        setNavOpen(false);
       } else {
-        // Scrolling up — show and open
-        setIsVisible(true);
-        setIsOpen(true);
+        inHeroRef.current = true;
+        setNavOpen(false);
       }
-
-      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   const handleMouseEnter = () => {
     if (closeTimeout.current) {
       clearTimeout(closeTimeout.current);
       closeTimeout.current = null;
     }
-    setIsOpen(true);
+    if (!inHeroRef.current) setNavOpen(true);
   };
 
   const handleMouseLeave = () => {
-    closeTimeout.current = setTimeout(() => {
-      setIsOpen(false);
-    }, 400);
+    if (!inHeroRef.current) {
+      closeTimeout.current = setTimeout(() => setNavOpen(false), 400);
+    }
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 flex items-center transition-all duration-300 ease-in-out ${
-        isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-      }`}
-    >
-      {/* Parallax wordmark — left side */}
+    <header className="fixed top-0 left-0 right-0 z-50 flex items-center pointer-events-none">
+      {/* Parallax wordmark — fades in on first scroll, stays forever */}
       <Link
         href="/"
-        className="absolute left-[5vw] font-light text-ink/80 no-underline transition-colors hover:text-ink"
+        className={`absolute left-[5vw] font-sans font-light no-underline pointer-events-auto transition-opacity duration-700 ${
+          brandRevealed
+            ? "text-ink/80 opacity-100 hover:text-ink"
+            : "opacity-0"
+        }`}
         style={{
           fontSize: "clamp(1.1rem, 1.5vw, 1.4rem)",
           letterSpacing: "var(--tracking-wide)",
         }}
+        tabIndex={brandRevealed ? 0 : -1}
       >
         Parallax
       </Link>
 
       {/* Centered axis nav */}
       <div
-        className="relative mx-auto flex items-center py-5"
+        className="relative mx-auto flex items-center py-5 pointer-events-auto"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {/* Left links — expand outward */}
         <nav
           className={`flex items-center gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-            isOpen
+            navOpen
               ? "max-w-[40vw] opacity-100 mr-[2vw]"
               : "max-w-0 opacity-0 mr-0"
           }`}
@@ -112,30 +119,34 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Center axis — always visible */}
+        {/* Center cross — always visible, tapered, crossbar at 1/3 from top */}
         <button
-          onClick={() => setIsOpen((prev) => !prev)}
-          className="group relative flex items-center justify-center w-8 h-8 cursor-pointer bg-transparent border-none"
+          onClick={() => {
+            if (!inHeroRef.current) setNavOpen((prev) => !prev);
+          }}
+          className="group relative flex items-center justify-center w-10 h-10 cursor-pointer bg-transparent border-none text-ink/25 transition-colors duration-500 hover:text-ink/40"
           aria-label="Toggle navigation"
         >
-          {/* Vertical axis line */}
-          <div
-            className={`w-px bg-ink/40 transition-all duration-500 group-hover:bg-ink/70 ${
-              isOpen ? "h-3" : "h-5"
-            }`}
-          />
-          {/* Small crossbar when closed */}
-          <div
-            className={`absolute w-2 h-px bg-ink/40 transition-all duration-500 group-hover:bg-ink/70 ${
-              isOpen ? "opacity-0 scale-x-0" : "opacity-100 scale-x-100"
-            }`}
-          />
+          <svg
+            viewBox="0 0 16 40"
+            className="h-8 transition-all duration-500"
+            fill="currentColor"
+          >
+            {/* Vertical tapered line — point at top, widest at 1/3, long taper to bottom */}
+            <path d="M8 0 L9 13 L8 40 L7 13 Z" />
+            {/* Horizontal tapered crossbar at 1/3 height */}
+            <path
+              d="M0 13 L8 12 L16 13 L8 14 Z"
+              className="transition-opacity duration-500"
+              style={{ opacity: navOpen ? 0 : 1 }}
+            />
+          </svg>
         </button>
 
         {/* Right links — expand outward */}
         <nav
           className={`flex items-center gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-            isOpen
+            navOpen
               ? "max-w-[40vw] opacity-100 ml-[2vw]"
               : "max-w-0 opacity-0 ml-0"
           }`}

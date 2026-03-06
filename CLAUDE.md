@@ -9,7 +9,7 @@ A personal website for Julianna at the quality level of an Asimov Collective sit
 - **Styling:** Tailwind CSS 3 + CSS custom properties (design tokens)
 - **Content:** MDX files in `src/content/`, loaded via `gray-matter` + `next-mdx-remote`
 - **Package manager:** pnpm
-- **Fonts:** Jost + Cormorant Garamond + DM Mono via `next/font/google` (stand-ins for Futura PT + Degular Mono; see `brand-guide.md` §4)
+- **Fonts:** Jost (body/nav, stand-in for Futura PT) + Cormorant Garamond (headings, semibold italic) + DM Mono (stand-in for Degular Mono) via `next/font/google`; see `brand-guide.md` §4
 - **Brand:** "Parallax" / parallax.studio — full brand guide in `brand-guide.md`
 
 Research, PRD, and task tracking remain in their original locations.
@@ -93,7 +93,7 @@ Research, PRD, and task tracking remain in their original locations.
 | Tech stack | Next.js 15 (App Router) + Tailwind CSS 3 + pnpm | Matches Asimov Collective stack; RSC by default, client islands for interactivity |
 | Site name | Parallax | Single word — captures shifting perspective across disciplines |
 | Domain | parallax.studio | Short, memorable, studio connotation |
-| Typography | Futura PT (headings) + Cormorant Garamond (body) + Degular Mono (code) | Geometric precision for structure, humanist warmth for substance; see `brand-guide.md` §4 |
+| Typography | Cormorant Garamond (headings, semibold italic) + Futura PT (body/nav) + Degular Mono (code) | Calligraphic warmth for headings, geometric precision for body; see `brand-guide.md` §4 |
 | Design philosophy | "The site IS the bridge" | PRD §8 — architecture × software demonstrated, not explained |
 
 ## Design Language References
@@ -152,7 +152,7 @@ The `research/asset-workflows/` directory contains runnable starter scripts and 
 - **Imports:** Path alias `@/*` maps to `src/*`. Prefer `@/components/...`, `@/lib/...`, etc.
 - **Styling:** Tailwind utility classes. Design tokens in `src/styles/tokens.css` as CSS custom properties. Both are accessible — use Tailwind for layout/spacing, CSS vars for semantic values shared with future interactive components.
 - **Content:** MDX files in `src/content/<collection>/`. Frontmatter parsed by `gray-matter`. Content loaded via helpers in `src/lib/content.ts`.
-- **Fonts:** Configured in `src/lib/fonts.ts` via `next/font/google`. Body defaults to serif (Cormorant Garamond); headings default to sans (Futura PT/Jost) via `globals.css`. Navigation and structural UI use `font-sans` explicitly. CSS variables `--font-sans`, `--font-serif`, `--font-mono` applied to `<html>`. Adobe Fonts upgrade: swap to `next/font/local`, keep same variable names.
+- **Fonts:** Configured in `src/lib/fonts.ts` via `next/font/google`. Body defaults to sans (Jost/Futura PT); headings default to serif semibold italic (Cormorant Garamond) via `globals.css`. Wordmark and structural UI use `font-sans` explicitly. CSS variables `--font-sans`, `--font-serif`, `--font-mono` applied to `<html>`. Adobe Fonts upgrade: swap to `next/font/local`, keep same variable names.
 
 ## Git Workflow
 
