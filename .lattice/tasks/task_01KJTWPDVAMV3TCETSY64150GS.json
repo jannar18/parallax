@@ -10,8 +10,8 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KJTWPDVAMV3TCETSY64150GS",
-  "last_event_id": "ev_01KJTWQW1PQAVCS2F4SR9HRTRW",
-  "last_status_changed_at": "2026-03-03T22:22:00Z",
+  "last_event_id": "ev_01KK2KBZ3VXS616F9NTHM1YAG6",
+  "last_status_changed_at": "2026-03-06T22:12:55Z",
   "priority": "high",
   "relationships_out": [
     {
@@ -32,10 +32,10 @@
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-17",
-  "status": "backlog",
+  "status": "cancelled",
   "tags": null,
   "title": "Remaining site pages (About, Work, Writing, Now)",
   "type": "task",
-  "updated_at": "2026-03-03T22:22:47Z",
+  "updated_at": "2026-03-06T22:12:55Z",
   "urgency": null
 }

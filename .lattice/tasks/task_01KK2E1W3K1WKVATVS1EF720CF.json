@@ -1,7 +1,7 @@
 {
   "assigned_to": null,
   "branch_links": [],
-  "comment_count": 0,
+  "comment_count": 1,
   "complexity": null,
   "created_at": "2026-03-06T20:40:01Z",
   "created_by": "human:jules",
@@ -10,8 +10,8 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KK2E1W3K1WKVATVS1EF720CF",
-  "last_event_id": "ev_01KK2JV4YBX163TGB1AGCHK97G",
-  "last_status_changed_at": "2026-03-06T20:40:01Z",
+  "last_event_id": "ev_01KK2KBQV8V8NMCNSKF9VW9ZJP",
+  "last_status_changed_at": "2026-03-06T22:12:47Z",
   "priority": "critical",
   "relationships_out": [
     {
@@ -25,10 +25,10 @@
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-30",
-  "status": "backlog",
+  "status": "needs_human",
   "tags": null,
   "title": "Add hero image: software + architecture combined (riso pipeline)",
   "type": "task",
-  "updated_at": "2026-03-06T22:03:44Z",
+  "updated_at": "2026-03-06T22:12:48Z",
   "urgency": null
 }

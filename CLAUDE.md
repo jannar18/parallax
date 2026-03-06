@@ -123,6 +123,10 @@ Research, PRD, and task tracking remain in their original locations.
 
 The `research/asset-workflows/` directory contains runnable starter scripts and prompt templates for testing each pipeline.
 
+## Current Sprint
+
+**`notes/sprint-plan-20260306.md`** is the active sprint plan. It maps every open Lattice task to a wave with dependencies and ownership (agent vs human). Read it before picking up work.
+
 ## Essential Commands
 
 | Command | Purpose |
