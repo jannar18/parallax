@@ -165,7 +165,7 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
                 )}
                 <Link
                   href="/now"
-                  className="mt-3 inline-block font-sans text-xs text-vermillion hover:text-vermillion-light transition-colors"
+                  className="mt-3 inline-block font-sans text-xs text-scarlet hover:text-scarlet-dark transition-colors"
                   style={{ letterSpacing: "0.05em" }}
                   onClick={(e) => e.stopPropagation()}
                 >

@@ -18,7 +18,7 @@ const config: Config = {
         spruce: "#4a635d",
 
         /* Legacy aliases */
-        vermillion: { DEFAULT: "#f65058", light: "#f65058" },
+        vermillion: "#f65058",
         cream: "#FDFCEA",
         forest: "#4a635d",
 
