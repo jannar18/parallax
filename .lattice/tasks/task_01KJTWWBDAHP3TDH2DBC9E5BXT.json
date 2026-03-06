@@ -1,6 +1,13 @@
 {
   "assigned_to": null,
-  "branch_links": [],
+  "branch_links": [
+    {
+      "branch": "feature/asmv-18-update-skill",
+      "linked_at": "2026-03-06T22:48:50Z",
+      "linked_by": "agent:claude-opus-4-asmv18",
+      "repo": null
+    }
+  ],
   "comment_count": 1,
   "complexity": null,
   "created_at": "2026-03-03T22:25:14Z",
@@ -10,7 +17,7 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KJTWWBDAHP3TDH2DBC9E5BXT",
-  "last_event_id": "ev_01KJTWWJMJKPGWHYM7VJDJETZT",
+  "last_event_id": "ev_01KK2NDQ33TS5Y47SNPR4CKG0J",
   "last_status_changed_at": "2026-03-03T22:25:14Z",
   "priority": "critical",
   "relationships_out": [
@@ -36,6 +43,6 @@
   "tags": null,
   "title": "Daily update skill (/update-site)",
   "type": "task",
-  "updated_at": "2026-03-03T22:25:21Z",
+  "updated_at": "2026-03-06T22:48:50Z",
   "urgency": null
 }
