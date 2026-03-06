@@ -102,98 +102,104 @@ The three statements marked in **bold** above (1, 3, and 7) are recommended as f
 
 ### Palette Overview
 
-Extracted from Julianna's photographs — ranunculus flowers, Portuguese stone house collages, Scandinavian brick, Japanese temple vermillion, weathered timber. The palette is organized into primary colors (the structural backbone of the brand) and an extended palette (available for richness and variation).
+A Risograph-inspired palette — six colors on warm cream paper. The Riso reference is deliberate: Risograph printing layers translucent inks on uncoated stock, producing the kind of textured, slightly imperfect color that defines Julianna's visual language. The palette carries the warmth of her photographs (ranunculus petals, Portuguese stone, weathered timber) through a printmaking lens: limited colors, each with a clear role, designed to layer and overlap.
 
-### Primary Colors
+### The Six Colors
 
-| Name | Hex | Role |
-|------|-----|------|
-| **Vermillion** | `#CC4422` | Primary accent — the "one color." Links, active states, emphasis. Ranunculus deep + collage ink. |
-| **Cream** | `#F5F0E8` | Page background. Warm off-white — aged paper, never pure white. |
-| **Ink** | `#2C2824` | Primary text, dark backgrounds. Warm near-black — never pure `#000`. |
-| **Oxblood** | `#3C2A28` | Dark accent. Deepest brick shadow — rich, near-black warmth. |
-| **Forest** | `#2B3A22` | Dark accent. Deep shadow green — grounding, natural. |
+| Name | Hex | Swatch | Role |
+|------|-----|--------|------|
+| **Paper** | `#FDFCEA` | ![Paper](https://placehold.co/24x24/FDFCEA/FDFCEA) | Page background — warm cream, the uncoated stock everything prints on. Never pure white. |
+| **Oxblood** | `#471f20` | ![Oxblood](https://placehold.co/24x24/471f20/471f20) | Primary text and dark tone. Deep, near-black warmth — the darkest ink in the drawer. |
+| **Scarlet** | `#f65058` | ![Scarlet](https://placehold.co/24x24/f65058/f65058) | Primary accent — the "one color." Links, active states, emphasis. Bright and assertive against the cream. |
+| **Olive** | `#b49f29` | ![Olive](https://placehold.co/24x24/b49f29/b49f29) | Secondary accent — warm, earthy gold-green. Highlights, tags, supporting color. |
+| **Moss** | `#68724d` | ![Moss](https://placehold.co/24x24/68724d/68724d) | Midtone accent — quiet, grounded green. Borders, secondary elements, texture. |
+| **Spruce** | `#4a635d` | ![Spruce](https://placehold.co/24x24/4a635d/4a635d) | Shadow accent — cool, deep green-grey. Dark section backgrounds, depth. |
 
-### Extended Palette
+### Palette Relationships
 
-#### Burgundy / Brick
+The palette reads as two groups:
 
-| Name | Hex | Source |
-|------|-----|--------|
-| Burgundy | `#5C3D38` | Brick field |
-| Brick | `#7A5650` | Mid-tone brick |
+**Warm axis:** Paper -- Olive -- Scarlet. The cream ground, the earthy midtone, and the bright accent. This is the active, forward-facing voice of the brand.
 
-#### Vermillion Family
+**Cool axis:** Paper -- Moss -- Spruce -- Oxblood. The cream ground darkening through greens into near-black. This is the quieter, structural voice — text, backgrounds, depth.
 
-| Name | Hex | Source |
-|------|-----|--------|
-| Vermillion Light | `#D86838` | Temple red wall |
-| Apricot | `#E8944A` | Lighter ranunculus petals |
-| Amber Light | `#EDB872` | Inner petals, sandstone glow |
+Scarlet is the only high-saturation color. Everything else is muted, earthy, or dark. This restraint is intentional: the site should feel like a warm, paper-toned environment where a single vivid red draws the eye.
 
-#### Greens
+### Neutrals (Derived from Oxblood)
 
-| Name | Hex | Source |
-|------|-----|--------|
-| Moss | `#4E6430` | Deep meadow green |
-| Meadow | `#98AA52` | Sunlit grass |
-| Chartreuse | `#CDDA82` | Light meadow, spring grass |
-
-#### Earth
-
-| Name | Hex | Source |
-|------|-----|--------|
-| Dark Caramel | `#7A4400` | Burnt caramel, dark amber glass |
-| Amber | `#B06A10` | Amber glass, warm resin |
-| Honey | `#C89858` | Light caramel, warm gold |
-| Wheat | `#DCBC8A` | Pale caramel, warm parchment |
-
-### Neutrals
+Rather than a separate grey scale, the neutral tones are derived from Oxblood — lightened progressively to maintain the warm undertone across all text and UI elements.
 
 | Name | Hex | Role |
 |------|-----|------|
-| **Ink** | `#2C2824` | Primary text — warm near-black. |
-| **Ink Light** | `#5C554E` | Secondary text, subheadings. |
-| **Ink Lighter** | `#8A847D` | Tertiary text, metadata, timestamps. |
-| **Border** | `#E2DCD5` | Subtle dividers, card edges. |
-| **Surface** | `#FAF8F5` | Elevated surface (cards). Slightly lighter than Cream. |
+| **Ink** | `#471f20` | Primary text — same as Oxblood. Warm, dark, readable. |
+| **Ink Light** | `#6d4344` | Secondary text — subheadings, descriptions. ~20% lighter than Oxblood. |
+| **Ink Lighter** | `#946768` | Tertiary text — metadata, timestamps, captions. ~40% lighter. |
+| **Border** | `#e8e5d8` | Subtle dividers, card edges — cream darkened just enough to register. |
+| **Surface** | `#f8f6ea` | Elevated surfaces (cards, panels) — slightly darker than Paper. |
 
 ### WCAG AA Contrast Ratios
 
 WCAG AA requires 4.5:1 for normal text, 3.0:1 for large text (18px+ or 14px+ bold).
 
-#### Text Colors on Cream Background (`#F5F0E8`)
+#### Text Colors on Paper Background (`#FDFCEA`)
 
 | Text Color | Hex | Contrast Ratio | Normal Text (AA) | Large Text (AA) |
 |------------|-----|---------------|------------------|-----------------|
-| Ink | `#2C2824` | **10.3:1** | Pass | Pass |
-| Ink Light | `#5C554E` | **5.2:1** | Pass | Pass |
-| Ink Lighter | `#8A847D` | **3.2:1** | Fail | Pass |
-| Vermillion | `#CC4422` | **3.6:1** | Fail | Pass |
+| Ink / Oxblood | `#471f20` | **13.7:1** | Pass | Pass |
+| Ink Light | `#6d4344` | **8.0:1** | Pass | Pass |
+| Ink Lighter | `#946768` | **4.6:1** | Pass | Pass |
+| Scarlet | `#f65058` | **3.3:1** | Fail | Pass |
+| Olive | `#b49f29` | **2.6:1** | Fail | Fail |
+| Moss | `#68724d` | **4.9:1** | Pass | Pass |
+| Spruce | `#4a635d` | **6.3:1** | Pass | Pass |
 
-#### Cream (`#F5F0E8`) on Color Backgrounds
+#### Paper (`#FDFCEA`) on Color Backgrounds
 
-| Background | Hex | Contrast (Cream on bg) | Normal Text (AA) | Large Text (AA) |
+| Background | Hex | Contrast (Paper on bg) | Normal Text (AA) | Large Text (AA) |
 |------------|-----|----------------------|------------------|-----------------|
-| Ink | `#2C2824` | **10.3:1** | Pass | Pass |
-| Oxblood | `#3C2A28` | **9.4:1** | Pass | Pass |
-| Forest | `#2B3A22` | **9.1:1** | Pass | Pass |
-| Vermillion | `#CC4422` | **3.6:1** | Fail | Pass |
-| Burgundy | `#5C3D38` | **6.0:1** | Pass | Pass |
-| Moss | `#4E6430` | **5.4:1** | Pass | Pass |
+| Oxblood | `#471f20` | **13.7:1** | Pass | Pass |
+| Scarlet | `#f65058` | **3.3:1** | Fail | Pass |
+| Olive | `#b49f29` | **2.6:1** | Fail | Fail |
+| Moss | `#68724d` | **4.9:1** | Pass | Pass |
+| Spruce | `#4a635d` | **6.3:1** | Pass | Pass |
 
 ### Usage Rules
 
-1. **Body text** must always be Ink (`#2C2824`) or Ink Light (`#5C554E`) on Cream/Surface backgrounds.
-2. **Vermillion as text** is permitted only at large sizes (18px+ regular, 14px+ bold) — headings, pull quotes, highlighted words. Never for body text.
-3. **Ink Lighter** (`#8A847D`) is for metadata, timestamps, and labels at 14px+ bold or 18px+ only.
-4. **Oxblood and Forest** work as dark section backgrounds with Cream text — both pass AA at all sizes.
-5. **Vermillion on Cream** works for interactive elements (links, buttons) at large sizes with additional affordance (underlines, hover states, button shapes).
-6. **Cream on Ink** is the primary dark-on-light inversion — use for dark sections, footer, hero.
+1. **Body text** must always be Ink (`#471f20`) or Ink Light (`#6d4344`) on Paper/Surface backgrounds. Both pass AA at all sizes.
+2. **Scarlet as text** is permitted only at large sizes (18px+ regular, 14px+ bold) — headings, pull quotes, highlighted words. Never for body text.
+3. **Olive as text** does not pass AA at any size on Paper. Use Olive only for decorative/non-text elements (tags with sufficient background contrast, icons, borders) or on dark backgrounds.
+4. **Ink Lighter** (`#946768`) passes AA for normal text (4.6:1), but use it sparingly — metadata, timestamps, and labels where the reduced emphasis is intentional.
+5. **Oxblood, Moss, and Spruce** all work as dark section backgrounds with Paper text — all pass AA at all sizes.
+6. **Scarlet on Paper** works for interactive elements (links, buttons) at large sizes with additional affordance (underlines, hover states, button shapes). Scarlet hover state darkens to `#d4434a`.
+7. **Paper on Oxblood** is the primary dark-on-light inversion — use for dark sections, footer, hero.
 
-### Primary Accent — Vermillion
+### Tonal Range & Color Mixing
 
-**Why Vermillion:** Drawn from the ranunculus flowers and Japanese temple vermillion in Julianna's photographs. Warmer and bolder than the previous Coral — it carries fired-earth materiality (kilns, ceramics, temple lacquer) with enough saturation to anchor the brand against cream. Following the Asimov "one color" philosophy, Vermillion defines Parallax.
+The four Riso inks (Olive, Moss, Spruce, Scarlet) each produce a full tonal ramp from 10% to 100% density on the cream Paper ground. At low densities, every ink reads as a tinted cream; at full density, it reads as its true color. This gives the palette far more range than the six named colors suggest — any ink at 30-40% produces usable midtones for backgrounds, cards, and subtle accents.
+
+**Reference:** `research/moodboard/riso-palette/riso-tonal-ramp-10-100.png`
+
+When Riso inks overlap (as they do in actual Risograph printing), the translucent layers mix to produce **emergent neutrals** — warm browns, muted olive-greys, dusty roses, and deep near-blacks that don't exist in the base palette. These mixed tones are where the palette's richness lives. The color mixing grid shows every pairwise combination across density levels, revealing earthy neutrals (Olive × Moss), warm darks (Scarlet × Spruce), and dusty midtones (Scarlet × Olive) that can be used for backgrounds, illustrations, and data visualization.
+
+**Reference:** `research/moodboard/riso-palette/riso-color-mixing-neutrals.png`
+
+These references should inform any future color decisions — particularly for illustrations, generative graphics, hover states, and section backgrounds. The available palette is much richer than the six named tokens; the mixing behavior is the palette's secret depth.
+
+### Primary Accent — Scarlet
+
+**Why Scarlet:** The brightest ink in the Riso drawer. At `#f65058` it has the assertive warmth of Risograph fluorescent red — vivid enough to anchor the brand against cream, soft enough not to feel digital. Following the Asimov "one color" philosophy, Scarlet defines Parallax. Every other color in the palette is muted or dark; Scarlet is where the energy lives.
+
+### Legacy Color Names
+
+The codebase maintains backward-compatible aliases for color names used before the Riso palette was adopted. These resolve to Riso values:
+
+| Legacy Name | Resolves To | Hex |
+|-------------|-------------|-----|
+| Cream | Paper | `#FDFCEA` |
+| Vermillion | Scarlet | `#f65058` |
+| Forest | Spruce | `#4a635d` |
+
+New code should use the Riso names. Legacy aliases exist to prevent breakage during transition.
 
 ---
 
@@ -332,7 +338,7 @@ The favicon uses a **lettermark** rather than the full wordmark. Two candidates:
 
 **Single "P" lettermark** — one uppercase "P" in Futura PT Medium, centered in the favicon square. The geometric construction of Futura's "P" — a perfect semicircle atop a vertical stroke — is distinctive at every scale. At 16x16, the form reads cleanly; at 180x180 (touch icon), it carries full brand recognition.
 
-**Color:** Terracotta (`#C4724E`) "p" on Cream (`#F5F0E8`) background, or Ink (`#2C2824`) "p" on Cream. Both work. The Terracotta version reinforces brand color at the smallest scale.
+**Color:** Oxblood (`#471f20`) "p" on Paper (`#FDFCEA`) background, or Scarlet (`#f65058`) "p" on Paper. Both work. The Oxblood version reads cleanly at every size; the Scarlet version reinforces brand accent color at the smallest scale.
 
 ---
 
@@ -388,7 +394,7 @@ Following the Asimov copy pattern adapted for first-person voice:
 
 ## 7. Design Tokens — Ready for Code
 
-The following token system is the brand standard. The values below match `src/styles/tokens.css` and `tailwind.config.ts` already present in the codebase.
+The following token system is the brand standard. The values below match `src/styles/tokens.css` and `tailwind.config.ts` in the codebase. When in doubt, `tokens.css` is the source of truth — Tailwind reads from it via CSS custom properties.
 
 ### CSS Custom Properties (`tokens.css`)
 
@@ -448,34 +454,33 @@ The following token system is the brand standard. The values below match `src/st
   --content-max-width: 72rem;    /* 1152px */
   --text-max-width:    40rem;    /* 640px — text column narrower than images */
 
-  /* ── Color: Primary Warmth ── */
-  --color-terracotta:    #C4724E;  /* Primary accent — the "one color" */
-  --color-amber:         #D4A76A;  /* Warm secondary */
-  --color-cream:         #F5F0E8;  /* Background — warm off-white */
-  --color-warm-gray:     #B5AFA6;  /* Neutral mid-tone */
+  /* ── Color: Riso Palette ── */
+  --color-paper:           #FDFCEA;  /* Warm cream paper */
+  --color-oxblood:         #471f20;  /* Deep oxblood — text/black */
+  --color-scarlet:         #f65058;  /* Scarlet — accent 1 */
+  --color-olive:           #b49f29;  /* Bright olive — accent 2 */
+  --color-moss:            #68724d;  /* Moss — midtone accent */
+  --color-spruce:          #4a635d;  /* Spruce — shadow accent */
 
-  /* ── Color: Secondary Earth ── */
-  --color-sage:          #8B9E7E;  /* Nature accent */
-  --color-dusty-rose:    #C9A5A0;  /* Subtle warmth */
-  --color-slate:         #7A8B9A;  /* Cool contrast */
+  /* ── Color: Neutrals (derived from oxblood) ── */
+  --color-ink:             #471f20;  /* Primary text */
+  --color-ink-light:       #6d4344;  /* Secondary text (~20% lighter) */
+  --color-ink-lighter:     #946768;  /* Tertiary text (~40% lighter) */
+  --color-border:          #e8e5d8;  /* Cream/ink derived border */
+  --color-surface:         #f8f6ea;  /* Slightly darker than paper */
+  --color-background:      #FDFCEA;  /* Page background (paper) */
 
-  /* ── Color: Accent (sparingly) ── */
-  --color-coral:         #C95D45;  /* High-contrast accent */
-
-  /* ── Color: Neutrals ── */
-  --color-ink:           #2C2824;  /* Primary text — warm near-black */
-  --color-ink-light:     #5C554E;  /* Secondary text */
-  --color-ink-lighter:   #8A847D;  /* Tertiary text, metadata */
-  --color-border:        #E2DCD5;  /* Subtle borders */
-  --color-surface:       #FAF8F5;  /* Elevated surface (cards) */
-  --color-background:    #F5F0E8;  /* Page background (cream) */
+  /* ── Color: Legacy aliases (smooth transition) ── */
+  --color-cream:           var(--color-paper);
+  --color-vermillion:      var(--color-scarlet);
+  --color-forest:          var(--color-spruce);
 
   /* ── Color: Semantic ── */
   --color-text-primary:    var(--color-ink);
   --color-text-secondary:  var(--color-ink-light);
   --color-text-tertiary:   var(--color-ink-lighter);
-  --color-accent:          var(--color-terracotta);
-  --color-accent-hover:    var(--color-coral);
+  --color-accent:          var(--color-scarlet);
+  --color-accent-hover:    #d4434a;  /* Scarlet darkened for hover */
   --color-bg:              var(--color-background);
   --color-bg-surface:      var(--color-surface);
 }
@@ -487,22 +492,28 @@ The following token system is the brand standard. The values below match `src/st
 // tailwind.config.ts — theme.extend
 {
   colors: {
-    terracotta: "#C4724E",
-    amber: "#D4A76A",
-    cream: "#F5F0E8",
-    "warm-gray": "#B5AFA6",
-    sage: "#8B9E7E",
-    "dusty-rose": "#C9A5A0",
-    slate: "#7A8B9A",
-    coral: "#C95D45",
+    /* Riso Palette */
+    paper: "#FDFCEA",
+    oxblood: "#471f20",
+    scarlet: { DEFAULT: "#f65058", dark: "#d4434a" },
+    olive: "#b49f29",
+    moss: "#68724d",
+    spruce: "#4a635d",
+
+    /* Legacy aliases */
+    vermillion: { DEFAULT: "#f65058", light: "#f65058" },
+    cream: "#FDFCEA",
+    forest: "#4a635d",
+
+    /* Neutrals */
     ink: {
-      DEFAULT: "#2C2824",
-      light: "#5C554E",
-      lighter: "#8A847D",
+      DEFAULT: "#471f20",
+      light: "#6d4344",
+      lighter: "#946768",
     },
-    border: "#E2DCD5",
-    surface: "#FAF8F5",
-    background: "#F5F0E8",
+    border: "#e8e5d8",
+    surface: "#f8f6ea",
+    background: "#FDFCEA",
   },
   fontFamily: {
     sans: ["var(--font-sans)", "Futura PT", "Jost", "system-ui", "sans-serif"],
@@ -523,6 +534,7 @@ The following token system is the brand standard. The values below match `src/st
     "7xl": ["4.5rem",  { lineHeight: "1.2" }],
   },
   fontWeight: {
+    extralight: "200",
     light: "300",
     normal: "400",
     medium: "500",
@@ -575,8 +587,8 @@ The following token system is the brand standard. The values below match `src/st
 | Name: Parallax | Decided | Confirmed by Julianna |
 | Primary domain | Decided | `parallax.studio` |
 | Positioning statement | Pending | 3 finalists presented — Julianna to choose |
-| Color palette | Formalized | Values from research/03 confirmed and tested for WCAG |
-| Primary accent | Formalized | Terracotta (`#C4724E`) |
+| Color palette | Formalized | Riso palette — Paper, Oxblood, Scarlet, Olive, Moss, Spruce. WCAG tested. |
+| Primary accent | Formalized | Scarlet (`#f65058`) |
 | Typeface pairing | Decided | Futura PT + Cormorant Garamond + Degular Mono |
 | Wordmark | Decided | `parallax` lowercase — CG 600i body + Jost 200 `ll` (A3 finalist) |
 | Favicon | Decided | "p" lettermark in Futura PT Medium |
