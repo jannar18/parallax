@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARALLAX Wordmark — Coral / Cream / Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Libre+Caslon+Display&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Nunito:wght@200;300;400;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #F5F0E8;
+      --ink: #2C2824;
+      --ink-light: #5C554E;
+      --ink-lighter: #8A847D;
+      --coral: #C95D45;
+      --sage: #8B9E7E;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #1a1816;
+      font-family: 'Jost', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    .title {
+      text-align: center;
+      padding: 0.75rem 0 1.5rem;
+    }
+    .title h1 {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-lighter);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3.5rem 1.5rem 2.5rem;
+      position: relative;
+      min-height: 28vh;
+    }
+
+    .num {
+      position: absolute;
+      top: 0.75rem;
+      left: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      opacity: 0.35;
+    }
+
+    .label {
+      position: absolute;
+      top: 0.75rem;
+      right: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.45rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      opacity: 0.3;
+      text-align: right;
+      line-height: 1.6;
+    }
+
+    .wordmark {
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .sub {
+      margin-top: 0.6rem;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      opacity: 0.45;
+    }
+
+    /* Color combos */
+    .on-cream      { background: var(--cream); }
+    .on-cream .wordmark, .on-cream .num, .on-cream .label, .on-cream .sub { color: var(--ink); }
+
+    .on-coral      { background: var(--coral); }
+    .on-coral .wordmark, .on-coral .num, .on-coral .label, .on-coral .sub { color: var(--cream); }
+
+    .on-sage       { background: var(--sage); }
+    .on-sage .wordmark, .on-sage .num, .on-sage .label, .on-sage .sub { color: var(--cream); }
+
+    /* Cream text on cream bg — use coral or sage text */
+    .on-cream-coral .wordmark { color: var(--coral); }
+    .on-cream-sage .wordmark  { color: var(--sage); }
+
+    /* Coral text on sage, sage text on coral */
+    .on-sage-coral .wordmark  { color: var(--coral); }
+    .on-coral-sage .wordmark  { color: var(--sage); }
+
+    /* ── Wordmark font styles ── */
+    .wm-1  { font-family: 'Jost', sans-serif; font-weight: 300; font-size: clamp(2rem, 3vw, 3.5rem); letter-spacing: 0.05em; }
+    .wm-2  { font-family: 'Jost', sans-serif; font-weight: 500; font-size: clamp(2rem, 3vw, 3.5rem); letter-spacing: 0.02em; }
+    .wm-3  { font-family: 'Jost', sans-serif; font-weight: 200; font-size: clamp(1.75rem, 2.5vw, 3rem); letter-spacing: 0.25em; }
+    .wm-4  { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-style: italic; font-size: clamp(2.25rem, 3.5vw, 4rem); letter-spacing: 0.02em; }
+    .wm-5  { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(2rem, 3vw, 3.5rem); letter-spacing: 0.15em; }
+    .wm-6  { font-family: 'Playfair Display', serif; font-weight: 600; font-size: clamp(2rem, 3vw, 3.5rem); letter-spacing: 0.03em; }
+    .wm-7  { font-family: 'Playfair Display', serif; font-weight: 400; font-style: italic; font-size: clamp(2rem, 3vw, 3.5rem); letter-spacing: 0.02em; }
+    .wm-8  { font-family: 'EB Garamond', serif; font-weight: 500; font-size: clamp(2.25rem, 3.5vw, 4rem); letter-spacing: 0.08em; }
+    .wm-9  { font-family: 'Libre Caslon Display', serif; font-weight: 400; font-size: clamp(2rem, 3vw, 3.5rem); letter-spacing: 0.04em; }
+    .wm-10 { font-family: 'DM Mono', monospace; font-weight: 300; font-size: clamp(1.75rem, 2.5vw, 2.75rem); letter-spacing: 0.12em; }
+
+    /* Row labels */
+    .row-label {
+      grid-column: 1 / -1;
+      padding: 1.25rem 1rem 0.5rem;
+    }
+    .row-label span {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-lighter);
+    }
+
+    @media (max-width: 1000px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="title">
+    <h1>Parallax &mdash; Wordmark + Color &mdash; Coral / Cream / Sage</h1>
+  </div>
+
+  <div class="grid">
+
+    <!-- ── ROW 1: Jost Light ── -->
+    <div class="row-label"><span>01 &mdash; Jost Light / +0.05em</span></div>
+    <div class="cell on-cream">
+      <div class="num">01a</div><div class="label">cream bg</div>
+      <div class="wordmark wm-1">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-coral">
+      <div class="num">01b</div><div class="label">coral bg</div>
+      <div class="wordmark wm-1">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-sage">
+      <div class="num">01c</div><div class="label">sage bg</div>
+      <div class="wordmark wm-1">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+
+    <!-- ── ROW 2: Jost Medium ── -->
+    <div class="row-label"><span>02 &mdash; Jost Medium / +0.02em</span></div>
+    <div class="cell on-cream">
+      <div class="num">02a</div><div class="label">cream bg</div>
+      <div class="wordmark wm-2">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-coral">
+      <div class="num">02b</div><div class="label">coral bg</div>
+      <div class="wordmark wm-2">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-sage">
+      <div class="num">02c</div><div class="label">sage bg</div>
+      <div class="wordmark wm-2">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+
+    <!-- ── ROW 3: Jost ExtraLight Wide ── -->
+    <div class="row-label"><span>03 &mdash; Jost ExtraLight / +0.25em</span></div>
+    <div class="cell on-cream">
+      <div class="num">03a</div><div class="label">cream bg</div>
+      <div class="wordmark wm-3">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-coral">
+      <div class="num">03b</div><div class="label">coral bg</div>
+      <div class="wordmark wm-3">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-sage">
+      <div class="num">03c</div><div class="label">sage bg</div>
+      <div class="wordmark wm-3">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+
+    <!-- ── ROW 4: Cormorant SemiBold Italic ── -->
+    <div class="row-label"><span>04 &mdash; Cormorant Garamond SemiBold Italic / +0.02em / title case</span></div>
+    <div class="cell on-cream">
+      <div class="num">04a</div><div class="label">cream bg</div>
+      <div class="wordmark wm-4">Parallax</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-coral">
+      <div class="num">04b</div><div class="label">coral bg</div>
+      <div class="wordmark wm-4">Parallax</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-sage">
+      <div class="num">04c</div><div class="label">sage bg</div>
+      <div class="wordmark wm-4">Parallax</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+
+    <!-- ── ROW 5: Cormorant Light ── -->
+    <div class="row-label"><span>05 &mdash; Cormorant Garamond Light / +0.15em</span></div>
+    <div class="cell on-cream">
+      <div class="num">05a</div><div class="label">cream bg</div>
+      <div class="wordmark wm-5">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-coral">
+      <div class="num">05b</div><div class="label">coral bg</div>
+      <div class="wordmark wm-5">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-sage">
+      <div class="num">05c</div><div class="label">sage bg</div>
+      <div class="wordmark wm-5">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+
+    <!-- ── ROW 6: Playfair SemiBold ── -->
+    <div class="row-label"><span>06 &mdash; Playfair Display SemiBold / +0.03em</span></div>
+    <div class="cell on-cream">
+      <div class="num">06a</div><div class="label">cream bg</div>
+      <div class="wordmark wm-6">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-coral">
+      <div class="num">06b</div><div class="label">coral bg</div>
+      <div class="wordmark wm-6">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-sage">
+      <div class="num">06c</div><div class="label">sage bg</div>
+      <div class="wordmark wm-6">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+
+    <!-- ── ROW 7: Playfair Italic ── -->
+    <div class="row-label"><span>07 &mdash; Playfair Display Italic / +0.02em / title case</span></div>
+    <div class="cell on-cream">
+      <div class="num">07a</div><div class="label">cream bg</div>
+      <div class="wordmark wm-7">Parallax</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-coral">
+      <div class="num">07b</div><div class="label">coral bg</div>
+      <div class="wordmark wm-7">Parallax</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-sage">
+      <div class="num">07c</div><div class="label">sage bg</div>
+      <div class="wordmark wm-7">Parallax</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+
+    <!-- ── ROW 8: EB Garamond Medium ── -->
+    <div class="row-label"><span>08 &mdash; EB Garamond Medium / +0.08em</span></div>
+    <div class="cell on-cream">
+      <div class="num">08a</div><div class="label">cream bg</div>
+      <div class="wordmark wm-8">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-coral">
+      <div class="num">08b</div><div class="label">coral bg</div>
+      <div class="wordmark wm-8">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-sage">
+      <div class="num">08c</div><div class="label">sage bg</div>
+      <div class="wordmark wm-8">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+
+    <!-- ── ROW 9: Libre Caslon Display ── -->
+    <div class="row-label"><span>09 &mdash; Libre Caslon Display / +0.04em</span></div>
+    <div class="cell on-cream">
+      <div class="num">09a</div><div class="label">cream bg</div>
+      <div class="wordmark wm-9">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-coral">
+      <div class="num">09b</div><div class="label">coral bg</div>
+      <div class="wordmark wm-9">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-sage">
+      <div class="num">09c</div><div class="label">sage bg</div>
+      <div class="wordmark wm-9">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+
+    <!-- ── ROW 10: DM Mono Light ── -->
+    <div class="row-label"><span>10 &mdash; DM Mono Light / +0.12em</span></div>
+    <div class="cell on-cream">
+      <div class="num">10a</div><div class="label">cream bg</div>
+      <div class="wordmark wm-10">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-coral">
+      <div class="num">10b</div><div class="label">coral bg</div>
+      <div class="wordmark wm-10">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+    <div class="cell on-sage">
+      <div class="num">10c</div><div class="label">sage bg</div>
+      <div class="wordmark wm-10">PARALLAX</div>
+      <div class="sub">Depth revealed through perspective.</div>
+    </div>
+
+  </div>
+
+</body>
+</html>

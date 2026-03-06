@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARALLAX — LL as Parallel Planes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Libre+Caslon+Display&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --vermillion: #CC4422;
+      --forest: #2B3A22;
+      --oxblood: #3C2A28;
+      --cream: #F5F0E8;
+      --ink: #2C2824;
+      --ink-light: #5C554E;
+      --ink-lighter: #8A847D;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--cream);
+      font-family: 'Jost', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: var(--ink);
+      padding: 2rem;
+    }
+
+    .page-title {
+      text-align: center;
+      padding: 1rem 0 0.5rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-lighter);
+    }
+    .page-subtitle {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--ink-lighter);
+      margin-bottom: 2.5rem;
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+      letter-spacing: 0.02em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .cell {
+      background: var(--cream);
+      border: 1px solid rgba(44,40,36,0.08);
+      border-radius: 8px;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 220px;
+      position: relative;
+    }
+
+    .cell-label {
+      position: absolute;
+      top: 0.75rem;
+      left: 1rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-lighter);
+    }
+
+    .cell-sublabel {
+      position: absolute;
+      top: 0.75rem;
+      right: 1rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-lighter);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+    }
+
+    /* ─── Wordmark base ─── */
+    .wordmark {
+      font-size: 3.5rem;
+      letter-spacing: 0.25em;
+      line-height: 1;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    /* ─────────────────────────────────────────────
+       Ghost technique: a hidden "LL" inside the .ll
+       span sets the correct width, height, and baseline.
+       The visible lines overlay on top via position:absolute.
+       ───────────────────────────────────────────── */
+
+    /* Shared: every CSS-line variant uses this base */
+    .ll-base .ll {
+      display: inline-block;
+      position: relative;
+      vertical-align: baseline;
+    }
+    .ll-base .ll .ghost {
+      visibility: hidden;
+      /* inherits parent font — sets correct cap height & baseline */
+    }
+    .ll-base .ll .strokes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+
+    /* ─── Variant styles ─── */
+
+    /* 1. Hairline LL — still uses actual font glyphs, just thinner weight */
+    .ll-hairline .ll {
+      font-weight: 100;
+      letter-spacing: 0.35em;
+    }
+
+    /* 2. Geometric lines — clean vertical strokes */
+    .v-lines .strokes { gap: 0.2em; }
+    .v-lines .strokes .line {
+      width: 1.5px;
+      background: currentColor;
+    }
+
+    /* 3. Spaced hairlines — still font glyphs, pushed apart */
+    .ll-spaced .ll {
+      font-weight: 100;
+      letter-spacing: 0.6em;
+      margin: 0 0.1em;
+    }
+
+    /* 4. Tall lines — extend above cap height */
+    .v-tall .strokes {
+      gap: 0.2em;
+      top: -0.15em;  /* extend above */
+      bottom: -0.08em; /* extend below baseline slightly */
+    }
+    .v-tall .strokes .line {
+      width: 1.5px;
+      background: currentColor;
+    }
+
+    /* 5. Angled planes — slight rotation */
+    .v-angled .strokes { gap: 0.24em; }
+    .v-angled .strokes .line {
+      width: 1.5px;
+      background: currentColor;
+      transform: rotate(-4deg);
+    }
+
+    /* 6. Double-stroke hatching — two thin strokes per L */
+    .v-double .strokes { gap: 0.3em; }
+    .v-double .strokes .line-pair {
+      display: flex;
+      gap: 2.5px;
+      align-items: stretch;
+    }
+    .v-double .strokes .line-pair .stroke {
+      width: 1px;
+      background: currentColor;
+    }
+
+    /* 7. Serif/Sans contrast — font glyphs with weight/family swap */
+    .ll-serif-contrast .ll {
+      font-family: 'Jost', sans-serif;
+      font-weight: 100;
+      font-style: normal;
+      letter-spacing: 0.4em;
+    }
+
+    /* 8. Offset planes — staggered heights */
+    .v-offset .strokes { gap: 0.22em; }
+    .v-offset .strokes .line:nth-child(1) {
+      width: 1.5px;
+      background: currentColor;
+      margin-top: -0.06em;
+      margin-bottom: 0.06em;
+    }
+    .v-offset .strokes .line:nth-child(2) {
+      width: 1.5px;
+      background: currentColor;
+      margin-top: 0.08em;
+      margin-bottom: -0.08em;
+    }
+
+    /* 9. Color accent — font glyphs in vermillion */
+    .ll-accent .ll {
+      color: var(--vermillion);
+      font-weight: 100;
+      letter-spacing: 0.4em;
+    }
+
+    /* 10. Wide planes — thicker strokes */
+    .v-wide .strokes { gap: 0.24em; }
+    .v-wide .strokes .line {
+      width: 3px;
+      background: currentColor;
+    }
+
+    /* 11. Section cut — lines with cross-ticks */
+    .v-section .strokes { gap: 0.24em; }
+    .v-section .strokes .line {
+      width: 1.5px;
+      background: currentColor;
+      position: relative;
+    }
+    .v-section .strokes .line::before,
+    .v-section .strokes .line::after {
+      content: '';
+      position: absolute;
+      left: -3px;
+      width: 7.5px;
+      height: 1px;
+      background: currentColor;
+    }
+    .v-section .strokes .line::before { top: 0; }
+    .v-section .strokes .line::after { bottom: 0; }
+
+    /* 12. Italic serif + geometric LL */
+    .ll-italic-geo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-style: italic;
+    }
+    .v-italic-geo .strokes { gap: 0.18em; }
+    .v-italic-geo .strokes .line {
+      width: 1.5px;
+      background: currentColor;
+    }
+
+    /* ─── Size variants ─── */
+    .size-lg { font-size: 4.5rem; }
+
+    /* ─── Color variants ─── */
+    .color-vermillion { color: var(--vermillion); }
+    .color-forest { color: var(--forest); }
+    .color-oxblood { color: var(--oxblood); }
+
+    /* ─── Dark bg ─── */
+    .cell-dark {
+      background: var(--ink);
+      border-color: transparent;
+    }
+    .cell-dark .cell-label,
+    .cell-dark .cell-sublabel { color: rgba(245,240,232,0.4); }
+    .cell-dark .wordmark { color: var(--cream); }
+  </style>
+</head>
+<body>
+
+<p class="page-title">PARALLAX — LL as Parallel Planes</p>
+<p class="page-subtitle">Explorations of the double-L as two thin parallel strokes — ghost alignment technique</p>
+
+<div class="grid">
+
+  <!-- 01. Hairline LL — font glyphs, just thinner -->
+  <div class="cell">
+    <span class="cell-label">01 — Hairline LL</span>
+    <span class="cell-sublabel">Jost Light body / Jost Thin LL</span>
+    <div class="wordmark ll-hairline" style="font-family:'Jost',sans-serif; font-weight:300;">PARA<span class="ll">LL</span>AX</div>
+  </div>
+
+  <!-- 02. Geometric Lines — Jost Light -->
+  <div class="cell">
+    <span class="cell-label">02 — Geometric Lines</span>
+    <span class="cell-sublabel">Jost Light / clean CSS strokes</span>
+    <div class="wordmark ll-base v-lines" style="font-family:'Jost',sans-serif; font-weight:300;">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line"></span><span class="line"></span></span></span>AX</div>
+  </div>
+
+  <!-- 03. Spaced Hairlines — Cormorant Italic -->
+  <div class="cell">
+    <span class="cell-label">03 — Spaced Hairlines</span>
+    <span class="cell-sublabel">Cormorant Garamond SemiBold Italic / Thin LL</span>
+    <div class="wordmark ll-spaced" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">PARA<span class="ll">LL</span>AX</div>
+  </div>
+
+  <!-- 04. Tall Planes — EB Garamond Italic -->
+  <div class="cell">
+    <span class="cell-label">04 — Tall Planes</span>
+    <span class="cell-sublabel">EB Garamond Italic / lines exceed cap height</span>
+    <div class="wordmark ll-base v-tall" style="font-family:'EB Garamond',serif; font-weight:500; font-style:italic;">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line"></span><span class="line"></span></span></span>AX</div>
+  </div>
+
+  <!-- 05. Angled Planes — Playfair Display Italic -->
+  <div class="cell">
+    <span class="cell-label">05 — Angled Planes</span>
+    <span class="cell-sublabel">Playfair Display Italic / slight rotation</span>
+    <div class="wordmark ll-base v-angled" style="font-family:'Playfair Display',serif; font-weight:500; font-style:italic;">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line"></span><span class="line"></span></span></span>AX</div>
+  </div>
+
+  <!-- 06. Double-Stroke Hatching — Jost Medium -->
+  <div class="cell">
+    <span class="cell-label">06 — Double-Stroke Hatching</span>
+    <span class="cell-sublabel">Jost Medium / two thin strokes per L</span>
+    <div class="wordmark ll-base v-double" style="font-family:'Jost',sans-serif; font-weight:400;">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line-pair"><span class="stroke"></span><span class="stroke"></span></span><span class="line-pair"><span class="stroke"></span><span class="stroke"></span></span></span></span>AX</div>
+  </div>
+
+  <!-- 07. Serif / Sans Contrast — font swap on LLs -->
+  <div class="cell">
+    <span class="cell-label">07 — Serif / Sans Contrast</span>
+    <span class="cell-sublabel">Cormorant Italic body / Jost Thin LL</span>
+    <div class="wordmark ll-serif-contrast" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">PARA<span class="ll">LL</span>AX</div>
+  </div>
+
+  <!-- 08. Offset Planes — Libre Caslon Display -->
+  <div class="cell">
+    <span class="cell-label">08 — Offset Planes</span>
+    <span class="cell-sublabel">Libre Caslon Display / staggered height lines</span>
+    <div class="wordmark ll-base v-offset" style="font-family:'Libre Caslon Display',serif; font-weight:400;">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line"></span><span class="line"></span></span></span>AX</div>
+  </div>
+
+  <!-- 09. Section Cut — Cormorant Light -->
+  <div class="cell">
+    <span class="cell-label">09 — Section Cut</span>
+    <span class="cell-sublabel">Cormorant Garamond Light / architectural section notation</span>
+    <div class="wordmark ll-base v-section" style="font-family:'Cormorant Garamond',serif; font-weight:300;">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line"></span><span class="line"></span></span></span>AX</div>
+  </div>
+
+  <!-- 10. Italic Serif + Geometric LL — the bridge concept -->
+  <div class="cell">
+    <span class="cell-label">10 — Italic Serif + Geometric LL</span>
+    <span class="cell-sublabel">Cormorant SemiBold Italic / clean CSS lines</span>
+    <div class="wordmark ll-base ll-italic-geo v-italic-geo">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line"></span><span class="line"></span></span></span>AX</div>
+  </div>
+
+  <!-- 11. Vermillion Accent LL — font glyphs in color -->
+  <div class="cell">
+    <span class="cell-label">11 — Vermillion Accent LL</span>
+    <span class="cell-sublabel">Jost Light / Thin LL in vermillion</span>
+    <div class="wordmark ll-accent" style="font-family:'Jost',sans-serif; font-weight:300;">PARA<span class="ll">LL</span>AX</div>
+  </div>
+
+  <!-- 12. Wide Planes — thicker CSS strokes -->
+  <div class="cell">
+    <span class="cell-label">12 — Wide Planes</span>
+    <span class="cell-sublabel">Jost ExtraLight / wider strokes</span>
+    <div class="wordmark ll-base v-wide" style="font-family:'Jost',sans-serif; font-weight:200; letter-spacing:0.3em;">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line"></span><span class="line"></span></span></span>AX</div>
+  </div>
+
+  <!-- ─── At scale ─── -->
+
+  <!-- 13. Geometric Lines — dark, large -->
+  <div class="cell cell-dark">
+    <span class="cell-label">13 — Geometric Lines (Dark)</span>
+    <span class="cell-sublabel">Jost Light / large scale</span>
+    <div class="wordmark ll-base v-lines size-lg" style="font-family:'Jost',sans-serif; font-weight:300;">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line"></span><span class="line"></span></span></span>AX</div>
+  </div>
+
+  <!-- 14. Italic Serif + Geo LL — dark, vermillion, large -->
+  <div class="cell cell-dark">
+    <span class="cell-label">14 — Italic Serif + Geo LL (Dark)</span>
+    <span class="cell-sublabel">Cormorant Italic / vermillion</span>
+    <div class="wordmark ll-base ll-italic-geo v-italic-geo size-lg color-vermillion">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line"></span><span class="line"></span></span></span>AX</div>
+  </div>
+
+  <!-- 15. Section Cut — forest, large -->
+  <div class="cell">
+    <span class="cell-label">15 — Section Cut (Forest)</span>
+    <span class="cell-sublabel">Cormorant Light / forest green</span>
+    <div class="wordmark ll-base v-section size-lg color-forest" style="font-family:'Cormorant Garamond',serif; font-weight:300;">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line"></span><span class="line"></span></span></span>AX</div>
+  </div>
+
+  <!-- 16. Tall Planes — oxblood, EB Garamond, large -->
+  <div class="cell">
+    <span class="cell-label">16 — Tall Planes (Oxblood)</span>
+    <span class="cell-sublabel">EB Garamond Italic / oxblood</span>
+    <div class="wordmark ll-base v-tall size-lg color-oxblood" style="font-family:'EB Garamond',serif; font-weight:500; font-style:italic;">PARA<span class="ll"><span class="ghost">LL</span><span class="strokes"><span class="line"></span><span class="line"></span></span></span>AX</div>
+  </div>
+
+</div>
+
+</body>
+</html>

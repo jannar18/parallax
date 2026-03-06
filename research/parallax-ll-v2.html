@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARALLAX — LL Contrast Explorations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Libre+Caslon+Display&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --vermillion: #CC4422;
+      --forest: #2B3A22;
+      --oxblood: #3C2A28;
+      --cream: #F5F0E8;
+      --ink: #2C2824;
+      --ink-light: #5C554E;
+      --ink-lighter: #8A847D;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--cream);
+      font-family: 'Jost', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: var(--ink);
+      padding: 2rem;
+    }
+
+    .page-title {
+      text-align: center;
+      padding: 1rem 0 0.5rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-lighter);
+    }
+    .page-subtitle {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--ink-lighter);
+      margin-bottom: 1rem;
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-lighter);
+      margin: 2.5rem 0 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(44,40,36,0.08);
+    }
+    .section-label:first-of-type { border-top: none; margin-top: 1.5rem; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .grid-full {
+      grid-template-columns: 1fr;
+    }
+
+    .cell {
+      background: var(--cream);
+      border: 1px solid rgba(44,40,36,0.08);
+      border-radius: 8px;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      position: relative;
+    }
+
+    .cell-label {
+      position: absolute;
+      top: 0.75rem;
+      left: 1rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-lighter);
+    }
+    .cell-sublabel {
+      position: absolute;
+      top: 0.75rem;
+      right: 1rem;
+      font-size: 0.5rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-lighter);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+    }
+
+    .wordmark {
+      font-size: 3.5rem;
+      letter-spacing: 0.25em;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    /* ─── Background variants ─── */
+    .cell-dark { background: var(--ink); border-color: transparent; }
+    .cell-dark .cell-label, .cell-dark .cell-sublabel { color: rgba(245,240,232,0.4); }
+    .cell-dark .wordmark { color: var(--cream); }
+
+    .cell-forest { background: var(--forest); border-color: transparent; }
+    .cell-forest .cell-label, .cell-forest .cell-sublabel { color: rgba(245,240,232,0.35); }
+    .cell-forest .wordmark { color: var(--cream); }
+
+    .cell-oxblood { background: var(--oxblood); border-color: transparent; }
+    .cell-oxblood .cell-label, .cell-oxblood .cell-sublabel { color: rgba(245,240,232,0.35); }
+    .cell-oxblood .wordmark { color: var(--cream); }
+
+    .color-vermillion { color: var(--vermillion) !important; }
+    .color-forest { color: var(--forest) !important; }
+    .color-oxblood { color: var(--oxblood) !important; }
+
+    .size-hero { font-size: 6.5rem; }
+  </style>
+</head>
+<body>
+
+<p class="page-title">PARAllAX — Typographic Contrast</p>
+<p class="page-subtitle">Serif vs sans-serif swap, and uppercase-to-lowercase case contrast</p>
+
+
+<!-- ═══════════════════════════════════════════════
+     DIRECTION A: Serif body, sans-serif ll (case drop)
+     ═══════════════════════════════════════════════ -->
+
+<p class="section-label">Direction A — Serif Body, Sans-Serif lowercase ll</p>
+
+<div class="grid">
+
+  <!-- A1: Cormorant 600i body / Jost 400 ll -->
+  <div class="cell">
+    <span class="cell-label">A1</span>
+    <span class="cell-sublabel">Cormorant 600i / Jost 400 ll</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic; letter-spacing:0.2em;">PARA<span style="font-family:'Jost',sans-serif; font-weight:400; font-style:normal;">ll</span>AX</div>
+  </div>
+
+  <!-- A2: Cormorant 600i body / Jost 300 ll -->
+  <div class="cell">
+    <span class="cell-label">A2</span>
+    <span class="cell-sublabel">Cormorant 600i / Jost 300 ll</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic; letter-spacing:0.2em;">PARA<span style="font-family:'Jost',sans-serif; font-weight:300; font-style:normal;">ll</span>AX</div>
+  </div>
+
+  <!-- A3: Cormorant 500 (upright) / Jost 400 ll -->
+  <div class="cell">
+    <span class="cell-label">A3</span>
+    <span class="cell-sublabel">Cormorant 500 upright / Jost 400 ll</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:500; letter-spacing:0.2em;">PARA<span style="font-family:'Jost',sans-serif; font-weight:400;">ll</span>AX</div>
+  </div>
+
+  <!-- A4: EB Garamond 600i / Jost 400 ll -->
+  <div class="cell">
+    <span class="cell-label">A4</span>
+    <span class="cell-sublabel">EB Garamond 600i / Jost 400 ll</span>
+    <div class="wordmark" style="font-family:'EB Garamond',serif; font-weight:600; font-style:italic; letter-spacing:0.18em;">PARA<span style="font-family:'Jost',sans-serif; font-weight:400; font-style:normal;">ll</span>AX</div>
+  </div>
+
+  <!-- A5: Playfair 600i / Jost 400 ll -->
+  <div class="cell">
+    <span class="cell-label">A5</span>
+    <span class="cell-sublabel">Playfair 600i / Jost 400 ll</span>
+    <div class="wordmark" style="font-family:'Playfair Display',serif; font-weight:600; font-style:italic; letter-spacing:0.18em;">PARA<span style="font-family:'Jost',sans-serif; font-weight:400; font-style:normal;">ll</span>AX</div>
+  </div>
+
+  <!-- A6: Libre Caslon Display / Jost 400 ll -->
+  <div class="cell">
+    <span class="cell-label">A6</span>
+    <span class="cell-sublabel">Libre Caslon Display / Jost 400 ll</span>
+    <div class="wordmark" style="font-family:'Libre Caslon Display',serif; font-weight:400; letter-spacing:0.18em;">PARA<span style="font-family:'Jost',sans-serif; font-weight:400;">ll</span>AX</div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     DIRECTION B: Sans-serif body, serif ll (case drop)
+     ═══════════════════════════════════════════════ -->
+
+<p class="section-label">Direction B — Sans-Serif Body, Serif lowercase ll</p>
+
+<div class="grid">
+
+  <!-- B1: Jost 400 body / Cormorant 400 ll -->
+  <div class="cell">
+    <span class="cell-label">B1</span>
+    <span class="cell-sublabel">Jost 400 / Cormorant 400 ll</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:400; letter-spacing:0.25em;">PARA<span style="font-family:'Cormorant Garamond',serif; font-weight:400;">ll</span>AX</div>
+  </div>
+
+  <!-- B2: Jost 400 body / Cormorant 400i ll -->
+  <div class="cell">
+    <span class="cell-label">B2</span>
+    <span class="cell-sublabel">Jost 400 / Cormorant 400 italic ll</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:400; letter-spacing:0.25em;">PARA<span style="font-family:'Cormorant Garamond',serif; font-weight:400; font-style:italic;">ll</span>AX</div>
+  </div>
+
+  <!-- B3: Jost 300 body / EB Garamond 400 ll -->
+  <div class="cell">
+    <span class="cell-label">B3</span>
+    <span class="cell-sublabel">Jost 300 / EB Garamond 400 ll</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:300; letter-spacing:0.25em;">PARA<span style="font-family:'EB Garamond',serif; font-weight:400;">ll</span>AX</div>
+  </div>
+
+  <!-- B4: Jost 500 body / Playfair 400i ll -->
+  <div class="cell">
+    <span class="cell-label">B4</span>
+    <span class="cell-sublabel">Jost 500 / Playfair 400 italic ll</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:500; letter-spacing:0.25em;">PARA<span style="font-family:'Playfair Display',serif; font-weight:400; font-style:italic;">ll</span>AX</div>
+  </div>
+
+  <!-- B5: Jost 400 body / Cormorant 600i ll -->
+  <div class="cell">
+    <span class="cell-label">B5</span>
+    <span class="cell-sublabel">Jost 400 / Cormorant 600 italic ll</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:400; letter-spacing:0.25em;">PARA<span style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">ll</span>AX</div>
+  </div>
+
+  <!-- B6: Jost 300 body / Libre Caslon ll -->
+  <div class="cell">
+    <span class="cell-label">B6</span>
+    <span class="cell-sublabel">Jost 300 / Libre Caslon Display ll</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:300; letter-spacing:0.25em;">PARA<span style="font-family:'Libre Caslon Display',serif; font-weight:400;">ll</span>AX</div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     DIRECTION C: Same font, just caps → lowercase on the ll
+     ═══════════════════════════════════════════════ -->
+
+<p class="section-label">Direction C — Same Font, Uppercase → Lowercase ll</p>
+
+<div class="grid">
+
+  <!-- C1: Jost 400 -->
+  <div class="cell">
+    <span class="cell-label">C1</span>
+    <span class="cell-sublabel">Jost 400 — case contrast only</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:400; letter-spacing:0.25em;">PARAllAX</div>
+  </div>
+
+  <!-- C2: Jost 300 -->
+  <div class="cell">
+    <span class="cell-label">C2</span>
+    <span class="cell-sublabel">Jost 300 — lighter</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:300; letter-spacing:0.25em;">PARAllAX</div>
+  </div>
+
+  <!-- C3: Cormorant 600i -->
+  <div class="cell">
+    <span class="cell-label">C3</span>
+    <span class="cell-sublabel">Cormorant 600 italic — case contrast only</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic; letter-spacing:0.2em;">PARAllAX</div>
+  </div>
+
+  <!-- C4: Cormorant 500 upright -->
+  <div class="cell">
+    <span class="cell-label">C4</span>
+    <span class="cell-sublabel">Cormorant 500 upright — case contrast only</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:500; letter-spacing:0.2em;">PARAllAX</div>
+  </div>
+
+  <!-- C5: EB Garamond 500i -->
+  <div class="cell">
+    <span class="cell-label">C5</span>
+    <span class="cell-sublabel">EB Garamond 500 italic — case contrast only</span>
+    <div class="wordmark" style="font-family:'EB Garamond',serif; font-weight:500; font-style:italic; letter-spacing:0.18em;">PARAllAX</div>
+  </div>
+
+  <!-- C6: Playfair 600i -->
+  <div class="cell">
+    <span class="cell-label">C6</span>
+    <span class="cell-sublabel">Playfair 600 italic — case contrast only</span>
+    <div class="wordmark" style="font-family:'Playfair Display',serif; font-weight:600; font-style:italic; letter-spacing:0.18em;">PARAllAX</div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     AT SCALE — Best of each direction, hero size
+     ═══════════════════════════════════════════════ -->
+
+<p class="section-label">At Scale — Primary Colors</p>
+
+<div class="grid grid-full">
+
+  <!-- Serif body + sans ll — vermillion -->
+  <div class="cell" style="min-height:250px;">
+    <span class="cell-label">Cormorant 600i + Jost 400 ll — Vermillion</span>
+    <div class="wordmark color-vermillion size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic; letter-spacing:0.2em;">PARA<span style="font-family:'Jost',sans-serif; font-weight:400; font-style:normal;">ll</span>AX</div>
+  </div>
+
+  <!-- Serif body + sans ll — cream on forest -->
+  <div class="cell cell-forest" style="min-height:250px;">
+    <span class="cell-label">Cormorant 600i + Jost 400 ll — Forest</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic; letter-spacing:0.2em;">PARA<span style="font-family:'Jost',sans-serif; font-weight:400; font-style:normal;">ll</span>AX</div>
+  </div>
+
+  <!-- Serif body + sans ll — cream on oxblood -->
+  <div class="cell cell-oxblood" style="min-height:250px;">
+    <span class="cell-label">Cormorant 600i + Jost 300 ll — Oxblood</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic; letter-spacing:0.2em;">PARA<span style="font-family:'Jost',sans-serif; font-weight:300; font-style:normal;">ll</span>AX</div>
+  </div>
+
+  <!-- Serif body + sans ll — cream on ink -->
+  <div class="cell cell-dark" style="min-height:250px;">
+    <span class="cell-label">Cormorant 600i + Jost 400 ll — Ink</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic; letter-spacing:0.2em;">PARA<span style="font-family:'Jost',sans-serif; font-weight:400; font-style:normal;">ll</span>AX</div>
+  </div>
+
+  <!-- Same-font case contrast — Cormorant italic, vermillion -->
+  <div class="cell" style="min-height:250px;">
+    <span class="cell-label">Cormorant 600i — case contrast only — Vermillion</span>
+    <div class="wordmark color-vermillion size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic; letter-spacing:0.2em;">PARAllAX</div>
+  </div>
+
+  <!-- Same-font case contrast — Jost, forest -->
+  <div class="cell" style="min-height:250px;">
+    <span class="cell-label">Jost 400 — case contrast only — Forest</span>
+    <div class="wordmark color-forest size-hero" style="font-family:'Jost',sans-serif; font-weight:400; letter-spacing:0.25em;">PARAllAX</div>
+  </div>
+
+  <!-- Sans body + serif ll — cream on ink -->
+  <div class="cell cell-dark" style="min-height:250px;">
+    <span class="cell-label">Jost 400 + Cormorant 400i ll — Ink</span>
+    <div class="wordmark size-hero" style="font-family:'Jost',sans-serif; font-weight:400; letter-spacing:0.25em;">PARA<span style="font-family:'Cormorant Garamond',serif; font-weight:400; font-style:italic;">ll</span>AX</div>
+  </div>
+
+  <!-- Sans body + serif ll — oxblood -->
+  <div class="cell" style="min-height:250px;">
+    <span class="cell-label">Jost 400 + Cormorant 600i ll — Oxblood</span>
+    <div class="wordmark color-oxblood size-hero" style="font-family:'Jost',sans-serif; font-weight:400; letter-spacing:0.25em;">PARA<span style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">ll</span>AX</div>
+  </div>
+
+</div>
+
+</body>
+</html>

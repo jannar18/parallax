@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARALLAX Wordmark Iterations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Nunito:wght@200;300;400;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #F5F0E8;
+      --ink: #2C2824;
+      --ink-light: #5C554E;
+      --ink-lighter: #8A847D;
+      --terracotta: #C4724E;
+      --slate: #7A8B9A;
+      --border: #E2DCD5;
+      --surface: #FAF8F5;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Jost', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .page-header {
+      padding: 3rem 5vw 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-style: italic;
+      font-size: 1.875rem;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .page-header p {
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--ink-light);
+      max-width: 40rem;
+      line-height: 1.6;
+    }
+
+    .iterations {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .iteration {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 50vh;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .iteration:nth-child(even) {
+      direction: rtl;
+    }
+    .iteration:nth-child(even) > * {
+      direction: ltr;
+    }
+
+    .wordmark-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 3rem;
+      position: relative;
+    }
+
+    .wordmark-panel .number {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--ink-lighter);
+    }
+
+    .iteration:nth-child(even) .wordmark-panel .number {
+      left: auto;
+      right: 1.5rem;
+    }
+
+    .context-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem;
+      background: var(--surface);
+    }
+
+    .context-panel h3 {
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-lighter);
+      margin-bottom: 0.75rem;
+    }
+
+    .context-panel .font-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-style: italic;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .context-panel .description {
+      font-size: 0.875rem;
+      line-height: 1.7;
+      color: var(--ink-light);
+      max-width: 28rem;
+    }
+
+    .context-panel .specs {
+      margin-top: 1.25rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--ink-lighter);
+      line-height: 1.8;
+    }
+
+    /* Dark panels */
+    .dark {
+      background: var(--ink);
+    }
+    .dark .wordmark {
+      color: var(--cream);
+    }
+    .dark .number {
+      color: var(--ink-lighter);
+    }
+
+    /* Slate panels */
+    .slate-bg {
+      background: var(--slate);
+    }
+    .slate-bg .wordmark {
+      color: var(--cream);
+    }
+
+    /* Wordmark base */
+    .wordmark {
+      color: var(--ink);
+      text-align: center;
+    }
+
+    /* ── Individual iterations ── */
+
+    /* 1: Jost Light — current wordmark */
+    .wm-1 {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 5vw, 5rem);
+      letter-spacing: 0.05em;
+    }
+
+    /* 2: Jost Medium, tighter tracking */
+    .wm-2 {
+      font-family: 'Jost', sans-serif;
+      font-weight: 500;
+      font-size: clamp(3rem, 5vw, 5rem);
+      letter-spacing: 0.02em;
+    }
+
+    /* 3: Jost ExtraLight, very wide tracking */
+    .wm-3 {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+      letter-spacing: 0.25em;
+    }
+
+    /* 4: Cormorant Garamond SemiBold Italic */
+    .wm-4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-style: italic;
+      font-size: clamp(3.5rem, 5.5vw, 5.5rem);
+      letter-spacing: 0.02em;
+    }
+
+    /* 5: Cormorant Garamond Light, normal, wide tracking */
+    .wm-5 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 5vw, 5rem);
+      letter-spacing: 0.15em;
+    }
+
+    /* 6: Playfair Display SemiBold */
+    .wm-6 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: clamp(3rem, 5vw, 5rem);
+      letter-spacing: 0.03em;
+    }
+
+    /* 7: Playfair Display Italic, lighter */
+    .wm-7 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(3rem, 5vw, 5rem);
+      letter-spacing: 0.02em;
+    }
+
+    /* 8: EB Garamond Medium */
+    .wm-8 {
+      font-family: 'EB Garamond', serif;
+      font-weight: 500;
+      font-size: clamp(3.5rem, 5.5vw, 5.5rem);
+      letter-spacing: 0.08em;
+    }
+
+    /* 9: Libre Caslon Display */
+    .wm-9 {
+      font-family: 'Libre Caslon Display', serif;
+      font-weight: 400;
+      font-size: clamp(3rem, 5vw, 5rem);
+      letter-spacing: 0.04em;
+    }
+
+    /* 10: DM Mono Light — technical/architectural */
+    .wm-10 {
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      letter-spacing: 0.12em;
+    }
+
+    /* Subtitle under wordmark */
+    .wordmark-sub {
+      margin-top: 1rem;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.8rem, 1vw, 1rem);
+      letter-spacing: 0.05em;
+      opacity: 0.5;
+    }
+    .dark .wordmark-sub {
+      color: var(--cream);
+    }
+
+    /* Footer */
+    .page-footer {
+      padding: 3rem 5vw;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .page-footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--ink-lighter);
+    }
+
+    @media (max-width: 768px) {
+      .iteration {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .iteration:nth-child(even) {
+        direction: ltr;
+      }
+      .wordmark-panel {
+        padding: 4rem 2rem;
+        min-height: 40vh;
+      }
+      .context-panel {
+        padding: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <h1>Wordmark Iterations</h1>
+    <p>Ten typographic treatments of PARALLAX, drawn from the fonts in the brand research: Jost (Futura PT stand-in), Cormorant Garamond, Playfair Display, EB Garamond, Libre Caslon, and DM Mono. Each iteration pairs the wordmark with the positioning line to test the full brand moment.</p>
+  </div>
+
+  <div class="iterations">
+
+    <!-- 1: Jost Light (current) -->
+    <div class="iteration">
+      <div class="wordmark-panel">
+        <div class="number">01</div>
+        <div>
+          <div class="wordmark wm-1">PARALLAX</div>
+          <div class="wordmark-sub">Depth revealed through perspective.</div>
+        </div>
+      </div>
+      <div class="context-panel">
+        <h3>Iteration</h3>
+        <div class="font-name">Jost Light</div>
+        <div class="description">The current wordmark. Geometric sans at light weight with moderate tracking. Clean, confident, research-lab feel. The Futura PT stand-in doing what Futura does best: disappearing into pure geometry.</div>
+        <div class="specs">
+          font: Jost 300<br>
+          tracking: +0.05em<br>
+          case: uppercase<br>
+          style: normal
+        </div>
+      </div>
+    </div>
+
+    <!-- 2: Jost Medium, tighter -->
+    <div class="iteration">
+      <div class="wordmark-panel dark">
+        <div class="number">02</div>
+        <div>
+          <div class="wordmark wm-2">PARALLAX</div>
+          <div class="wordmark-sub">Depth revealed through perspective.</div>
+        </div>
+      </div>
+      <div class="context-panel">
+        <h3>Iteration</h3>
+        <div class="font-name">Jost Medium</div>
+        <div class="description">Same geometric sans, heavier weight, tighter spacing. More presence, more authority. The letters lock together like masonry. Feels more like an architecture firm nameplate than the airy lightness of #01.</div>
+        <div class="specs">
+          font: Jost 500<br>
+          tracking: +0.02em<br>
+          case: uppercase<br>
+          style: normal
+        </div>
+      </div>
+    </div>
+
+    <!-- 3: Jost ExtraLight, ultra-wide -->
+    <div class="iteration">
+      <div class="wordmark-panel">
+        <div class="number">03</div>
+        <div>
+          <div class="wordmark wm-3">PARALLAX</div>
+          <div class="wordmark-sub">Depth revealed through perspective.</div>
+        </div>
+      </div>
+      <div class="context-panel">
+        <h3>Iteration</h3>
+        <div class="font-name">Jost ExtraLight, Wide</div>
+        <div class="description">Ultra-thin strokes with generous letter-spacing. Each letter breathes. The word stretches across the page like a horizon line. Delicate, restrained, whisper-quiet. Maximum Asimov energy: the type barely insists on itself.</div>
+        <div class="specs">
+          font: Jost 200<br>
+          tracking: +0.25em<br>
+          case: uppercase<br>
+          style: normal
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: Cormorant Garamond SemiBold Italic -->
+    <div class="iteration">
+      <div class="wordmark-panel dark">
+        <div class="number">04</div>
+        <div>
+          <div class="wordmark wm-4">Parallax</div>
+          <div class="wordmark-sub">Depth revealed through perspective.</div>
+        </div>
+      </div>
+      <div class="context-panel">
+        <h3>Iteration</h3>
+        <div class="font-name">Cormorant Garamond SemiBold Italic</div>
+        <div class="description">The heading font pressed into wordmark service. Calligraphic warmth, forward-leaning energy. Title case feels natural here. This is the most expressive option: handcraft, editorial flair, personal voice. Breaks the Asimov mold deliberately.</div>
+        <div class="specs">
+          font: Cormorant Garamond 600 italic<br>
+          tracking: +0.02em<br>
+          case: title case<br>
+          style: italic
+        </div>
+      </div>
+    </div>
+
+    <!-- 5: Cormorant Garamond Light, normal -->
+    <div class="iteration">
+      <div class="wordmark-panel">
+        <div class="number">05</div>
+        <div>
+          <div class="wordmark wm-5">PARALLAX</div>
+          <div class="wordmark-sub">Depth revealed through perspective.</div>
+        </div>
+      </div>
+      <div class="context-panel">
+        <h3>Iteration</h3>
+        <div class="font-name">Cormorant Garamond Light</div>
+        <div class="description">Serif at whisper weight, wide-spaced. The thin strokes and high contrast create an engraved, classical feel. Uppercase keeps it formal. Could read as a gallery nameplate or a book imprint. Elegant tension between old-world letterforms and wide modern spacing.</div>
+        <div class="specs">
+          font: Cormorant Garamond 300<br>
+          tracking: +0.15em<br>
+          case: uppercase<br>
+          style: normal
+        </div>
+      </div>
+    </div>
+
+    <!-- 6: Playfair Display SemiBold -->
+    <div class="iteration">
+      <div class="wordmark-panel slate-bg">
+        <div class="number">06</div>
+        <div>
+          <div class="wordmark wm-6">PARALLAX</div>
+          <div class="wordmark-sub">Depth revealed through perspective.</div>
+        </div>
+      </div>
+      <div class="context-panel">
+        <h3>Iteration</h3>
+        <div class="font-name">Playfair Display SemiBold</div>
+        <div class="description">High-contrast transitional serif. Dramatic thick/thin variation gives the word editorial gravity. The "A" letterforms are distinctive with their pointed serifs. Feels like a magazine masthead: Vogue meets architecture journal. Strong, opinionated.</div>
+        <div class="specs">
+          font: Playfair Display 600<br>
+          tracking: +0.03em<br>
+          case: uppercase<br>
+          style: normal
+        </div>
+      </div>
+    </div>
+
+    <!-- 7: Playfair Display Italic -->
+    <div class="iteration">
+      <div class="wordmark-panel dark">
+        <div class="number">07</div>
+        <div>
+          <div class="wordmark wm-7">Parallax</div>
+          <div class="wordmark-sub">Depth revealed through perspective.</div>
+        </div>
+      </div>
+      <div class="context-panel">
+        <h3>Iteration</h3>
+        <div class="font-name">Playfair Display Italic</div>
+        <div class="description">The italic version softens Playfair's boldness into something more literary. Title case, lighter weight. The swash-like quality of the italic "P" and "l" forms creates movement. A personal essay collection or literary review. More intimate than #06.</div>
+        <div class="specs">
+          font: Playfair Display 400 italic<br>
+          tracking: +0.02em<br>
+          case: title case<br>
+          style: italic
+        </div>
+      </div>
+    </div>
+
+    <!-- 8: EB Garamond Medium -->
+    <div class="iteration">
+      <div class="wordmark-panel">
+        <div class="number">08</div>
+        <div>
+          <div class="wordmark wm-8">PARALLAX</div>
+          <div class="wordmark-sub">Depth revealed through perspective.</div>
+        </div>
+      </div>
+      <div class="context-panel">
+        <h3>Iteration</h3>
+        <div class="font-name">EB Garamond Medium</div>
+        <div class="description">Used in the generative brand visual (v7). Georg Duffner's revival of Claude Garamond's original cuts. More historically faithful than Cormorant. The moderate weight with wide tracking gives it a scholarly, considered presence. Old-world authority, unhurried.</div>
+        <div class="specs">
+          font: EB Garamond 500<br>
+          tracking: +0.08em<br>
+          case: uppercase<br>
+          style: normal
+        </div>
+      </div>
+    </div>
+
+    <!-- 9: Libre Caslon Display -->
+    <div class="iteration">
+      <div class="wordmark-panel dark">
+        <div class="number">09</div>
+        <div>
+          <div class="wordmark wm-9">PARALLAX</div>
+          <div class="wordmark-sub">Depth revealed through perspective.</div>
+        </div>
+      </div>
+      <div class="context-panel">
+        <h3>Iteration</h3>
+        <div class="font-name">Libre Caslon Display</div>
+        <div class="description">Asimov's own serif choice for editorial moments. Caslon is the "when in doubt, use Caslon" typeface. The Display cut has higher contrast and more refined details at large sizes. Classic, dependable, instantly legible. Less character than Cormorant, more trustworthiness.</div>
+        <div class="specs">
+          font: Libre Caslon Display 400<br>
+          tracking: +0.04em<br>
+          case: uppercase<br>
+          style: normal
+        </div>
+      </div>
+    </div>
+
+    <!-- 10: DM Mono Light -->
+    <div class="iteration">
+      <div class="wordmark-panel">
+        <div class="number">10</div>
+        <div>
+          <div class="wordmark wm-10">PARALLAX</div>
+          <div class="wordmark-sub">Depth revealed through perspective.</div>
+        </div>
+      </div>
+      <div class="context-panel">
+        <h3>Iteration</h3>
+        <div class="font-name">DM Mono Light</div>
+        <div class="description">Monospace as wordmark. Each letter occupies equal width, creating a rhythm like code or architectural notation. The light weight keeps it refined. Signals "this is a practice that writes code." The Degular Mono stand-in. Technical, precise, quietly radical as a branding choice.</div>
+        <div class="specs">
+          font: DM Mono 300<br>
+          tracking: +0.12em<br>
+          case: uppercase<br>
+          style: normal
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <p>PARALLAX WORDMARK STUDY &mdash; FONTS FROM BRAND RESEARCH (01-ASIMOV, 02-PORTER-ROBINSON, 03-GRAPHICS-PIPELINE, BRAND-GUIDE)</p>
+  </div>
+
+</body>
+</html>
