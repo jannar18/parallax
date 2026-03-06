@@ -10,10 +10,18 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KK2E1V6YC15TFPQX3AHN069E",
-  "last_event_id": "ev_01KK2J94W2ZWK9763DZA8KAE9B",
+  "last_event_id": "ev_01KK2JV4GJFRXMGC7MV30NBBKN",
   "last_status_changed_at": "2026-03-06T20:40:00Z",
   "priority": "critical",
-  "relationships_out": [],
+  "relationships_out": [
+    {
+      "created_at": "2026-03-06T22:03:44Z",
+      "created_by": "human:jules",
+      "note": null,
+      "target_task_id": "task_01KK2JTY5BCZZ9EC463XKQ1NNT",
+      "type": "depends_on"
+    }
+  ],
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-29",
@@ -21,6 +29,6 @@
   "tags": null,
   "title": "Add software split view image (riso pipeline)",
   "type": "task",
-  "updated_at": "2026-03-06T21:53:54Z",
+  "updated_at": "2026-03-06T22:03:44Z",
   "urgency": null
 }
