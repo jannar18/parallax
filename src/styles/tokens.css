@@ -59,46 +59,33 @@
   --content-max-width: 72rem;    /* 1152px */
   --text-max-width:    40rem;    /* 640px — text column narrower than images */
 
-  /* ── Color: Primary ── */
-  --color-vermillion:      #CC4422;  /* Primary accent — the "one color" */
-  --color-cream:           #F5F0E8;  /* Page background — warm off-white */
-  --color-oxblood:         #3C2A28;  /* Dark accent — brick shadow */
-  --color-forest:          #2B3A22;  /* Dark accent — deep green */
+  /* ── Color: Riso Palette ── */
+  --color-paper:           #FDFCEA;  /* Warm cream paper */
+  --color-oxblood:         #471f20;  /* Deep oxblood — text/black */
+  --color-scarlet:         #f65058;  /* Scarlet — accent 1 */
+  --color-olive:           #b49f29;  /* Bright olive — accent 2 */
+  --color-moss:            #68724d;  /* Moss — midtone accent */
+  --color-spruce:          #4a635d;  /* Spruce — shadow accent */
 
-  /* ── Color: Burgundy / Brick ── */
-  --color-burgundy:        #5C3D38;  /* Brick field */
-  --color-brick:           #7A5650;  /* Mid-tone brick */
+  /* ── Color: Neutrals (derived from oxblood) ── */
+  --color-ink:             #471f20;  /* Primary text */
+  --color-ink-light:       #6d4344;  /* Secondary text (~20% lighter) */
+  --color-ink-lighter:     #946768;  /* Tertiary text (~40% lighter) */
+  --color-border:          #e8e5d8;  /* Cream/ink derived border */
+  --color-surface:         #f8f6ea;  /* Slightly darker than paper */
+  --color-background:      #FDFCEA;  /* Page background (paper) */
 
-  /* ── Color: Vermillion Family ── */
-  --color-vermillion-light: #D86838; /* Temple red wall */
-  --color-apricot:         #E8944A;  /* Lighter ranunculus petals */
-  --color-amber-light:     #EDB872;  /* Inner petals, sandstone glow */
-
-  /* ── Color: Greens ── */
-  --color-moss:            #4E6430;  /* Deep meadow green */
-  --color-meadow:          #98AA52;  /* Sunlit grass */
-  --color-chartreuse:      #CDDA82;  /* Light meadow, spring grass */
-
-  /* ── Color: Earth ── */
-  --color-dark-caramel:    #7A4400;  /* Burnt caramel, dark amber glass */
-  --color-amber:           #B06A10;  /* Amber glass, warm resin */
-  --color-honey:           #C89858;  /* Light caramel, warm gold */
-  --color-wheat:           #DCBC8A;  /* Pale caramel, warm parchment */
-
-  /* ── Color: Neutrals ── */
-  --color-ink:             #2C2824;  /* Primary text — warm near-black */
-  --color-ink-light:       #5C554E;  /* Secondary text */
-  --color-ink-lighter:     #8A847D;  /* Tertiary text, metadata */
-  --color-border:          #E2DCD5;  /* Subtle borders */
-  --color-surface:         #FAF8F5;  /* Elevated surface (cards) */
-  --color-background:      #F5F0E8;  /* Page background (cream) */
+  /* ── Color: Legacy aliases (smooth transition) ── */
+  --color-cream:           var(--color-paper);
+  --color-vermillion:      var(--color-scarlet);
+  --color-forest:          var(--color-spruce);
 
   /* ── Color: Semantic ── */
   --color-text-primary:    var(--color-ink);
   --color-text-secondary:  var(--color-ink-light);
   --color-text-tertiary:   var(--color-ink-lighter);
-  --color-accent:          var(--color-vermillion);
-  --color-accent-hover:    #A83A1C;  /* vermillion darkened for hover */
+  --color-accent:          var(--color-scarlet);
+  --color-accent-hover:    #d4434a;  /* Scarlet darkened for hover */
   --color-bg:              var(--color-background);
   --color-bg-surface:      var(--color-surface);
 }

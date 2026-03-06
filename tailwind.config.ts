@@ -9,40 +9,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        /* Primary */
-        vermillion: { DEFAULT: "#CC4422", light: "#D86838" },
-        cream: "#F5F0E8",
-        oxblood: "#3C2A28",
-        forest: "#2B3A22",
+        /* Riso Palette */
+        paper: "#FDFCEA",
+        oxblood: "#471f20",
+        scarlet: { DEFAULT: "#f65058", dark: "#d4434a" },
+        olive: "#b49f29",
+        moss: "#68724d",
+        spruce: "#4a635d",
 
-        /* Burgundy / Brick */
-        burgundy: "#5C3D38",
-        brick: "#7A5650",
-
-        /* Warm spectrum */
-        apricot: "#E8944A",
-        "amber-light": "#EDB872",
-
-        /* Greens */
-        moss: "#4E6430",
-        meadow: "#98AA52",
-        chartreuse: "#CDDA82",
-
-        /* Earth */
-        "dark-caramel": "#7A4400",
-        amber: "#B06A10",
-        honey: "#C89858",
-        wheat: "#DCBC8A",
+        /* Legacy aliases */
+        vermillion: { DEFAULT: "#f65058", light: "#f65058" },
+        cream: "#FDFCEA",
+        forest: "#4a635d",
 
         /* Neutrals */
         ink: {
-          DEFAULT: "#2C2824",
-          light: "#5C554E",
-          lighter: "#8A847D",
+          DEFAULT: "#471f20",
+          light: "#6d4344",
+          lighter: "#946768",
         },
-        border: "#E2DCD5",
-        surface: "#FAF8F5",
-        background: "#F5F0E8",
+        border: "#e8e5d8",
+        surface: "#f8f6ea",
+        background: "#FDFCEA",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Futura PT", "Jost", "system-ui", "sans-serif"],
