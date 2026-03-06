@@ -76,18 +76,20 @@ export default function Header() {
       {/* Parallax wordmark — fades in on first scroll, stays forever */}
       <Link
         href="/"
-        className={`absolute left-[5vw] font-sans font-light no-underline pointer-events-auto transition-opacity duration-700 ${
+        className={`absolute left-[5vw] no-underline pointer-events-auto transition-opacity duration-700 ${
           brandRevealed
             ? "text-ink/80 opacity-100 hover:text-ink"
             : "opacity-0"
         }`}
         style={{
-          fontSize: "clamp(1.1rem, 1.5vw, 1.4rem)",
+          fontSize: "clamp(1.4rem, 2vw, 1.8rem)",
           letterSpacing: "var(--tracking-wide)",
         }}
         tabIndex={brandRevealed ? 0 : -1}
       >
-        Parallax
+        <span className="font-serif font-semibold italic">para</span>
+        <span className="font-sans font-extralight not-italic">ll</span>
+        <span className="font-serif font-semibold italic">ax</span>
       </Link>
 
       {/* Centered axis nav */}

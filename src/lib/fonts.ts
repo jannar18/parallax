@@ -18,7 +18,7 @@ export const fontSans = Jost({
   subsets: ["latin", "latin-ext"],
   variable: "--font-sans",
   display: "swap",
-  weight: ["300", "400", "500", "600"],
+  weight: ["200", "300", "400", "500", "600"],
 });
 
 export const fontSerif = Cormorant_Garamond({

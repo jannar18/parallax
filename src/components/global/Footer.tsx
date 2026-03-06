@@ -109,13 +109,15 @@ export default function Footer() {
         {/* Bottom: wordmark + year */}
         <div className="flex flex-col gap-[2vh] sm:flex-row sm:items-end sm:justify-between">
           <p
-            className="font-sans font-light not-italic text-cream/20 tracking-tighter"
+            className="text-cream/20 tracking-tighter"
             style={{
               fontSize: "clamp(2.5rem, 5vw, 5rem)",
               letterSpacing: "var(--tracking-tight)",
             }}
           >
-            PARALLAX
+            <span className="font-serif font-semibold italic">para</span>
+            <span className="font-sans font-extralight not-italic">ll</span>
+            <span className="font-serif font-semibold italic">ax</span>
           </p>
           <p
             className="text-cream/30"

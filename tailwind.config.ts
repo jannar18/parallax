@@ -63,6 +63,7 @@ const config: Config = {
         "7xl": ["4.5rem", { lineHeight: "1.2" }],
       },
       fontWeight: {
+        extralight: "200",
         light: "300",
         normal: "400",
         medium: "500",

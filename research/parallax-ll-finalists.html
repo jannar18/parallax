@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARALLAX — Wordmark Finalists</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --vermillion: #CC4422;
+      --forest: #2B3A22;
+      --oxblood: #3C2A28;
+      --cream: #F5F0E8;
+      --ink: #2C2824;
+      --ink-lighter: #8A847D;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--cream);
+      font-family: 'Jost', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: var(--ink);
+      padding: 2rem 2rem 6rem;
+    }
+
+    .page-title {
+      text-align: center;
+      padding: 1rem 0 0.3rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-lighter);
+    }
+    .page-subtitle {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--ink-lighter);
+      margin-bottom: 2rem;
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-lighter);
+      margin: 3rem 0 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(44,40,36,0.08);
+    }
+    .section-label:first-of-type { border-top: none; margin-top: 1.5rem; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .grid-full { grid-template-columns: 1fr; }
+
+    .cell {
+      background: var(--cream);
+      border: 1px solid rgba(44,40,36,0.08);
+      border-radius: 8px;
+      padding: 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      position: relative;
+    }
+
+    .cell-label {
+      position: absolute;
+      top: 0.75rem;
+      left: 1rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-lighter);
+    }
+    .cell-sublabel {
+      position: absolute;
+      top: 0.75rem;
+      right: 1rem;
+      font-size: 0.5rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-lighter);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+    }
+
+    .wordmark {
+      font-size: 3.8rem;
+      letter-spacing: 0.22em;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .ll { letter-spacing: 0.32em; }
+
+    .cell-dark { background: var(--ink); border-color: transparent; }
+    .cell-dark .cell-label, .cell-dark .cell-sublabel { color: rgba(245,240,232,0.35); }
+    .cell-dark .wordmark { color: var(--cream); }
+
+    .cell-forest { background: var(--forest); border-color: transparent; }
+    .cell-forest .cell-label, .cell-forest .cell-sublabel { color: rgba(245,240,232,0.35); }
+    .cell-forest .wordmark { color: var(--cream); }
+
+    .cell-oxblood { background: var(--oxblood); border-color: transparent; }
+    .cell-oxblood .cell-label, .cell-oxblood .cell-sublabel { color: rgba(245,240,232,0.35); }
+    .cell-oxblood .wordmark { color: var(--cream); }
+
+    .cell-vermillion { background: var(--vermillion); border-color: transparent; }
+    .cell-vermillion .cell-label, .cell-vermillion .cell-sublabel { color: rgba(245,240,232,0.5); }
+    .cell-vermillion .wordmark { color: var(--cream); }
+
+    .color-vermillion { color: var(--vermillion) !important; }
+
+    .size-hero { font-size: 6rem; }
+
+    @media (max-width: 900px) {
+      .grid, .grid-3 { grid-template-columns: 1fr; }
+      .wordmark { font-size: 2.5rem; }
+      .size-hero { font-size: 3.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<p class="page-title">Wordmark Finalists</p>
+<p class="page-subtitle">Shortlisted from v3 and v5. Serif body + sans-serif ll, lowercase throughout.</p>
+
+
+<!-- ═══════════════════════════════════════════════
+     FROM V3 — A1-A6: Cormorant 600i body + Jost ll
+     ═══════════════════════════════════════════════ -->
+
+<p class="section-label">Cormorant Garamond 600 Italic Body + Sans ll (from v3)</p>
+
+<div class="grid grid-3">
+
+  <div class="cell">
+    <span class="cell-label">A1</span>
+    <span class="cell-sublabel">Jost 100 ll upright</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:100; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell">
+    <span class="cell-label">A2</span>
+    <span class="cell-sublabel">Jost 100 ll italic</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:100; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell">
+    <span class="cell-label">A3</span>
+    <span class="cell-sublabel">Jost 200 ll upright</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:200; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell">
+    <span class="cell-label">A4</span>
+    <span class="cell-sublabel">Jost 200 ll italic</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:200; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell">
+    <span class="cell-label">A5</span>
+    <span class="cell-sublabel">Jost 300 ll upright</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell">
+    <span class="cell-label">A6</span>
+    <span class="cell-sublabel">Jost 300 ll italic</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:italic;">ll</span>ax</div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     FROM V3 — C1-C4: Jost body + Jost ll
+     ═══════════════════════════════════════════════ -->
+
+<p class="section-label">All-Sans: Jost Body + Jost ll (from v3)</p>
+
+<div class="grid">
+
+  <div class="cell">
+    <span class="cell-label">C1</span>
+    <span class="cell-sublabel">Jost 400 body / Jost 100 ll upright</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:400;">para<span class="ll" style="font-weight:100; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell">
+    <span class="cell-label">C2</span>
+    <span class="cell-sublabel">Jost 400 body / Jost 100 ll italic</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:400;">para<span class="ll" style="font-weight:100; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell">
+    <span class="cell-label">C3</span>
+    <span class="cell-sublabel">Jost 300 body / Jost 100 ll upright</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:300;">para<span class="ll" style="font-weight:100; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell">
+    <span class="cell-label">C4</span>
+    <span class="cell-sublabel">Jost 300 body / Jost 100 ll italic</span>
+    <div class="wordmark" style="font-family:'Jost',sans-serif; font-weight:300;">para<span class="ll" style="font-weight:100; font-style:italic;">ll</span>ax</div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     FROM V5 — 01, 04, 19
+     ═══════════════════════════════════════════════ -->
+
+<p class="section-label">Ultra-Light Serif Body + Heavier Sans ll (from v5)</p>
+
+<div class="grid grid-3">
+
+  <div class="cell">
+    <span class="cell-label">V5-01</span>
+    <span class="cell-sublabel">CG 300i / Jost 300 ll upright</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell">
+    <span class="cell-label">V5-04</span>
+    <span class="cell-sublabel">CG 300i / Jost 300 ll italic</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell">
+    <span class="cell-label">V5-19</span>
+    <span class="cell-sublabel">CG 300 upright / Jost 300 ll upright</span>
+    <div class="wordmark" style="font-family:'Cormorant Garamond',serif; font-weight:300;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:normal;">ll</span>ax</div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     ALL FINALISTS AT HERO SCALE
+     ═══════════════════════════════════════════════ -->
+
+<p class="section-label">All Finalists at Hero Scale</p>
+
+<div class="grid grid-full">
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">A1 — CG 600i + Jost 100 ll upright</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:100; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">A2 — CG 600i + Jost 100 ll italic</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:100; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">A3 — CG 600i + Jost 200 ll upright</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:200; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">A4 — CG 600i + Jost 200 ll italic</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:200; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">A5 — CG 600i + Jost 300 ll upright</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">A6 — CG 600i + Jost 300 ll italic</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">C1 — Jost 400 + Jost 100 ll upright</span>
+    <div class="wordmark size-hero" style="font-family:'Jost',sans-serif; font-weight:400;">para<span class="ll" style="font-weight:100; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">C2 — Jost 400 + Jost 100 ll italic</span>
+    <div class="wordmark size-hero" style="font-family:'Jost',sans-serif; font-weight:400;">para<span class="ll" style="font-weight:100; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">C3 — Jost 300 + Jost 100 ll upright</span>
+    <div class="wordmark size-hero" style="font-family:'Jost',sans-serif; font-weight:300;">para<span class="ll" style="font-weight:100; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">C4 — Jost 300 + Jost 100 ll italic</span>
+    <div class="wordmark size-hero" style="font-family:'Jost',sans-serif; font-weight:300;">para<span class="ll" style="font-weight:100; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">V5-01 — CG 300i + Jost 300 ll upright</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">V5-04 — CG 300i + Jost 300 ll italic</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">V5-19 — CG 300 upright + Jost 300 ll upright</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:300;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:normal;">ll</span>ax</div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     ON BRAND BACKGROUNDS
+     ═══════════════════════════════════════════════ -->
+
+<p class="section-label">On Brand Backgrounds</p>
+
+<div class="grid grid-full">
+
+  <div class="cell" style="min-height:260px;">
+    <span class="cell-label">A1 — Vermillion</span>
+    <div class="wordmark size-hero color-vermillion" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:100; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell cell-dark" style="min-height:260px;">
+    <span class="cell-label">A2 — Cream on Ink</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:100; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell cell-forest" style="min-height:260px;">
+    <span class="cell-label">C1 — Cream on Forest</span>
+    <div class="wordmark size-hero" style="font-family:'Jost',sans-serif; font-weight:400;">para<span class="ll" style="font-weight:100; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell cell-oxblood" style="min-height:260px;">
+    <span class="cell-label">C4 — Cream on Oxblood</span>
+    <div class="wordmark size-hero" style="font-family:'Jost',sans-serif; font-weight:300;">para<span class="ll" style="font-weight:100; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell cell-dark" style="min-height:260px;">
+    <span class="cell-label">V5-01 — Cream on Ink</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell cell-vermillion" style="min-height:260px;">
+    <span class="cell-label">V5-04 — Cream on Vermillion</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:italic;">ll</span>ax</div>
+  </div>
+
+  <div class="cell cell-forest" style="min-height:260px;">
+    <span class="cell-label">V5-19 — Cream on Forest</span>
+    <div class="wordmark size-hero" style="font-family:'Cormorant Garamond',serif; font-weight:300;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:normal;">ll</span>ax</div>
+  </div>
+
+  <div class="cell cell-dark" style="min-height:260px;">
+    <span class="cell-label">A5 — Vermillion on Ink</span>
+    <div class="wordmark size-hero color-vermillion" style="font-family:'Cormorant Garamond',serif; font-weight:600; font-style:italic;">para<span class="ll" style="font-family:'Jost',sans-serif; font-weight:300; font-style:normal;">ll</span>ax</div>
+  </div>
+
+</div>
+
+</body>
+</html>

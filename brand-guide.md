@@ -38,8 +38,8 @@ The single word stands on its own — no qualifier needed. It is a practice, a s
 
 | Context | Treatment |
 |---------|-----------|
-| **Header wordmark** | `Parallax` — set in Futura PT (or Jost stand-in) at medium weight |
-| **Footer** | `Parallax` — same typographic treatment as header, smaller scale |
+| **Header wordmark** | `parallax` — lowercase, Cormorant Garamond 600i with Jost 200 `ll` |
+| **Footer** | `parallax` — same typographic treatment as header, smaller scale |
 | **Page title / meta** | `Parallax — [Page Name]` (title case for meta tags) |
 | **Conversation / speech** | "Parallax" (title case when spoken) |
 | **Social handles** | `@parallaxstudio` (one word, lowercase) |
@@ -289,11 +289,20 @@ Regardless of which pairing is chosen, the type scale follows a minor third rati
 
 ### Approach
 
-The wordmark is **pure typography** — the name set in Futura PT at medium weight, with considered tracking. No icon, no symbol, no geometric mark. This follows the Asimov principle: "Typography IS the design."
+The wordmark is **pure typography with a typographic contrast moment** — the name set in lowercase with a deliberate font swap on the double-L. No icon, no symbol, no geometric mark. The `ll` becomes a design moment: two thin, upright geometric sans strokes standing like parallel planes against the flowing italic serif of the surrounding letters. This IS the parallax concept made typographic.
 
-### Wordmark Specimen
+### Wordmark Specimen — A3
 
-**`Parallax`** in Futura PT Medium, tracking +0.05em (`--tracking-wide`). The geometric sans creates clean, confident letterforms — the "a" is single-story (modern, distinctive), the "x" has precise angular crossings, the double "l" creates vertical rhythm. At large sizes, the consistent stroke width gives it architectural authority. At small sizes (16px), the medium weight holds up well on screen. Title case. The overall feel: a research lab nameplate.
+**`para`**`ll`**`ax`** — all lowercase.
+
+| Element | Typeface | Weight | Style |
+|---------|----------|--------|-------|
+| `p`, `a`, `r`, `a`, `a`, `x` | Cormorant Garamond | 600 (SemiBold) | Italic |
+| `l`, `l` | Jost (Futura PT) | 200 (ExtraLight) | Upright (roman) |
+
+The calligraphic italic serif flows through `para` and `ax`, then pauses at the `ll` — two thin, vertical geometric strokes that stand upright while everything around them leans. The weight contrast (600 vs 200) and style contrast (italic vs upright) make the `ll` feel like a structural intervention: two columns, two lenses, two parallel lines of sight. The parallax concept expressed in letterforms.
+
+All lowercase. The intimacy of lowercase reinforces this as a personal practice, not a corporate identity. The double-L does the work that a capital letter would — it creates a visual anchor without shouting.
 
 ### Clear Space Rules
 
@@ -569,5 +578,5 @@ The following token system is the brand standard. The values below match `src/st
 | Color palette | Formalized | Values from research/03 confirmed and tested for WCAG |
 | Primary accent | Formalized | Terracotta (`#C4724E`) |
 | Typeface pairing | Decided | Futura PT + Cormorant Garamond + Degular Mono |
-| Wordmark | Decided | "Parallax" in Futura PT Medium, title case |
-| Favicon | Decided | "P" lettermark in Futura PT Medium |
+| Wordmark | Decided | `parallax` lowercase — CG 600i body + Jost 200 `ll` (A3 finalist) |
+| Favicon | Decided | "p" lettermark in Futura PT Medium |
