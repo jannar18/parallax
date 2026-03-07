@@ -11,15 +11,8 @@ export default function Footer() {
 
   return (
     <footer className="relative flex h-screen flex-col justify-between bg-ink overflow-hidden">
-      {/* Grain texture overlay — localized to footer */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-soft-light"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "300px 300px",
-        }}
-      />
+      {/* Grain texture overlay — localized to footer (uses shared .grain-texture class) */}
+      <div className="grain-texture absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-soft-light" />
 
       <div className="relative flex flex-1 flex-col justify-between px-[5vw] py-[6vh] font-sans">
         {/* Top: quote + contact */}

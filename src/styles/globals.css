@@ -72,7 +72,8 @@
 /* ── Grain Overlay ──
    Subtle paper texture using SVG feTurbulence filter.
    Applied as a pseudo-element on a wrapper to avoid affecting layout.
-   Usage: apply the .grain-overlay class to a fixed-position element. */
+   - .grain-overlay: fixed full-viewport overlay (used by GrainOverlay component)
+   - .grain-texture: texture-only, no container styles (use with your own positioning) */
 .grain-overlay {
   position: fixed;
   inset: 0;
@@ -100,7 +101,8 @@
   display: none;
 }
 
-.grain-overlay::before {
+.grain-overlay::before,
+.grain-texture::before {
   content: "";
   position: absolute;
   inset: 0;
