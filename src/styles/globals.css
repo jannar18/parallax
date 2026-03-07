@@ -148,13 +148,12 @@
   position: relative;
   display: inline-block;
   background-color: var(--color-paper);
-  background-image: url("/textures/paper.png");
-  background-size: cover;
 }
 
 .artifact-treatment > img {
   position: relative;
   mix-blend-mode: multiply;
+  opacity: 0.92;
   z-index: 1;
 }
 
