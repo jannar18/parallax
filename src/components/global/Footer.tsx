@@ -26,7 +26,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-[4vw] md:grid-cols-2">
           <div>
             <p
-              className="text-cream/60 italic font-serif leading-relaxed max-w-text"
+              className="text-paper/60 italic font-serif leading-relaxed max-w-text"
               style={{ fontSize: "clamp(0.875rem, 1.2vw, 1.125rem)" }}
             >
               &ldquo;Quote placeholder — a line that captures the ethos of the
@@ -35,7 +35,7 @@ export default function Footer() {
           </div>
           <div className="md:text-right">
             <p
-              className="text-cream/40 uppercase"
+              className="text-paper/40 uppercase"
               style={{
                 fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)",
                 letterSpacing: "var(--tracking-wider)",
@@ -44,7 +44,7 @@ export default function Footer() {
               Contact
             </p>
             <p
-              className="mt-[1vh] text-cream/60"
+              className="mt-[1vh] text-paper/60"
               style={{ fontSize: "clamp(0.8rem, 1vw, 0.95rem)" }}
             >
               hello@parallax.studio
@@ -56,7 +56,7 @@ export default function Footer() {
         <nav className="flex flex-wrap gap-[3vw]">
           <Link
             href="/"
-            className="text-cream/40 transition-colors hover:text-cream/80"
+            className="text-paper/40 transition-colors hover:text-paper/80"
             style={{
               fontSize: "clamp(0.8rem, 1vw, 0.95rem)",
               letterSpacing: "var(--tracking-wide)",
@@ -66,7 +66,7 @@ export default function Footer() {
           </Link>
           <Link
             href="/about"
-            className="text-cream/40 transition-colors hover:text-cream/80"
+            className="text-paper/40 transition-colors hover:text-paper/80"
             style={{
               fontSize: "clamp(0.8rem, 1vw, 0.95rem)",
               letterSpacing: "var(--tracking-wide)",
@@ -76,7 +76,7 @@ export default function Footer() {
           </Link>
           <Link
             href="/work"
-            className="text-cream/40 transition-colors hover:text-cream/80"
+            className="text-paper/40 transition-colors hover:text-paper/80"
             style={{
               fontSize: "clamp(0.8rem, 1vw, 0.95rem)",
               letterSpacing: "var(--tracking-wide)",
@@ -86,7 +86,7 @@ export default function Footer() {
           </Link>
           <Link
             href="/writing"
-            className="text-cream/40 transition-colors hover:text-cream/80"
+            className="text-paper/40 transition-colors hover:text-paper/80"
             style={{
               fontSize: "clamp(0.8rem, 1vw, 0.95rem)",
               letterSpacing: "var(--tracking-wide)",
@@ -96,7 +96,7 @@ export default function Footer() {
           </Link>
           <Link
             href="/now"
-            className="text-cream/40 transition-colors hover:text-cream/80"
+            className="text-paper/40 transition-colors hover:text-paper/80"
             style={{
               fontSize: "clamp(0.8rem, 1vw, 0.95rem)",
               letterSpacing: "var(--tracking-wide)",
@@ -109,7 +109,7 @@ export default function Footer() {
         {/* Bottom: wordmark + year */}
         <div className="flex flex-col gap-[2vh] sm:flex-row sm:items-end sm:justify-between">
           <p
-            className="text-cream/20 tracking-tighter"
+            className="text-paper/20 tracking-tighter"
             style={{
               fontSize: "clamp(2.5rem, 5vw, 5rem)",
               letterSpacing: "var(--tracking-tight)",
@@ -120,7 +120,7 @@ export default function Footer() {
             <span className="font-serif font-semibold italic">ax</span>
           </p>
           <p
-            className="text-cream/30"
+            className="text-paper/30"
             style={{
               fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)",
               letterSpacing: "var(--tracking-wide)",

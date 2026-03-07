@@ -64,8 +64,8 @@
 
   /* ── Selection ── */
   ::selection {
-    background-color: var(--color-vermillion);
-    color: var(--color-cream);
+    background-color: var(--color-scarlet);
+    color: var(--color-paper);
   }
 }
 

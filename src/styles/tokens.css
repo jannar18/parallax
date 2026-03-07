@@ -75,11 +75,6 @@
   --color-surface:         #f8f6ea;  /* Slightly darker than paper */
   --color-background:      #FDFCEA;  /* Page background (paper) */
 
-  /* ── Color: Legacy aliases (smooth transition) ── */
-  --color-cream:           var(--color-paper);
-  --color-vermillion:      var(--color-scarlet);
-  --color-forest:          var(--color-spruce);
-
   /* ── Color: Semantic ── */
   --color-text-primary:    var(--color-ink);
   --color-text-secondary:  var(--color-ink-light);
