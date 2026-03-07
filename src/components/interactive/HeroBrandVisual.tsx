@@ -67,18 +67,18 @@ export default function HeroBrandVisual() {
         t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
       // Open → fold together (merge) → unfold back to open
-      // rotation=0.5 is the "open/resting" state (planes visible)
-      // rotation=1.0 is the "merged" state (planes fully overlapping)
+      // rotation=0 is the "open/resting" state (planes fully spread)
+      // rotation=1 is the "merged" state (planes fully overlapping)
       let rotation: number;
       if (progress <= 0.3) {
-        // Fold from open (0.5) to merged (1.0)
-        rotation = 0.5 + 0.5 * ease(progress / 0.3);
+        // Fold from open (0) to merged (1)
+        rotation = ease(progress / 0.3);
       } else if (progress <= 0.7) {
         // Hold merged
         rotation = 1;
       } else {
-        // Unfold from merged (1.0) back to open (0.5)
-        rotation = 1 - 0.5 * ease((progress - 0.7) / 0.3);
+        // Unfold from merged (1) back to open (0)
+        rotation = 1 - ease((progress - 0.7) / 0.3);
       }
 
       // Set directly — no lerp lag for scroll-driven animation

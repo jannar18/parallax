@@ -75,8 +75,8 @@ export function createInitialState(): HeroState {
     W: 0,
     H: 0,
     frame: 0,
-    rotation: 0.5,
-    targetRotation: 0.5,
+    rotation: 0,
+    targetRotation: 0,
     isDragging: false,
     dragStartX: 0,
     dragStartRotation: 0,
@@ -178,8 +178,9 @@ export function getLeftPlane(s: HeroState): Point[] {
   const botY = s.H * 0.9;
   const frontX = cx - s.W * 0.35;
   const maxSwing = s.W * 0.55;
-  const backX = frontX + s.rotation * maxSwing;
-  const perspAmount = s.rotation * 0.08;
+  const t = 0.5 + s.rotation * 0.5; // remap [0,1] → [0.5,1] for visual range
+  const backX = frontX + t * maxSwing;
+  const perspAmount = t * 0.08;
 
   return [
     { x: frontX, y: topY },
@@ -195,8 +196,9 @@ export function getRightPlane(s: HeroState): Point[] {
   const botY = s.H * 0.9;
   const frontX = cx + s.W * 0.35;
   const maxSwing = s.W * 0.55;
-  const backX = frontX - s.rotation * maxSwing;
-  const perspAmount = s.rotation * 0.08;
+  const t = 0.5 + s.rotation * 0.5; // remap [0,1] → [0.5,1] for visual range
+  const backX = frontX - t * maxSwing;
+  const perspAmount = t * 0.08;
 
   return [
     { x: backX, y: topY + s.H * perspAmount },
