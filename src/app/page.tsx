@@ -1,8 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getAllNowEntries } from "@/lib/content";
 import HeroBrandVisual from "@/components/interactive/HeroBrandVisual";
 import ArtifactBar from "@/components/interactive/ArtifactBar";
 import SplitViewMerge from "@/components/interactive/SplitViewMerge";
+import MergeVideo from "@/components/interactive/MergeVideo";
 /**
  * Home page — viewport-fitted sections ("slides").
  *
@@ -30,8 +32,24 @@ export default function HomePage() {
 
       {/* ─── Section 2: Split A — visual left, text right ─── */}
       <section className="grid h-screen grid-cols-1 md:grid-cols-2">
-        <div className="flex items-center justify-center bg-spruce px-[5vw] py-[5vh]">
-          {/* Visual / image placeholder */}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            backgroundColor: "var(--color-paper)",
+            backgroundImage: "url(/textures/paper.png)",
+            backgroundSize: "cover",
+          }}
+        >
+          {/* Dial back paper texture intensity */}
+          <div className="absolute inset-0 bg-paper/70" />
+          <Image
+            src="/images/homepage/processed/arch-split-riso.png"
+            alt="Architecture split view"
+            fill
+            className="object-cover"
+            style={{ mixBlendMode: "multiply" }}
+            unoptimized
+          />
         </div>
         <div className="flex items-center bg-paper px-[5vw] py-[5vh]">
           <div>
@@ -39,14 +57,17 @@ export default function HomePage() {
               className="text-ink"
               style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)" }}
             >
-              Heading placeholder
+              Architectural Design
             </h2>
             <p
               className="mt-[2vh] max-w-text text-ink-light leading-relaxed"
               style={{ fontSize: "clamp(0.875rem, 1.2vw, 1.125rem)" }}
             >
-              Body text placeholder. A brief passage that introduces the theme
-              or narrative thread of this section.
+              One year ago I was finishing a 5 year accredited architecture
+              program at Illinois Tech. I was on track to follow the traditional
+              path towards becoming a Licensed Architect through NCARB, but as I
+              was nearing graduation I looked at the rapidly changing world
+              around me, I looked at my field which seemed stuck in time...
             </p>
           </div>
         </div>
@@ -56,7 +77,9 @@ export default function HomePage() {
       <SplitViewMerge />
 
       {/* ─── Section 5: Merged — architecture + software as one ─── */}
-      <section className="h-screen bg-ink" />
+      <section className="relative h-screen overflow-hidden bg-ink">
+        <MergeVideo />
+      </section>
 
       {/* ─── Sections 7+8: Text → Links (shared) → Studio Desk ───
           This is ONE continuous block, not two h-screen sections.
@@ -76,10 +99,8 @@ export default function HomePage() {
               className="text-ink-light leading-relaxed"
               style={{ fontSize: "clamp(1rem, 1.3vw, 1.25rem)" }}
             >
-              Body text placeholder. A passage about the practice — what ties
-              architecture and software together, the philosophy behind the
-              work, and what Parallax means as a studio identity. Depth
-              revealed through the shifting of perspective across disciplines.
+              This site collects my ongoing work, experiments, research notes
+              and observations.
             </p>
           </div>
         </div>
