@@ -16,6 +16,7 @@ const contentDirectory = path.join(process.cwd(), "src", "content");
 export interface NowEntry {
   slug: string;
   date: string;
+  time?: string;
   mood?: string;
   tags?: string[];
   image?: string;
@@ -86,7 +87,11 @@ function parseFile<T>(collection: string, filename: string): T {
 export function getAllNowEntries(): NowEntry[] {
   return getContentFiles("now")
     .map((file) => parseFile<NowEntry>("now", file))
-    .sort((a, b) => (a.date > b.date ? -1 : 1));
+    .sort((a, b) => {
+      const aKey = `${a.date} ${a.time ?? "00:00"}`;
+      const bKey = `${b.date} ${b.time ?? "00:00"}`;
+      return bKey > aKey ? 1 : bKey < aKey ? -1 : 0;
+    });
 }
 
 export function getNowEntry(slug: string): NowEntry | undefined {
