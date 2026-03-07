@@ -35,6 +35,7 @@ export interface WireEdge {
   signalPos: number;
   signalSpeed: number;
   signalDir: number;
+  drawProgress: number;
 }
 
 export interface WireNetwork {
@@ -68,7 +69,7 @@ export interface HeroState {
 
 const PERF_SLICES_HIGH = 80;
 const PERF_SLICES_LOW = 24;
-const PERF_WIRE_NODES_HIGH = 90;
+const PERF_WIRE_NODES_HIGH = 120;
 const PERF_WIRE_NODES_LOW = 40;
 const PERF_LONG_EDGES_HIGH = 14;
 const PERF_LONG_EDGES_LOW = 6;
@@ -139,7 +140,7 @@ export function generateWireNetwork(tier: PerfTier = "high"): WireNetwork {
       phase: Math.random() * Math.PI * 2,
       reveal: 0,
       revealTarget: 0,
-      revealDelay: i * 0.2 + Math.random() * 3,
+      revealDelay: i * 0.18 + Math.random() * 2,
     });
   }
 
@@ -165,11 +166,12 @@ export function generateWireNetwork(tier: PerfTier = "high"): WireNetwork {
         from: c.i,
         to: c.j,
         weight: 0.3 + Math.random() * 0.5,
-        alpha: 0.1 + Math.random() * 0.3,
+        alpha: 0.15 + Math.random() * 0.4,
         phase: Math.random() * Math.PI * 2,
         signalPos: Math.random(),
         signalSpeed: 0.003 + Math.random() * 0.006,
         signalDir: Math.random() < 0.5 ? 1 : -1,
+        drawProgress: 0,
       });
       ec[c.i]++;
       ec[c.j]++;
@@ -185,11 +187,12 @@ export function generateWireNetwork(tier: PerfTier = "high"): WireNetwork {
       from: a,
       to: b,
       weight: 0.2 + Math.random() * 0.3,
-      alpha: 0.04 + Math.random() * 0.08,
+      alpha: 0.08 + Math.random() * 0.15,
       phase: Math.random() * Math.PI * 2,
       signalPos: Math.random(),
       signalSpeed: 0.002 + Math.random() * 0.004,
       signalDir: Math.random() < 0.5 ? 1 : -1,
+      drawProgress: 0,
     });
   }
 
@@ -363,7 +366,7 @@ export function drawLeftPlane(
   const na = 0.82 * s.crossfade * fade;
   if (ca > 0.01) drawPhotoInQuad(ctx, photos[s.currentPhoto], pts, ca, refAspect, slices);
   if (na > 0.01) drawPhotoInQuad(ctx, photos[s.nextPhoto], pts, na, refAspect, slices);
-  drawPlaneBorder(ctx, pts, 0.12);
+  drawPlaneBorder(ctx, pts, 0.15);
 }
 
 // ── Right Plane (Wireframe Network) ──
@@ -384,7 +387,7 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
   // Reveal nodes over time
   for (const n of net.nodes) {
     if (ts > n.revealDelay) n.revealTarget = 1;
-    n.reveal += (n.revealTarget - n.reveal) * 0.06;
+    n.reveal += (n.revealTarget - n.reveal) * 0.2;
   }
 
   // Draw edges + signals
@@ -394,24 +397,33 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
     const er = Math.min(nA.reveal, nB.reveal);
     if (er < 0.01) continue;
 
+    // Animate draw progress — line strokes from node A toward node B
+    edge.drawProgress += (1 - edge.drawProgress) * 0.06;
+
     const pA = mapToQuad(nA.nx, nA.ny, pts);
     const pB = mapToQuad(nB.nx, nB.ny, pts);
+
+    // End point based on draw progress
+    const endX = pA.x + (pB.x - pA.x) * edge.drawProgress;
+    const endY = pA.y + (pB.y - pA.y) * edge.drawProgress;
+
     const a = Math.min(
-      edge.alpha * er * (0.6 + 0.2 * Math.sin(s.frame * 0.008 + edge.phase)) * 1.8,
-      0.65,
+      edge.alpha * er * (0.7 + 0.15 * Math.sin(s.frame * 0.008 + edge.phase)) * 2.5,
+      0.85,
     );
 
     ctx.strokeStyle = `rgba(${INK_RGB},${a})`;
-    ctx.lineWidth = edge.weight * 1.2;
+    ctx.lineWidth = edge.weight * 1.8;
     ctx.beginPath();
     ctx.moveTo(pA.x + px, pA.y + py);
-    ctx.lineTo(pB.x + px, pB.y + py);
+    ctx.lineTo(endX + px, endY + py);
     ctx.stroke();
 
-    // Signal dot — update position always (state), but skip draw on mobile
+    // Signal dot — only travels along drawn portion; skip on mobile
     edge.signalPos += edge.signalSpeed * edge.signalDir;
-    if (edge.signalPos > 1) {
-      edge.signalPos = 1;
+    const maxSig = edge.drawProgress;
+    if (edge.signalPos > maxSig) {
+      edge.signalPos = maxSig;
       edge.signalDir = -1;
     } else if (edge.signalPos < 0) {
       edge.signalPos = 0;
@@ -420,9 +432,9 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
     if (!isLow) {
       const sigX = pA.x + (pB.x - pA.x) * edge.signalPos + px;
       const sigY = pA.y + (pB.y - pA.y) * edge.signalPos + py;
-      ctx.fillStyle = `rgba(${INK_RGB},${Math.min(a * 1.2, 0.4) * er})`;
+      ctx.fillStyle = `rgba(${INK_RGB},${Math.min(a * 1.4, 0.6) * er})`;
       ctx.beginPath();
-      ctx.arc(sigX, sigY, 1.3, 0, Math.PI * 2);
+      ctx.arc(sigX, sigY, 1.8, 0, Math.PI * 2);
       ctx.fill();
     }
   }
@@ -431,16 +443,16 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
   for (const node of net.nodes) {
     if (node.reveal < 0.01) continue;
     const p = mapToQuad(node.nx, node.ny, pts);
-    const a = node.reveal * (0.18 + 0.08 * Math.sin(s.frame * 0.01 + node.phase));
+    const a = node.reveal * (0.35 + 0.1 * Math.sin(s.frame * 0.01 + node.phase));
     ctx.fillStyle = `rgba(${INK_RGB},${a})`;
     ctx.beginPath();
-    ctx.arc(p.x + px, p.y + py, 1.5, 0, Math.PI * 2);
+    ctx.arc(p.x + px, p.y + py, 2.0, 0, Math.PI * 2);
     ctx.fill();
 
     // Cross marker on some nodes — skip on mobile
     if (!isLow && node.phase > Math.PI) {
       ctx.strokeStyle = `rgba(${INK_RGB},${a * 0.4})`;
-      ctx.lineWidth = 0.3;
+      ctx.lineWidth = 0.5;
       ctx.beginPath();
       ctx.moveTo(p.x + px - 3, p.y + py);
       ctx.lineTo(p.x + px + 3, p.y + py);
@@ -451,7 +463,7 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
   }
 
   ctx.restore();
-  drawPlaneBorder(ctx, pts, 0.12);
+  drawPlaneBorder(ctx, pts, 0.15);
 }
 
 // ── Main Draw Frame ──
