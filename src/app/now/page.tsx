@@ -22,8 +22,7 @@ export default function NowPage() {
   return (
     <div className="studio-desk-surface grain-texture mx-auto max-w-content px-5">
       <section className="py-24">
-        <h1 className="text-4xl font-light text-ink md:text-5xl">Now</h1>
-        <div className="mt-16 flex flex-col gap-20">
+        <div className="flex flex-col gap-20">
           {entries.length === 0 ? (
             <p className="text-ink-light">Nothing here yet.</p>
           ) : (
