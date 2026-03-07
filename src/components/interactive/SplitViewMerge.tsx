@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 /**
@@ -59,14 +60,15 @@ export default function SplitViewMerge() {
                 className="text-ink"
                 style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)" }}
               >
-                Heading placeholder
+                Software Engineering + AI Research
               </h2>
               <p
                 className="mt-[2vh] max-w-text text-ink-light leading-relaxed"
                 style={{ fontSize: "clamp(0.875rem, 1.2vw, 1.125rem)" }}
               >
-                Body text placeholder. A complementary passage that deepens the
-                narrative or introduces a second thread.
+                ...and I realized I wanted to respond to it. Now I&#39;m taking
+                the time to look into the future and predict the skills I will
+                need to be successful in the future version of my field.
               </p>
             </div>
           </div>
@@ -74,16 +76,36 @@ export default function SplitViewMerge() {
           {/* Architecture visual (slides down from above) */}
           <div
             ref={archRef}
-            className="absolute inset-0 flex items-center justify-center bg-spruce"
-            style={{ transform: "translateY(-100%)", opacity: 0 }}
+            className="absolute inset-0 overflow-hidden"
+            style={{
+              transform: "translateY(-100%)",
+              opacity: 0,
+              backgroundColor: "var(--color-paper)",
+              backgroundImage: "url(/textures/paper.png)",
+              backgroundSize: "cover",
+            }}
           >
-            {/* Visual / image placeholder */}
+            <div className="absolute inset-0 bg-paper/70" />
+            <Image
+              src="/images/homepage/processed/arch-split-riso.png"
+              alt="Architecture split view"
+              fill
+              className="object-cover"
+              style={{ mixBlendMode: "multiply" }}
+              unoptimized
+            />
           </div>
         </div>
 
         {/* Right column — Software visual (always visible) */}
-        <div className="flex items-center justify-center bg-spruce px-[5vw] py-[5vh]">
-          {/* Visual / image placeholder */}
+        <div className="relative overflow-hidden">
+          <Image
+            src="/images/homepage/processed/software-split-riso.png"
+            alt="Software split view"
+            fill
+            className="object-cover"
+            unoptimized
+          />
         </div>
       </div>
     </div>
