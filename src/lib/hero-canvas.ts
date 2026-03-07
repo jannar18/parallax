@@ -366,7 +366,7 @@ export function drawLeftPlane(
   const na = 0.82 * s.crossfade * fade;
   if (ca > 0.01) drawPhotoInQuad(ctx, photos[s.currentPhoto], pts, ca, refAspect, slices);
   if (na > 0.01) drawPhotoInQuad(ctx, photos[s.nextPhoto], pts, na, refAspect, slices);
-  drawPlaneBorder(ctx, pts, 0.12);
+  drawPlaneBorder(ctx, pts, 0.15);
 }
 
 // ── Right Plane (Wireframe Network) ──
@@ -463,7 +463,7 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
   }
 
   ctx.restore();
-  drawPlaneBorder(ctx, pts, 0.12);
+  drawPlaneBorder(ctx, pts, 0.15);
 }
 
 // ── Main Draw Frame ──

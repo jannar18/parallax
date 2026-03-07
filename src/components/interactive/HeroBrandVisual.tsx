@@ -84,14 +84,12 @@ export default function HeroBrandVisual() {
       const ease = (t: number) =>
         t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
-      // Fold in → hold merged → unfold back to thin lines
+      // Fold in → stay merged
       let rotation: number;
-      if (progress <= 0.35) {
-        rotation = ease(progress / 0.35);
-      } else if (progress <= 0.65) {
-        rotation = 1;
+      if (progress <= 0.5) {
+        rotation = ease(progress / 0.5);
       } else {
-        rotation = 1 - ease((progress - 0.65) / 0.35);
+        rotation = 1;
       }
 
       // Set directly — no lerp lag for scroll-driven animation
@@ -194,7 +192,7 @@ export default function HeroBrandVisual() {
   }, []);
 
   return (
-    <div ref={scrollRef} className="relative" style={{ height: "200vh" }}>
+    <div ref={scrollRef} className="relative" style={{ height: "150vh" }}>
       <section
         ref={stickyRef}
         className="sticky top-0 h-screen overflow-hidden"
@@ -220,7 +218,7 @@ export default function HeroBrandVisual() {
               fontWeight: 300,
               letterSpacing: "1.8px",
               lineHeight: 1.8,
-              color: "rgba(var(--color-ink-rgb),0.22)",
+              color: "rgba(var(--color-ink-rgb),0.26)",
             }}
           >
             {metadataLeft}
@@ -236,7 +234,7 @@ export default function HeroBrandVisual() {
               fontWeight: 300,
               letterSpacing: "1.8px",
               lineHeight: 1.8,
-              color: "rgba(var(--color-ink-rgb),0.22)",
+              color: "rgba(var(--color-ink-rgb),0.26)",
             }}
           >
             {metadataRight}
@@ -250,7 +248,7 @@ export default function HeroBrandVisual() {
                 fontSize: "7.5px",
                 fontWeight: 300,
                 letterSpacing: "3px",
-                color: "rgba(var(--color-ink-rgb),0.1)",
+                color: "rgba(var(--color-ink-rgb),0.13)",
               }}
             >
               scroll to merge worlds
@@ -264,7 +262,7 @@ export default function HeroBrandVisual() {
               fontSize: "7.5px",
               fontWeight: 300,
               letterSpacing: "3.5px",
-              color: "rgba(var(--color-ink-rgb),0.16)",
+              color: "rgba(var(--color-ink-rgb),0.19)",
             }}
           >
             {metadataBottom.map((item, i) =>
@@ -272,7 +270,7 @@ export default function HeroBrandVisual() {
                 <span
                   key={i}
                   className="inline-block w-[3px] h-[3px] rounded-full"
-                  style={{ background: "rgba(var(--color-ink-rgb),0.13)" }}
+                  style={{ background: "rgba(var(--color-ink-rgb),0.16)" }}
                 />
               ) : (
                 <span key={i}>{item.value}</span>
