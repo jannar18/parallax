@@ -30,50 +30,38 @@ export default function HomePage() {
       {/* ─── Section 1: Hero ─── */}
       <HeroBrandVisual />
 
-      {/* ─── Section 2: Split A — visual left, text right ─── */}
+      {/* ─── Section 2: Split A — text left, software right ─── */}
       <section className="grid h-screen grid-cols-1 md:grid-cols-2">
-        <div
-          className="relative overflow-hidden"
-          style={{
-            backgroundColor: "var(--color-paper)",
-            backgroundImage: "url(/textures/paper.png)",
-            backgroundSize: "cover",
-          }}
-        >
-          {/* Dial back paper texture intensity */}
-          <div className="absolute inset-0 bg-paper/70" />
-          <Image
-            src="/images/homepage/processed/arch-split-riso.png"
-            alt="Architecture split view"
-            fill
-            className="object-cover"
-            style={{ mixBlendMode: "multiply" }}
-            unoptimized
-          />
-        </div>
         <div className="flex items-center bg-paper px-[5vw] py-[5vh]">
           <div>
             <h2
               className="text-ink"
               style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)" }}
             >
-              Architectural Design
+              Software Engineering + AI Research
             </h2>
             <p
               className="mt-[2vh] max-w-text text-ink-light leading-relaxed"
               style={{ fontSize: "clamp(0.875rem, 1.2vw, 1.125rem)" }}
             >
-              One year ago I was finishing a 5 year accredited architecture
-              program at Illinois Tech. I was on track to follow the traditional
-              path towards becoming a Licensed Architect through NCARB, but as I
-              was nearing graduation I looked at the rapidly changing world
-              around me, I looked at my field which seemed stuck in time...
+              ...and I realized I wanted to respond to it. Now I&#39;m taking
+              the time to look into the future and predict the skills I will
+              need to be successful in the future version of my field.
             </p>
           </div>
         </div>
+        <div className="relative overflow-hidden">
+          <Image
+            src="/images/homepage/processed/software-split-riso.png"
+            alt="Software split view"
+            fill
+            className="object-cover"
+            unoptimized
+          />
+        </div>
       </section>
 
-      {/* ─── Section 3 + Merge: Split B → architecture visual slides in ─── */}
+      {/* ─── Section 3 + Merge: Split B → software visual slides in ─── */}
       <SplitViewMerge />
 
       {/* ─── Section 5: Merged — architecture + software as one ─── */}

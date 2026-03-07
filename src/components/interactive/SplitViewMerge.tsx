@@ -7,19 +7,19 @@ import { useEffect, useRef } from "react";
  * SplitViewMerge — the merge moment after Sections 2 and 3.
  *
  * A 150vh sticky container (50vh of scroll range). Shows Section 3's
- * layout initially (text left, software visual right). As the user
- * scrolls, the architecture visual slides down from above into the
- * left half while text fades out. Quick and immediate.
+ * layout initially (architecture left, text right). As the user
+ * scrolls, the software visual slides down from above into the
+ * right half while text fades out. Quick and immediate.
  */
 export default function SplitViewMerge() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const archRef = useRef<HTMLDivElement>(null);
+  const softwareRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       const el = containerRef.current;
-      if (!el || !archRef.current || !textRef.current) return;
+      if (!el || !softwareRef.current || !textRef.current) return;
 
       const rect = el.getBoundingClientRect();
       const scrollRange = el.clientHeight - window.innerHeight;
@@ -33,9 +33,9 @@ export default function SplitViewMerge() {
           ? 2 * progress * progress
           : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
-      // Architecture visual: slides from above to resting position
-      archRef.current.style.transform = `translateY(${-100 + ease * 100}%)`;
-      archRef.current.style.opacity = String(ease);
+      // Software visual: slides from above to resting position
+      softwareRef.current.style.transform = `translateY(${-100 + ease * 100}%)`;
+      softwareRef.current.style.opacity = String(ease);
 
       // Text: fades out
       textRef.current.style.opacity = String(1 - ease);
@@ -48,7 +48,27 @@ export default function SplitViewMerge() {
   return (
     <div ref={containerRef} style={{ height: "150vh" }}>
       <div className="sticky top-0 h-screen grid grid-cols-1 md:grid-cols-2">
-        {/* Left column */}
+        {/* Left column — Architecture visual (always visible) */}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            backgroundColor: "var(--color-paper)",
+            backgroundImage: "url(/textures/paper.png)",
+            backgroundSize: "cover",
+          }}
+        >
+          <div className="absolute inset-0 bg-paper/70" />
+          <Image
+            src="/images/homepage/processed/arch-split-riso.png"
+            alt="Architecture split view"
+            fill
+            className="object-cover"
+            style={{ mixBlendMode: "multiply" }}
+            unoptimized
+          />
+        </div>
+
+        {/* Right column */}
         <div className="relative overflow-hidden">
           {/* Text (visible initially, fades out) */}
           <div
@@ -60,52 +80,35 @@ export default function SplitViewMerge() {
                 className="text-ink"
                 style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)" }}
               >
-                Software Engineering + AI Research
+                Architectural Design
               </h2>
               <p
                 className="mt-[2vh] max-w-text text-ink-light leading-relaxed"
                 style={{ fontSize: "clamp(0.875rem, 1.2vw, 1.125rem)" }}
               >
-                ...and I realized I wanted to respond to it. Now I&#39;m taking
-                the time to look into the future and predict the skills I will
-                need to be successful in the future version of my field.
+                One year ago I was finishing a 5 year accredited architecture
+                program at Illinois Tech. I was on track to follow the traditional
+                path towards becoming a Licensed Architect through NCARB, but as I
+                was nearing graduation I looked at the rapidly changing world
+                around me, I looked at my field which seemed stuck in time...
               </p>
             </div>
           </div>
 
-          {/* Architecture visual (slides down from above) */}
+          {/* Software visual (slides down from above) */}
           <div
-            ref={archRef}
+            ref={softwareRef}
             className="absolute inset-0 overflow-hidden"
-            style={{
-              transform: "translateY(-100%)",
-              opacity: 0,
-              backgroundColor: "var(--color-paper)",
-              backgroundImage: "url(/textures/paper.png)",
-              backgroundSize: "cover",
-            }}
+            style={{ transform: "translateY(-100%)", opacity: 0 }}
           >
-            <div className="absolute inset-0 bg-paper/70" />
             <Image
-              src="/images/homepage/processed/arch-split-riso.png"
-              alt="Architecture split view"
+              src="/images/homepage/processed/software-split-riso.png"
+              alt="Software split view"
               fill
               className="object-cover"
-              style={{ mixBlendMode: "multiply" }}
               unoptimized
             />
           </div>
-        </div>
-
-        {/* Right column — Software visual (always visible) */}
-        <div className="relative overflow-hidden">
-          <Image
-            src="/images/homepage/processed/software-split-riso.png"
-            alt="Software split view"
-            fill
-            className="object-cover"
-            unoptimized
-          />
         </div>
       </div>
     </div>
