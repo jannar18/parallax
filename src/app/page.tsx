@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getAllNowEntries } from "@/lib/content";
 import HeroBrandVisual from "@/components/interactive/HeroBrandVisual";
 import ArtifactBar from "@/components/interactive/ArtifactBar";
+import SplitViewMerge from "@/components/interactive/SplitViewMerge";
 /**
  * Home page — viewport-fitted sections ("slides").
  *
@@ -51,67 +52,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── Section 3: Split B — text left, visual right ─── */}
-      <section className="grid h-screen grid-cols-1 md:grid-cols-2">
-        <div className="flex items-center bg-paper px-[5vw] py-[5vh]">
-          <div>
-            <h2
-              className="text-ink"
-              style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)" }}
-            >
-              Heading placeholder
-            </h2>
-            <p
-              className="mt-[2vh] max-w-text text-ink-light leading-relaxed"
-              style={{ fontSize: "clamp(0.875rem, 1.2vw, 1.125rem)" }}
-            >
-              Body text placeholder. A complementary passage that deepens the
-              narrative or introduces a second thread.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center justify-center bg-spruce px-[5vw] py-[5vh]">
-          {/* Visual / image placeholder */}
-        </div>
-      </section>
-
-      {/* ─── Section 4: Split C (50/50) — text in both columns ─── */}
-      <section className="grid h-screen grid-cols-1 md:grid-cols-2">
-        <div className="flex items-center bg-spruce px-[5vw] py-[5vh]">
-          <div>
-            <h2
-              className="text-ink"
-              style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)" }}
-            >
-              Heading placeholder
-            </h2>
-            <p
-              className="mt-[2vh] max-w-text text-ink-light leading-relaxed"
-              style={{ fontSize: "clamp(0.875rem, 1.2vw, 1.125rem)" }}
-            >
-              Body text placeholder. One side of a dialogue — architecture,
-              structure, the built environment.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center bg-spruce px-[5vw] py-[5vh]">
-          <div>
-            <h2
-              className="text-ink"
-              style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.5rem)" }}
-            >
-              Heading placeholder
-            </h2>
-            <p
-              className="mt-[2vh] max-w-text text-ink-light leading-relaxed"
-              style={{ fontSize: "clamp(0.875rem, 1.2vw, 1.125rem)" }}
-            >
-              Body text placeholder. The other side — software, systems,
-              digital craft.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* ─── Section 3 + Merge: Split B → architecture visual slides in ─── */}
+      <SplitViewMerge />
 
       {/* ─── Section 5: Merged — architecture + software as one ─── */}
       <section className="h-screen bg-ink" />
