@@ -138,3 +138,47 @@
   mix-blend-mode: multiply;
   z-index: 1;
 }
+
+/* ── Artifact Treatment ──
+   CSS-based image treatment: paper texture background, grain overlay,
+   and warm tone filter. Apply to a container wrapping an <img>.
+   The image keeps its natural proportions — no stretching or cropping.
+   White areas become semi-transparent via multiply blend, revealing paper. */
+.artifact-treatment {
+  position: relative;
+  display: inline-block;
+  background-color: var(--color-paper);
+  background-image: url("/textures/paper.png");
+  background-size: cover;
+}
+
+.artifact-treatment > img {
+  position: relative;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+
+/* Grain overlay */
+.artifact-treatment::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 300px 300px;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Warm tone */
+.artifact-treatment::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(180, 120, 80, 0.08);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 3;
+}

@@ -39,14 +39,16 @@ export default function NowPage() {
                 )}
                 {entry.image && (
                   <div className="mt-4">
-                    <Image
-                      src={entry.image}
-                      alt={entry.description || `Artifact from ${entry.date}`}
-                      width={640}
-                      height={640}
-                      className="w-full max-w-md h-auto rounded-sm"
-                      unoptimized
-                    />
+                    <div className="artifact-treatment rounded-sm">
+                      <Image
+                        src={entry.image}
+                        alt={entry.description || `Artifact from ${entry.date}`}
+                        width={640}
+                        height={640}
+                        className="max-w-md h-auto rounded-sm"
+                        unoptimized
+                      />
+                    </div>
                     {entry.description && (
                       <p className="mt-2 text-xs text-ink-lighter">
                         {entry.description}

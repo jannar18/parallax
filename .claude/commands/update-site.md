@@ -1,6 +1,8 @@
 # /update-site — Artifact-First Daily Pipeline for parallax.studio
 
-You are the daily content pipeline for parallax.studio. You publish "now" entries — daily studio desk artifacts that document the work. You are fully automated by default: scan for artifacts, process them, infer all metadata, write the MDX, and commit. No user prompts unless `--blog` is passed.
+You are the daily content pipeline for parallax.studio. You publish "now" entries — daily studio desk artifacts that document the work. You are fully automated by default: scan for artifacts, copy them, infer all metadata, write the MDX, and commit. No user prompts unless `--blog` is passed.
+
+**Image treatment is CSS-based, not build-time.** Images are copied as-is. The `.artifact-treatment` class in `globals.css` applies grain, warm tone, and paper texture in the browser. No Python, no riso engine, no image processing dependencies.
 
 ## Flags
 
@@ -8,8 +10,8 @@ Parse `$ARGUMENTS` for these flags (combinable):
 
 | Flag | Effect |
 |------|--------|
-| `--no-riso` | Skip Riso processing; use raw images as-is |
 | `--blog` | Enter blog writing mode — user writes longer body text alongside artifacts |
+| `--raw` | Skip CSS treatment class on images (use plain `<img>`) |
 
 Anything in `$ARGUMENTS` that is not a flag is treated as a file path to a specific artifact (overrides auto-scan).
 
@@ -17,11 +19,9 @@ Anything in `$ARGUMENTS` that is not a flag is treated as a file path to a speci
 
 ```
 SITE_REPO="$(git rev-parse --show-toplevel)"
-RISO_ENGINE="$SITE_REPO/scripts/riso_engine.py"
 CONTENT_DIR="$SITE_REPO/src/content/now"
 IMAGE_DIR="$SITE_REPO/public/images/now"
 RAW_DIR="$HOME/Documents/Artifacts/raw"
-PROCESSED_DIR="$HOME/Documents/Artifacts/processed"
 ARCHIVE_DIR="$HOME/Documents/Artifacts/archive"
 TODAY="$(date +%Y-%m-%d)"
 ```
@@ -34,18 +34,9 @@ Run silently. Only surface failures.
 
 1. **Directories.** Create if missing:
    ```bash
-   mkdir -p ~/Documents/Artifacts/{raw,processed,archive}
+   mkdir -p ~/Documents/Artifacts/{raw,archive}
    mkdir -p "$SITE_REPO/public/images/now/$TODAY"
    ```
-
-2. **Riso engine check** (skip if `--no-riso`):
-   ```bash
-   python3 -c "from PIL import Image; import numpy" 2>/dev/null
-   ```
-   If this fails, warn once and proceed as if `--no-riso` was passed:
-   > "Riso deps not found (Pillow/numpy). Processing images as-is. Install with: `pip3 install Pillow numpy`"
-
-3. **Riso engine script.** Verify `$RISO_ENGINE` exists. If not, treat as `--no-riso`.
 
 ---
 
@@ -70,25 +61,30 @@ find ~/Documents/Artifacts/raw/ -maxdepth 1 -type f \( \
 
 ---
 
-## Step 2: Process Artifacts
+## Step 2: Copy Artifacts
 
-For each discovered artifact:
-
-### If `--no-riso` or file is SVG/PDF/video (non-rasterizable):
-Copy directly to the site image directory:
+For each discovered artifact, copy directly to the site image directory:
 ```bash
 cp "<source>" "$SITE_REPO/public/images/now/$TODAY/<filename>"
 ```
 
-### If Riso processing is available (default):
+**PDF conversion:** If the file is a `.pdf`, convert to PNG using Quick Look at high resolution:
 ```bash
-python3 "$RISO_ENGINE" "<source>" "$SITE_REPO/public/images/now/$TODAY/<filename>.png"
+qlmanage -t -s 2880 -o /tmp "<source>"
+cp "/tmp/<filename>.png" "$SITE_REPO/public/images/now/$TODAY/<basename>.png"
 ```
 
-If Riso engine fails on a specific file, fall back to raw copy for that file and continue.
+**HEIC conversion:** If the file is `.heic`, convert to PNG:
+```bash
+sips -s format png "<source>" --out "$SITE_REPO/public/images/now/$TODAY/<basename>.png"
+```
+
+**Videos (.mp4, .mov):** Copy as-is. Videos don't get the artifact treatment class.
 
 ### Multiple artifacts:
-Process all found media. The first image becomes the `image` field in frontmatter. All images land in the `public/images/now/$TODAY/` directory.
+Copy all found media. The first image becomes the `image` field in frontmatter. All images land in the `public/images/now/$TODAY/` directory.
+
+**Images keep their natural proportions.** No cropping, no stretching, no resizing.
 
 ---
 
@@ -175,6 +171,16 @@ description: "<one-line artifact description>"
 
 **If no image** (text-only entry), omit `image` and `description` fields entirely.
 
+### Image Treatment in Templates
+
+The Now page and ArtifactBar apply the `.artifact-treatment` CSS class to image containers. This gives every artifact:
+- Paper texture background (from `/textures/paper.png`)
+- Grain overlay (SVG feTurbulence)
+- Warm tone filter (subtle multiply)
+- `mix-blend-mode: multiply` on the image (whites become transparent, showing paper)
+
+**No build-time processing needed.** Just copy the raw image — CSS handles the rest.
+
 ### Frontmatter Schema Reference
 
 ```typescript
@@ -238,11 +244,6 @@ mv ~/Documents/Artifacts/raw/<specific-file> ~/Documents/Artifacts/archive/
 
 If no files came from `raw/`, skip this step.
 
-Clean up any processed intermediates:
-```bash
-rm -f ~/Documents/Artifacts/processed/*  # only files we created this session
-```
-
 ---
 
 ## Step 8: Summary
@@ -263,9 +264,8 @@ Daily update complete.
 
 | Problem | Action |
 |---------|--------|
-| Riso engine fails | Use raw image, continue |
-| Riso deps missing | Treat as `--no-riso`, warn once |
 | No raw media found | Create text-only entry |
+| PDF conversion fails | Copy raw PDF, continue |
 | MDX parse error | Fix frontmatter, retry |
 | Existing entry | Overwrite (default) or ask (blog mode) |
 | Git commit fails | Show error, don't retry |
@@ -277,20 +277,15 @@ Daily update complete.
 
 ### Default (zero prompts):
 ```
-scan raw/ -> process images -> infer metadata -> write MDX -> validate -> commit -> archive -> summary
+scan raw/ -> copy images -> infer metadata -> write MDX -> validate -> commit -> archive -> summary
 ```
 
 ### With `--blog` (one prompt):
 ```
-scan raw/ -> process images -> infer metadata -> ASK user for body text -> write MDX -> validate -> commit -> archive -> summary
-```
-
-### With `--no-riso`:
-```
-scan raw/ -> copy images as-is -> infer metadata -> write MDX -> validate -> commit -> archive -> summary
+scan raw/ -> copy images -> infer metadata -> ASK user for body text -> write MDX -> validate -> commit -> archive -> summary
 ```
 
 ### With explicit file path:
 ```
-use provided file -> process -> infer metadata -> write MDX -> validate -> commit -> archive -> summary
+use provided file -> copy -> infer metadata -> write MDX -> validate -> commit -> archive -> summary
 ```

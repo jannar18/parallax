@@ -71,14 +71,14 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
                 onClick={() =>
                   setActiveIndex(activeIndex === i ? null : i)
                 }
-                className="group relative block cursor-pointer"
+                className="artifact-treatment group relative block cursor-pointer rounded-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
               >
                 <Image
                   src={artifact.image}
                   alt={artifact.description || `Artifact from ${artifact.date}`}
                   width={600}
                   height={800}
-                  className="rounded-sm object-contain transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-lg"
+                  className="rounded-sm object-contain"
                   style={{ height: heights[i % heights.length], width: "auto" }}
                   unoptimized
                 />
