@@ -65,8 +65,8 @@ export interface HeroState {
 export const HOLD_DURATION = 300; // ~5s per photo at 60fps
 export const FADE_SPEED = 0.006;
 export const PHOTO_COUNT = 12;
-export const BG_COLOR = "#FDFCEA"; // --color-background (Riso Paper)
-const INK_RGB = "71,31,32"; // --color-ink (Riso Oxblood #471f20)
+export const BG_COLOR = "#F5F0E8"; // --color-background
+const INK_RGB = "44,40,36"; // --color-ink (#2C2824)
 
 // ── State Factory ──
 
@@ -178,9 +178,8 @@ export function getLeftPlane(s: HeroState): Point[] {
   const botY = s.H * 0.9;
   const frontX = cx - s.W * 0.35;
   const maxSwing = s.W * 0.55;
-  const t = 0.5 + s.rotation * 0.5; // remap [0,1] → [0.5,1] for visual range
-  const backX = frontX + t * maxSwing;
-  const perspAmount = t * 0.08;
+  const backX = frontX + s.rotation * maxSwing;
+  const perspAmount = s.rotation * 0.08;
 
   return [
     { x: frontX, y: topY },
@@ -196,9 +195,8 @@ export function getRightPlane(s: HeroState): Point[] {
   const botY = s.H * 0.9;
   const frontX = cx + s.W * 0.35;
   const maxSwing = s.W * 0.55;
-  const t = 0.5 + s.rotation * 0.5; // remap [0,1] → [0.5,1] for visual range
-  const backX = frontX - t * maxSwing;
-  const perspAmount = t * 0.08;
+  const backX = frontX - s.rotation * maxSwing;
+  const perspAmount = s.rotation * 0.08;
 
   return [
     { x: backX, y: topY + s.H * perspAmount },

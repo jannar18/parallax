@@ -130,11 +130,11 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center pointer-events-none">
-        {/* Parallax wordmark — fades in on first scroll, stays forever */}
+      <header className="fixed top-0 left-0 right-0 z-50 py-5 pointer-events-none">
+        {/* Parallax wordmark — absolutely positioned, vertically centered with cross */}
         <Link
           href="/"
-          className={`absolute left-[5vw] no-underline pointer-events-auto transition-opacity duration-700 ${
+          className={`absolute left-[5vw] top-1/2 -translate-y-1/2 no-underline pointer-events-auto transition-opacity duration-700 ${
             brandRevealed
               ? "text-ink/80 opacity-100 hover:text-ink"
               : "opacity-0"
@@ -151,19 +151,19 @@ export default function Header() {
           <span className="font-serif font-semibold italic">ax</span>
         </Link>
 
-        {/* Centered axis nav — grid layout keeps cross pinned to center column */}
+        {/* Centered axis nav — grid keeps cross pinned to center */}
         <div
-          className="absolute inset-x-0 top-0 grid items-center py-5 pointer-events-none"
+          className="grid items-center pointer-events-auto"
           style={{ gridTemplateColumns: "1fr auto 1fr" }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           {/* Left links — expand outward from center (desktop only) */}
           <nav
-            className={`hidden md:flex items-center justify-end gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] pointer-events-auto ${
+            className={`hidden md:flex items-center justify-end gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
               navOpen
-                ? "opacity-100"
-                : "opacity-0"
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
             }`}
           >
             {leftLinks.map((link) => (
@@ -210,10 +210,10 @@ export default function Header() {
 
           {/* Right links — expand outward from center (desktop only) */}
           <nav
-            className={`hidden md:flex items-center justify-start gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] pointer-events-auto ${
+            className={`hidden md:flex items-center justify-start gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
               navOpen
-                ? "opacity-100"
-                : "opacity-0"
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
             }`}
           >
             {rightLinks.map((link) => (
