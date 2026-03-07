@@ -17,6 +17,10 @@ interface ArtifactBarProps {
   artifacts: Artifact[];
 }
 
+function isVideo(src: string) {
+  return /\.(mov|mp4|webm)$/i.test(src);
+}
+
 /**
  * ArtifactBar — horizontal scroll strip of studio desk artifacts.
  *
@@ -73,15 +77,27 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
                 }
                 className="artifact-treatment group relative block cursor-pointer rounded-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
               >
-                <Image
-                  src={artifact.image}
-                  alt={artifact.description || `Artifact from ${artifact.date}`}
-                  width={600}
-                  height={800}
-                  className="rounded-sm object-contain"
-                  style={{ height: heights[i % heights.length], width: "auto" }}
-                  unoptimized
-                />
+                {isVideo(artifact.image) ? (
+                  <video
+                    src={artifact.image}
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                    className="rounded-sm object-contain"
+                    style={{ height: heights[i % heights.length], width: "auto" }}
+                  />
+                ) : (
+                  <Image
+                    src={artifact.image}
+                    alt={artifact.description || `Artifact from ${artifact.date}`}
+                    width={600}
+                    height={800}
+                    className="rounded-sm object-contain"
+                    style={{ height: heights[i % heights.length], width: "auto" }}
+                    unoptimized
+                  />
+                )}
               </button>
             </div>
           ))}
@@ -101,14 +117,26 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
           <div className="fixed inset-0 z-[70] flex items-center justify-center p-8 pointer-events-none">
             <div className="pointer-events-auto w-full max-w-sm rounded-lg bg-surface shadow-2xl ring-1 ring-border overflow-hidden">
               <div className="bg-paper p-6">
-                <Image
-                  src={active.image}
-                  alt={active.description || `Artifact from ${active.date}`}
-                  width={600}
-                  height={600}
-                  className="mx-auto h-auto max-h-[45vh] w-auto object-contain"
-                  unoptimized
-                />
+                {isVideo(active.image) ? (
+                  <video
+                    src={active.image}
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                    controls
+                    className="mx-auto h-auto max-h-[45vh] w-auto object-contain"
+                  />
+                ) : (
+                  <Image
+                    src={active.image}
+                    alt={active.description || `Artifact from ${active.date}`}
+                    width={600}
+                    height={600}
+                    className="mx-auto h-auto max-h-[45vh] w-auto object-contain"
+                    unoptimized
+                  />
+                )}
               </div>
 
               <div className="px-5 py-4">
