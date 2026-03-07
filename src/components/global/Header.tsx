@@ -130,11 +130,11 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center pointer-events-none">
-        {/* Parallax wordmark — fades in on first scroll, stays forever */}
+      <header className="fixed top-0 left-0 right-0 z-50 py-5 pointer-events-none">
+        {/* Parallax wordmark — absolutely positioned, vertically centered with cross */}
         <Link
           href="/"
-          className={`absolute left-[5vw] no-underline pointer-events-auto transition-opacity duration-700 ${
+          className={`absolute left-[5vw] top-1/2 -translate-y-1/2 no-underline pointer-events-auto transition-opacity duration-700 ${
             brandRevealed
               ? "text-ink/80 opacity-100 hover:text-ink"
               : "opacity-0"
@@ -151,18 +151,19 @@ export default function Header() {
           <span className="font-serif font-semibold italic">ax</span>
         </Link>
 
-        {/* Centered axis nav */}
+        {/* Centered axis nav — grid keeps cross pinned to center */}
         <div
-          className="relative mx-auto flex items-center py-5 pointer-events-auto"
+          className="grid items-center pointer-events-auto"
+          style={{ gridTemplateColumns: "1fr auto 1fr" }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          {/* Left links — expand outward (desktop only) */}
+          {/* Left links — expand outward from center (desktop only) */}
           <nav
-            className={`hidden md:flex items-center gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+            className={`hidden md:flex items-center justify-end gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
               navOpen
-                ? "max-w-[40vw] opacity-100 mr-[2vw]"
-                : "max-w-0 opacity-0 mr-0"
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
             }`}
           >
             {leftLinks.map((link) => (
@@ -179,11 +180,13 @@ export default function Header() {
               </Link>
             ))}
           </nav>
+          {/* Empty cell on mobile when left nav is hidden */}
+          <div className="md:hidden" />
 
-          {/* Center cross — always visible, tapered, crossbar at 1/3 from top */}
+          {/* Center cross — always visible, pinned to center grid column */}
           <button
             onClick={handleCrossClick}
-            className="group relative flex items-center justify-center w-10 h-10 cursor-pointer bg-transparent border-none transition-colors duration-500 text-ink/50 hover:text-ink/70 md:text-ink/25 md:hover:text-ink/40"
+            className="group relative flex items-center justify-center justify-self-center w-10 h-10 cursor-pointer bg-transparent border-none transition-colors duration-500 text-ink/50 hover:text-ink/70 md:text-ink/25 md:hover:text-ink/40 pointer-events-auto"
             aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"}
             aria-expanded={mobileMenuOpen || navOpen}
           >
@@ -205,12 +208,12 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Right links — expand outward (desktop only) */}
+          {/* Right links — expand outward from center (desktop only) */}
           <nav
-            className={`hidden md:flex items-center gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+            className={`hidden md:flex items-center justify-start gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
               navOpen
-                ? "max-w-[40vw] opacity-100 ml-[2vw]"
-                : "max-w-0 opacity-0 ml-0"
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
             }`}
           >
             {rightLinks.map((link) => (
@@ -227,6 +230,8 @@ export default function Header() {
               </Link>
             ))}
           </nav>
+          {/* Empty cell on mobile when right nav is hidden */}
+          <div className="md:hidden" />
         </div>
       </header>
 

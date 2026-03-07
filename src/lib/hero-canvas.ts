@@ -65,8 +65,8 @@ export interface HeroState {
 export const HOLD_DURATION = 300; // ~5s per photo at 60fps
 export const FADE_SPEED = 0.006;
 export const PHOTO_COUNT = 12;
-export const BG_COLOR = "#FDFCEA"; // --color-background (Riso Paper)
-const INK_RGB = "71,31,32"; // --color-ink (Riso Oxblood #471f20)
+export const BG_COLOR = "#F5F0E8"; // --color-background
+const INK_RGB = "44,40,36"; // --color-ink (#2C2824)
 
 // ── State Factory ──
 
@@ -75,8 +75,8 @@ export function createInitialState(): HeroState {
     W: 0,
     H: 0,
     frame: 0,
-    rotation: 0.5,
-    targetRotation: 0.5,
+    rotation: 0,
+    targetRotation: 0,
     isDragging: false,
     dragStartX: 0,
     dragStartRotation: 0,

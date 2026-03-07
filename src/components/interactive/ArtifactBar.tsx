@@ -20,7 +20,7 @@ interface ArtifactBarProps {
 /**
  * ArtifactBar — horizontal scroll strip of studio desk artifacts.
  *
- * Objects at varied scales on the page surface. Hover reveals metadata.
+ * Objects at varied scales on the page surface. Subtle scale on hover.
  * Click opens a centered popover with the artifact and info.
  */
 export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
@@ -82,34 +82,6 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
                   style={{ height: heights[i % heights.length], width: "auto" }}
                   unoptimized
                 />
-
-                {/* Hover overlay */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
-                  <div className="bg-ink/70 px-3 py-2 backdrop-blur-sm rounded-b-sm">
-                    <p
-                      className="font-sans text-cream uppercase"
-                      style={{
-                        fontSize: "clamp(0.6rem, 0.7vw, 0.75rem)",
-                        letterSpacing: "0.1em",
-                      }}
-                    >
-                      {artifact.date}
-                      {artifact.mood && (
-                        <span className="ml-2 normal-case italic opacity-80">
-                          {artifact.mood}
-                        </span>
-                      )}
-                    </p>
-                    {artifact.project && (
-                      <p
-                        className="mt-0.5 font-mono text-cream/70"
-                        style={{ fontSize: "clamp(0.55rem, 0.6vw, 0.65rem)" }}
-                      >
-                        {artifact.project}
-                      </p>
-                    )}
-                  </div>
-                </div>
               </button>
             </div>
           ))}
