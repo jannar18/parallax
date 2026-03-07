@@ -109,7 +109,7 @@ export default function HomePage() {
         <ScrollLine origin="center" />
 
         {/* Body text — upper 2/3 of virtual slide 7 */}
-        <div className="flex h-[66.67vh] items-center justify-center px-[5vw]">
+        <div className="flex h-[74vh] items-center justify-center px-[5vw]">
           <div className="max-w-[85vw] md:max-w-[58vw] text-center">
             <p
               className="font-serif font-bold italic text-ink leading-snug"
@@ -131,7 +131,7 @@ export default function HomePage() {
 
         {/* Links — shared 1/3 zone (bottom of slide 7 = top of slide 8) */}
         <ScrollLine origin="center" />
-        <div className="h-[33.33vh] flex items-center justify-center">
+        <div className="h-[26vh] flex items-center justify-center">
           <nav className="flex gap-[4vw]">
             <Link
               href="/work/architecture"
@@ -178,8 +178,8 @@ export default function HomePage() {
         {/* Studio desk — artifact bar (lower 2/3 of virtual slide 8) */}
         <div className="relative">
           <p
-            className="absolute top-[2vh] left-[5vw] font-mono uppercase tracking-wider text-ink-light pointer-events-none z-10"
-            style={{ fontSize: "clamp(0.7rem, 0.9vw, 0.825rem)" }}
+            className="absolute top-0 left-0 right-0 text-center font-serif font-bold italic text-ink pointer-events-none z-10 -translate-y-1/2"
+            style={{ fontSize: "clamp(1.75rem, 3.5vw, 3.5rem)" }}
           >
             the studio desk
           </p>

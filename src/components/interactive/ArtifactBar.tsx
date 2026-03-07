@@ -30,7 +30,7 @@ function isVideo(src: string) {
 export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const heights = ["50vh", "36vh", "44vh", "55vh", "34vh", "48vh"];
+  const heights = ["40vh", "28vh", "35vh", "44vh", "26vh", "38vh"];
 
   const closePopover = useCallback(() => setActiveIndex(null), []);
 
@@ -60,7 +60,7 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
 
   return (
     <>
-      <div className="relative z-10 h-[58vh] mb-[8.67vh] pt-[5vh] pb-[5vh] bg-ink/[0.02]">
+      <div className="relative z-10 h-[60vh] mb-[14vh] pt-[5vh] pb-[5vh] bg-ink/[0.02]">
         <div
           className="flex h-full items-center gap-[2vw] overflow-x-auto px-[3vw] scrollbar-hide"
           style={{ scrollSnapType: "x proximity" }}
@@ -120,7 +120,7 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
 
           {/* Popover */}
           <div className="fixed inset-0 z-[70] flex items-center justify-center p-8 pointer-events-none">
-            <div className="pointer-events-auto w-full max-w-sm rounded-lg bg-surface shadow-2xl ring-1 ring-border overflow-hidden">
+            <div className="pointer-events-auto w-full max-w-3xl rounded-lg bg-surface shadow-2xl ring-1 ring-border overflow-hidden">
               <div className="bg-paper p-6">
                 {isVideo(active.image) ? (
                   <video
@@ -130,15 +130,15 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
                     loop
                     playsInline
                     controls
-                    className="mx-auto h-auto max-h-[45vh] w-auto object-contain"
+                    className="mx-auto h-auto max-h-[75vh] w-auto object-contain"
                   />
                 ) : (
                   <Image
                     src={active.image}
                     alt={active.description || `Artifact from ${active.date}`}
-                    width={600}
-                    height={600}
-                    className="mx-auto h-auto max-h-[45vh] w-auto object-contain"
+                    width={1200}
+                    height={1200}
+                    className="mx-auto h-auto max-h-[75vh] w-auto object-contain"
                     unoptimized
                   />
                 )}
