@@ -214,7 +214,7 @@ export default function HeroBrandVisual() {
             className="absolute left-7 top-1/2 -translate-y-1/2 font-mono uppercase whitespace-pre"
             style={{
               writingMode: "vertical-rl",
-              fontSize: "8px",
+              fontSize: "8.75px",
               fontWeight: 300,
               letterSpacing: "1.8px",
               lineHeight: 1.8,
@@ -230,7 +230,7 @@ export default function HeroBrandVisual() {
             style={{
               writingMode: "vertical-rl",
               transform: "translateY(-50%) rotate(180deg)",
-              fontSize: "8px",
+              fontSize: "8.75px",
               fontWeight: 300,
               letterSpacing: "1.8px",
               lineHeight: 1.8,
@@ -245,7 +245,7 @@ export default function HeroBrandVisual() {
             <div
               className="absolute bottom-12 left-1/2 -translate-x-1/2 font-mono uppercase animate-breathe"
               style={{
-                fontSize: "7.5px",
+                fontSize: "8.25px",
                 fontWeight: 300,
                 letterSpacing: "3px",
                 color: "rgba(var(--color-ink-rgb),0.13)",
@@ -259,7 +259,7 @@ export default function HeroBrandVisual() {
           <div
             className="absolute bottom-[22px] left-0 right-0 flex justify-center items-center gap-5 font-mono uppercase"
             style={{
-              fontSize: "7.5px",
+              fontSize: "8.25px",
               fontWeight: 300,
               letterSpacing: "3.5px",
               color: "rgba(var(--color-ink-rgb),0.19)",

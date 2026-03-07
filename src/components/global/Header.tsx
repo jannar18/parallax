@@ -151,7 +151,7 @@ export default function Header() {
               : "opacity-0"
           }`}
           style={{
-            fontSize: "clamp(1.6rem, 2.4vw, 2.1rem)",
+            fontSize: "clamp(1.75rem, 2.6vw, 2.3rem)",
             letterSpacing: "var(--tracking-wide)",
           }}
           tabIndex={brandRevealed ? 0 : -1}
@@ -183,7 +183,7 @@ export default function Header() {
                 href={link.href}
                 className="whitespace-nowrap font-sans text-ink/70 transition-colors hover:text-ink"
                 style={{
-                  fontSize: "clamp(0.7rem, 0.9vw, 0.85rem)",
+                  fontSize: "clamp(0.775rem, 1vw, 0.925rem)",
                   letterSpacing: "var(--tracking-wide)",
                 }}
               >
@@ -233,7 +233,7 @@ export default function Header() {
                 href={link.href}
                 className="whitespace-nowrap font-sans text-ink/70 transition-colors hover:text-ink"
                 style={{
-                  fontSize: "clamp(0.7rem, 0.9vw, 0.85rem)",
+                  fontSize: "clamp(0.775rem, 1vw, 0.925rem)",
                   letterSpacing: "var(--tracking-wide)",
                 }}
               >

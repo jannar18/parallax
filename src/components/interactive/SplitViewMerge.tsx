@@ -79,19 +79,19 @@ export default function SplitViewMerge() {
             <div>
               <p
                 className="font-mono uppercase tracking-wider text-ink-light"
-                style={{ fontSize: "clamp(0.625rem, 0.8vw, 0.75rem)" }}
+                style={{ fontSize: "clamp(0.7rem, 0.9vw, 0.825rem)" }}
               >
                 World 01
               </p>
               <h2
-                className="mt-[1.5vh] font-serif font-semibold italic text-ink"
-                style={{ fontSize: "clamp(1.75rem, 3vw, 3rem)" }}
+                className="mt-[1.5vh] font-serif font-bold italic text-ink"
+                style={{ fontSize: "clamp(1.9rem, 3.2vw, 3.25rem)" }}
               >
                 Architectural Design
               </h2>
               <p
                 className="mt-[2vh] max-w-text text-ink-light leading-relaxed font-sans"
-                style={{ fontSize: "clamp(0.875rem, 1.2vw, 1.125rem)" }}
+                style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.2rem)" }}
               >
                 ...But one year ago I was finishing a 5 year accredited
                 architecture program at Illinois Tech. I was on track to follow
@@ -103,7 +103,7 @@ export default function SplitViewMerge() {
               <Link
                 href="/work/architecture"
                 className="mt-[3vh] inline-flex items-center gap-2 font-mono uppercase tracking-wide text-ink transition-colors hover:text-scarlet"
-                style={{ fontSize: "clamp(0.625rem, 0.8vw, 0.75rem)" }}
+                style={{ fontSize: "clamp(0.7rem, 0.9vw, 0.825rem)" }}
               >
                 View Architecture Work <span>&rarr;</span>
               </Link>

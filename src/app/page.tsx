@@ -42,19 +42,19 @@ export default function HomePage() {
           <div>
             <p
               className="font-mono uppercase tracking-wider text-ink-light"
-              style={{ fontSize: "clamp(0.625rem, 0.8vw, 0.75rem)" }}
+              style={{ fontSize: "clamp(0.7rem, 0.9vw, 0.825rem)" }}
             >
               World 02
             </p>
             <h2
-              className="mt-[1.5vh] font-serif font-semibold italic text-ink whitespace-nowrap"
-              style={{ fontSize: "clamp(1.75rem, 3vw, 3rem)" }}
+              className="mt-[1.5vh] font-serif font-bold italic text-ink whitespace-nowrap"
+              style={{ fontSize: "clamp(1.9rem, 3.2vw, 3.25rem)" }}
             >
               Software Engineering + AI Research
             </h2>
             <p
               className="mt-[2vh] max-w-text text-ink-light leading-relaxed font-sans"
-              style={{ fontSize: "clamp(0.875rem, 1.2vw, 1.125rem)" }}
+              style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.2rem)" }}
             >
               I spend 10 hours a day 6/7 days a week working with Claude Code,
               building software and strengthening my harness.
@@ -62,7 +62,7 @@ export default function HomePage() {
             <Link
               href="/work/software"
               className="mt-[3vh] inline-flex items-center gap-2 font-mono uppercase tracking-wide text-ink transition-colors hover:text-scarlet"
-              style={{ fontSize: "clamp(0.625rem, 0.8vw, 0.75rem)" }}
+              style={{ fontSize: "clamp(0.7rem, 0.9vw, 0.825rem)" }}
             >
               View Software Work <span>&rarr;</span>
             </Link>
@@ -110,12 +110,12 @@ export default function HomePage() {
 
         {/* Body text — upper 2/3 of virtual slide 7 */}
         <div className="flex h-[66.67vh] items-center justify-center px-[5vw]">
-          <div className="max-w-[60vw] text-center">
+          <div className="max-w-[80vw] md:max-w-[50vw] text-center">
             <p
               className="font-serif font-bold italic text-ink leading-snug"
               style={{ fontSize: "clamp(1.75rem, 3.5vw, 3.75rem)" }}
             >
-              Now I&rsquo;m taking the time to look into the future and predict
+              I&rsquo;m taking the time to look into the future and predict
               the skills I will need to be successful in the future version of
               my field.
             </p>
