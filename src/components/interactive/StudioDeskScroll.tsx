@@ -41,7 +41,7 @@ export default function StudioDeskScroll({ entries }: StudioDeskScrollProps) {
             className="group block h-full flex-shrink-0"
           >
             <div
-              className="h-full rounded-xl bg-forest/20 flex flex-col justify-end overflow-hidden transition-colors group-hover:bg-forest/35"
+              className="h-full rounded-xl bg-spruce/20 flex flex-col justify-end overflow-hidden transition-colors group-hover:bg-spruce/35"
               style={{ width: "clamp(12rem, 20vw, 24rem)" }}
             >
               <div className="p-[clamp(0.6rem,1.2vw,1.25rem)]">

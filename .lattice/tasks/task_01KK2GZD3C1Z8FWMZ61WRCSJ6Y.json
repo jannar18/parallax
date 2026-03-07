@@ -1,26 +1,39 @@
 {
   "assigned_to": null,
-  "branch_links": [],
-  "comment_count": 0,
+  "branch_links": [
+    {
+      "branch": "fix/asmv-46-legacy-aliases",
+      "linked_at": "2026-03-07T02:45:34Z",
+      "linked_by": "agent:claude-opus-4-asmv46",
+      "repo": null
+    }
+  ],
+  "comment_count": 1,
   "complexity": null,
   "created_at": "2026-03-06T21:31:06Z",
   "created_by": "agent:claude-opus-4",
   "custom_fields": {},
   "description": "Legacy alias class names (vermillion, bg-cream, bg-forest) used across many files. Also globals.css ::selection uses --color-vermillion/--color-cream. All resolve correctly via aliases but should use canonical names. Search-replace: vermillion\u2192scarlet, bg-cream\u2192bg-paper, bg-forest\u2192bg-spruce, --color-vermillion\u2192--color-scarlet, --color-cream\u2192--color-paper. Files: page.tsx, work/*.tsx, writing/page.tsx, ArtifactBar.tsx, StudioDeskScroll.tsx, globals.css. Found by all 4 agents (C2, C3).",
-  "done_at": null,
-  "evidence_refs": [],
+  "done_at": "2026-03-07T02:46:04Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KK330135MRKZV895TYF6KXCT",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
   "id": "task_01KK2GZD3C1Z8FWMZ61WRCSJ6Y",
-  "last_event_id": "ev_01KK2GZD3HYHD0GQG6DXXBBXPE",
-  "last_status_changed_at": "2026-03-06T21:31:06Z",
+  "last_event_id": "ev_01KK3304DK4K1ZPS04118ZQ8PG",
+  "last_status_changed_at": "2026-03-07T02:46:04Z",
   "priority": "medium",
   "relationships_out": [],
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-46",
-  "status": "backlog",
+  "status": "done",
   "tags": null,
   "title": "Replace legacy color aliases with canonical Riso names across codebase",
   "type": "task",
-  "updated_at": "2026-03-06T21:31:06Z",
+  "updated_at": "2026-03-07T02:46:04Z",
   "urgency": null
 }

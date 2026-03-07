@@ -32,7 +32,7 @@ export default function ArchitecturePage() {
                 href={`/work/architecture/${project.slug}`}
                 className="group block"
               >
-                <h2 className="text-2xl font-light text-ink transition-colors group-hover:text-vermillion">
+                <h2 className="text-2xl font-light text-ink transition-colors group-hover:text-scarlet">
                   {project.title}
                 </h2>
                 {project.description && (

@@ -17,11 +17,6 @@ const config: Config = {
         moss: "#68724d",
         spruce: "#4a635d",
 
-        /* Legacy aliases */
-        vermillion: "#f65058",
-        cream: "#FDFCEA",
-        forest: "#4a635d",
-
         /* Neutrals */
         ink: {
           DEFAULT: "#471f20",

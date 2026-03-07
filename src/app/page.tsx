@@ -29,10 +29,10 @@ export default function HomePage() {
 
       {/* ─── Section 2: Split A — visual left, text right ─── */}
       <section className="grid h-screen grid-cols-1 md:grid-cols-2">
-        <div className="flex items-center justify-center bg-forest px-[5vw] py-[5vh]">
+        <div className="flex items-center justify-center bg-spruce px-[5vw] py-[5vh]">
           {/* Visual / image placeholder */}
         </div>
-        <div className="flex items-center bg-cream px-[5vw] py-[5vh]">
+        <div className="flex items-center bg-paper px-[5vw] py-[5vh]">
           <div>
             <h2
               className="text-ink"
@@ -53,7 +53,7 @@ export default function HomePage() {
 
       {/* ─── Section 3: Split B — text left, visual right ─── */}
       <section className="grid h-screen grid-cols-1 md:grid-cols-2">
-        <div className="flex items-center bg-cream px-[5vw] py-[5vh]">
+        <div className="flex items-center bg-paper px-[5vw] py-[5vh]">
           <div>
             <h2
               className="text-ink"
@@ -70,14 +70,14 @@ export default function HomePage() {
             </p>
           </div>
         </div>
-        <div className="flex items-center justify-center bg-forest px-[5vw] py-[5vh]">
+        <div className="flex items-center justify-center bg-spruce px-[5vw] py-[5vh]">
           {/* Visual / image placeholder */}
         </div>
       </section>
 
       {/* ─── Section 4: Split C (50/50) — text in both columns ─── */}
       <section className="grid h-screen grid-cols-1 md:grid-cols-2">
-        <div className="flex items-center bg-forest px-[5vw] py-[5vh]">
+        <div className="flex items-center bg-spruce px-[5vw] py-[5vh]">
           <div>
             <h2
               className="text-ink"
@@ -94,7 +94,7 @@ export default function HomePage() {
             </p>
           </div>
         </div>
-        <div className="flex items-center bg-forest px-[5vw] py-[5vh]">
+        <div className="flex items-center bg-spruce px-[5vw] py-[5vh]">
           <div>
             <h2
               className="text-ink"
@@ -147,7 +147,7 @@ export default function HomePage() {
           <nav className="flex gap-[4vw]">
             <Link
               href="/work/architecture"
-              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-vermillion"
+              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-scarlet"
               style={{
                 fontSize: "clamp(1rem, 1.5vw, 1.5rem)",
                 letterSpacing: "var(--tracking-wide)",
@@ -160,7 +160,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/work/software"
-              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-vermillion"
+              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-scarlet"
               style={{
                 fontSize: "clamp(1rem, 1.5vw, 1.5rem)",
                 letterSpacing: "var(--tracking-wide)",
@@ -173,7 +173,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/writing"
-              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-vermillion"
+              className="group flex items-center gap-2 font-sans text-ink transition-colors hover:text-scarlet"
               style={{
                 fontSize: "clamp(1rem, 1.5vw, 1.5rem)",
                 letterSpacing: "var(--tracking-wide)",

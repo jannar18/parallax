@@ -101,7 +101,7 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
           <div className="fixed inset-0 z-[70] flex items-center justify-center p-8 pointer-events-none">
             <div className="pointer-events-auto w-full max-w-sm rounded-lg bg-surface shadow-2xl ring-1 ring-border overflow-hidden">
               {/* Artifact image — floating with padding */}
-              <div className="bg-cream p-6">
+              <div className="bg-paper p-6">
                 <Image
                   src={active.image}
                   alt={active.description || `Artifact from ${active.date}`}

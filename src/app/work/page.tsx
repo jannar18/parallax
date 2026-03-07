@@ -22,7 +22,7 @@ export default function WorkPage() {
             href="/work/architecture"
             className="group"
           >
-            <h2 className="text-2xl font-light text-ink transition-colors group-hover:text-vermillion">
+            <h2 className="text-2xl font-light text-ink transition-colors group-hover:text-scarlet">
               Architecture
             </h2>
             <p className="mt-2 text-base text-ink-light">
@@ -33,7 +33,7 @@ export default function WorkPage() {
             href="/work/software"
             className="group"
           >
-            <h2 className="text-2xl font-light text-ink transition-colors group-hover:text-vermillion">
+            <h2 className="text-2xl font-light text-ink transition-colors group-hover:text-scarlet">
               Software
             </h2>
             <p className="mt-2 text-base text-ink-light">
