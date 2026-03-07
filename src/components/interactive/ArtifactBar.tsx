@@ -68,6 +68,8 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
           {artifacts.map((artifact, i) => {
             const h = artifact.image.includes("wireframe")
               ? "55vh"
+              : artifact.image.includes("visual-")
+              ? "38vh"
               : heights[i % heights.length];
             return (
             <div
