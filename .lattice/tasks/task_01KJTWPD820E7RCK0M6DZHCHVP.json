@@ -7,11 +7,11 @@
   "created_by": "agent:claude-opus-4",
   "custom_fields": {},
   "description": null,
-  "done_at": null,
+  "done_at": "2026-03-07T23:46:03Z",
   "evidence_refs": [],
   "id": "task_01KJTWPD820E7RCK0M6DZHCHVP",
-  "last_event_id": "ev_01KJTWWTEJ2J1WTQF0PRVDC2SZ",
-  "last_status_changed_at": "2026-03-03T22:21:59Z",
+  "last_event_id": "ev_01KK5B374211ESV9AJ7NW40194",
+  "last_status_changed_at": "2026-03-07T23:46:03Z",
   "priority": "critical",
   "relationships_out": [
     {
@@ -46,10 +46,10 @@
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-16",
-  "status": "backlog",
+  "status": "done",
   "tags": null,
   "title": "Deployment \u2014 Vercel + parallax.studio domain",
   "type": "task",
-  "updated_at": "2026-03-03T22:25:29Z",
+  "updated_at": "2026-03-07T23:46:03Z",
   "urgency": null
 }

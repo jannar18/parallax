@@ -1,17 +1,23 @@
 {
   "assigned_to": null,
   "branch_links": [],
-  "comment_count": 0,
+  "comment_count": 1,
   "complexity": null,
   "created_at": "2026-03-07T23:06:04Z",
   "created_by": "agent:claude-opus-4",
   "custom_fields": {},
   "description": null,
-  "done_at": null,
-  "evidence_refs": [],
+  "done_at": "2026-03-08T01:54:01Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KK5JDBREEXYTNDVVYNZ5S975",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
   "id": "task_01KK58T0H7N9AMXNHXN53DMJ9F",
-  "last_event_id": "ev_01KK58T9EP1ZQAYCBFDWKAP5VG",
-  "last_status_changed_at": "2026-03-07T23:06:04Z",
+  "last_event_id": "ev_01KK5JDH7C52AN2FNHH3M7QXX4",
+  "last_status_changed_at": "2026-03-08T01:54:01Z",
   "priority": "medium",
   "relationships_out": [
     {
@@ -25,10 +31,10 @@
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-61",
-  "status": "backlog",
+  "status": "done",
   "tags": null,
   "title": "Infinite canvas: deterministic scatter layout algorithm",
   "type": "task",
-  "updated_at": "2026-03-07T23:06:13Z",
+  "updated_at": "2026-03-08T01:54:01Z",
   "urgency": null
 }

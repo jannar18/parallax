@@ -634,6 +634,21 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
         </p>
       </div>
 
+      {/* Right-side note */}
+      <div className="absolute top-20 right-6 z-20 pointer-events-none text-right">
+        <p
+          className="font-mono text-ink-lighter"
+          style={{
+            fontSize: "clamp(0.55rem, 0.7vw, 0.65rem)",
+            letterSpacing: "0.05em",
+          }}
+        >
+          updated daily by claude
+          <br />
+          with a /update-site skill
+        </p>
+      </div>
+
       {/* Reset view button (ASMV-62) */}
       <button
         onClick={resetView}

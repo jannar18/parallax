@@ -1,17 +1,23 @@
 {
   "assigned_to": null,
   "branch_links": [],
-  "comment_count": 0,
+  "comment_count": 1,
   "complexity": null,
   "created_at": "2026-03-07T23:06:06Z",
   "created_by": "agent:claude-opus-4",
   "custom_fields": {},
   "description": null,
-  "done_at": null,
-  "evidence_refs": [],
+  "done_at": "2026-03-08T01:54:02Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KK5JDCRC9T4WR5FWGTMJG1TK",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
   "id": "task_01KK58T227DBHWZ77XJ3B8WDF0",
-  "last_event_id": "ev_01KK58TBBGBRZ19RTVFF8KXNPB",
-  "last_status_changed_at": "2026-03-07T23:06:06Z",
+  "last_event_id": "ev_01KK5JDJ50Q4ECRGZDDBFQHDZC",
+  "last_status_changed_at": "2026-03-08T01:54:02Z",
   "priority": "medium",
   "relationships_out": [
     {
@@ -25,10 +31,10 @@
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-64",
-  "status": "backlog",
+  "status": "done",
   "tags": null,
   "title": "Infinite canvas: popover detail view on artifact click",
   "type": "task",
-  "updated_at": "2026-03-07T23:06:15Z",
+  "updated_at": "2026-03-08T01:54:02Z",
   "urgency": null
 }
