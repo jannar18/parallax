@@ -63,11 +63,11 @@ interface LayoutConfig {
 }
 
 const DEFAULT_CONFIG: LayoutConfig = {
-  minGap: 100,
+  minGap: 120,
   maxRotation: 0,
-  minWidth: 200,
-  maxWidth: 500,
-  relaxationPasses: 30,
+  minWidth: 250,
+  maxWidth: 380,
+  relaxationPasses: 60,
 };
 
 /* ── Helpers ── */
@@ -165,10 +165,9 @@ export function generateLayout(
   const cols = Math.ceil(Math.sqrt(itemCount * 1.5)); // slightly wider than tall
   const rows = Math.ceil(itemCount / cols);
 
-  // Cell size based on average item size + generous gap
-  const avgSize = (cfg.minWidth + cfg.maxWidth) / 2;
-  const cellWidth = avgSize + cfg.minGap + 80;
-  const cellHeight = avgSize + cfg.minGap + 80;
+  // Cell size based on max item size + generous gap
+  const cellWidth = cfg.maxWidth + cfg.minGap + 100;
+  const cellHeight = cfg.maxWidth + cfg.minGap + 100;
 
   // Global PRNG for grid-level jitter
   const globalSeed = hashString("canvas-layout-even") + itemCount;
@@ -194,7 +193,8 @@ export function generateLayout(
     // ── Size ──
     const video = isVideoPath(entry.image);
     const widthBase = cfg.minWidth + rng() * (cfg.maxWidth - cfg.minWidth);
-    const width = Math.round(video ? widthBase * 1.15 : widthBase);
+    // Clamp video boost so it doesn't exceed maxWidth
+    const width = Math.round(Math.min(video ? widthBase * 1.1 : widthBase, cfg.maxWidth));
     const aspectRatio = getAspectRatio(rng, video);
     const height = Math.round(width / aspectRatio);
 
@@ -206,9 +206,9 @@ export function generateLayout(
     const cellCenterX = margin + (col + 0.5) * cellWidth;
     const cellCenterY = margin + (row + 0.5) * cellHeight;
 
-    // Jitter: ±25% of cell size for organic scatter within the cell
-    const jitterX = (rng() - 0.5) * cellWidth * 0.5;
-    const jitterY = (rng() - 0.5) * cellHeight * 0.5;
+    // Jitter: ±15% of cell size for organic scatter (small enough to stay in cell)
+    const jitterX = (rng() - 0.5) * cellWidth * 0.3;
+    const jitterY = (rng() - 0.5) * cellHeight * 0.3;
 
     const x = cellCenterX + jitterX - width / 2;
     const y = cellCenterY + jitterY - height / 2;
