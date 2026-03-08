@@ -83,8 +83,9 @@ export default function Header() {
       }
     };
 
-    // On non-scrollable pages (e.g. /now canvas), reveal wordmark immediately
-    if (document.body.scrollHeight <= window.innerHeight + 50) {
+    // On non-homepage routes, reveal wordmark immediately
+    // (homepage reveals on scroll via the handler above)
+    if (window.location.pathname !== "/") {
       setBrandRevealed(true);
     }
 
