@@ -2,13 +2,11 @@
  * Deterministic layout generator for infinite canvas items.
  *
  * Algorithm:
- * 1. Group entries by date for loose clustering
- * 2. Assign cluster centroids across the world using seeded PRNG
- * 3. Place items within clusters using Poisson-like spacing
- * 4. Vary sizes (200-500px width) with aspect ratio seeded from slug
- * 5. Run AABB collision relaxation passes to eliminate overlaps
- * 6. Apply slight rotation (+-4 deg) seeded from slug
- * 7. Assign zIndex based on placement order + random offset
+ * 1. Sort entries by date for deterministic ordering
+ * 2. Place items on an even grid across the world with jitter for organic feel
+ * 3. Vary sizes (200-500px width) with aspect ratio seeded from slug
+ * 4. Run AABB collision relaxation passes to eliminate overlaps
+ * 5. Assign zIndex based on placement order + random offset
  *
  * All randomness uses mulberry32 PRNG for determinism.
  */
@@ -146,8 +144,8 @@ function overlapDepth(
 /* ── Main Layout Algorithm ── */
 
 /**
- * Generate deterministic, scattered positions for canvas items.
- * Items from the same date cluster loosely together.
+ * Generate deterministic, evenly-spread positions for canvas items.
+ * Items are distributed across the full canvas on a soft grid with jitter.
  * Layout is collision-free with organic, desk-like spacing.
  */
 export function generateLayout(
@@ -158,109 +156,70 @@ export function generateLayout(
 
   if (entries.length === 0) return [];
 
-  // ── 1. Group entries by date ──
-  const dateGroups = new Map<string, LayoutEntry[]>();
-  for (const entry of entries) {
-    const group = dateGroups.get(entry.date) || [];
-    group.push(entry);
-    dateGroups.set(entry.date, group);
-  }
+  // ── 1. Sort entries by date for deterministic ordering ──
+  const sorted = [...entries].sort((a, b) => a.date.localeCompare(b.date));
+  const itemCount = sorted.length;
 
-  // Sort date keys for deterministic ordering
-  const sortedDates = Array.from(dateGroups.keys()).sort();
+  // ── 2. Calculate grid dimensions ──
+  // Even grid across the world, each item gets its own cell
+  const cols = Math.ceil(Math.sqrt(itemCount * 1.5)); // slightly wider than tall
+  const rows = Math.ceil(itemCount / cols);
 
-  // ── 2. Calculate world size ──
-  const itemCount = entries.length;
-  const worldDim = Math.max(2000, Math.round(Math.sqrt(itemCount) * 800));
-  const worldWidth = worldDim;
-  const worldHeight = worldDim;
+  // Cell size based on average item size + generous gap
+  const avgSize = (cfg.minWidth + cfg.maxWidth) / 2;
+  const cellWidth = avgSize + cfg.minGap + 80;
+  const cellHeight = avgSize + cfg.minGap + 80;
 
-  // ── 3. Global PRNG for cluster placement ──
-  // Use a fixed seed combined with the total item count for global layout decisions
-  const globalSeed = hashString("canvas-layout-global") + itemCount;
+  // Global PRNG for grid-level jitter
+  const globalSeed = hashString("canvas-layout-even") + itemCount;
   const globalRng = mulberry32(globalSeed);
 
-  // ── 4. Assign cluster centroids ──
-  // Distribute date groups across the world with generous margins
-  const margin = worldDim * 0.12;
-  const usableWidth = worldWidth - margin * 2;
-  const usableHeight = worldHeight - margin * 2;
-
-  const clusterCentroids = new Map<string, { cx: number; cy: number }>();
-
-  if (sortedDates.length === 1) {
-    // Single date: center the cluster
-    clusterCentroids.set(sortedDates[0], {
-      cx: worldWidth / 2,
-      cy: worldHeight / 2,
-    });
-  } else {
-    // Multiple dates: scatter centroids across the world
-    // Use a soft grid with jitter for even distribution
-    const gridCols = Math.ceil(Math.sqrt(sortedDates.length));
-    const gridRows = Math.ceil(sortedDates.length / gridCols);
-    const cellWidth = usableWidth / gridCols;
-    const cellHeight = usableHeight / gridRows;
-
-    for (let i = 0; i < sortedDates.length; i++) {
-      const col = i % gridCols;
-      const row = Math.floor(i / gridCols);
-
-      // Base position at cell center
-      const baseCx = margin + (col + 0.5) * cellWidth;
-      const baseCy = margin + (row + 0.5) * cellHeight;
-
-      // Add jitter: +-30% of cell size
-      const jitterX = (globalRng() - 0.5) * cellWidth * 0.6;
-      const jitterY = (globalRng() - 0.5) * cellHeight * 0.6;
-
-      clusterCentroids.set(sortedDates[i], {
-        cx: baseCx + jitterX,
-        cy: baseCy + jitterY,
-      });
-    }
+  // Shuffle cell assignments for organic feel (not a left-to-right grid)
+  const cellIndices = Array.from({ length: cols * rows }, (_, i) => i);
+  // Fisher-Yates shuffle with seeded PRNG
+  for (let i = cellIndices.length - 1; i > 0; i--) {
+    const j = Math.floor(globalRng() * (i + 1));
+    [cellIndices[i], cellIndices[j]] = [cellIndices[j], cellIndices[i]];
   }
 
-  // ── 5. Place items within clusters ──
+  // ── 3. Place items on the grid with jitter ──
   const items: CanvasItemLayout[] = [];
+  const margin = 100;
 
-  for (const date of sortedDates) {
-    const group = dateGroups.get(date)!;
-    const centroid = clusterCentroids.get(date)!;
+  for (let i = 0; i < sorted.length; i++) {
+    const entry = sorted[i];
+    const slugSeed = hashString(entry.slug);
+    const rng = mulberry32(slugSeed);
 
-    // Cluster scatter radius scales with group size
-    const clusterRadius = Math.max(150, Math.sqrt(group.length) * 180);
+    // ── Size ──
+    const video = isVideoPath(entry.image);
+    const widthBase = cfg.minWidth + rng() * (cfg.maxWidth - cfg.minWidth);
+    const width = Math.round(video ? widthBase * 1.15 : widthBase);
+    const aspectRatio = getAspectRatio(rng, video);
+    const height = Math.round(width / aspectRatio);
 
-    for (let gi = 0; gi < group.length; gi++) {
-      const entry = group[gi];
-      const slugSeed = hashString(entry.slug);
-      const rng = mulberry32(slugSeed);
+    // ── Position: grid cell center + jitter ──
+    const cellIdx = cellIndices[i];
+    const col = cellIdx % cols;
+    const row = Math.floor(cellIdx / cols);
 
-      // ── Size ──
-      const video = isVideoPath(entry.image);
-      const widthBase = cfg.minWidth + rng() * (cfg.maxWidth - cfg.minWidth);
-      // Videos get a size boost
-      const width = Math.round(video ? widthBase * 1.15 : widthBase);
-      const aspectRatio = getAspectRatio(rng, video);
-      const height = Math.round(width / aspectRatio);
+    const cellCenterX = margin + (col + 0.5) * cellWidth;
+    const cellCenterY = margin + (row + 0.5) * cellHeight;
 
-      // ── Position within cluster ──
-      // Use polar coordinates for organic scattering
-      const angle = rng() * Math.PI * 2;
-      const dist = rng() * clusterRadius;
+    // Jitter: ±25% of cell size for organic scatter within the cell
+    const jitterX = (rng() - 0.5) * cellWidth * 0.5;
+    const jitterY = (rng() - 0.5) * cellHeight * 0.5;
 
-      const x = centroid.cx + Math.cos(angle) * dist - width / 2;
-      const y = centroid.cy + Math.sin(angle) * dist - height / 2;
+    const x = cellCenterX + jitterX - width / 2;
+    const y = cellCenterY + jitterY - height / 2;
 
-      // ── Rotation ──
-      const rotation = (rng() - 0.5) * 2 * cfg.maxRotation;
+    // ── Rotation ──
+    const rotation = (rng() - 0.5) * 2 * cfg.maxRotation;
 
-      // ── zIndex ──
-      // Base on placement order with a small random offset for variety
-      const zIndex = items.length + Math.floor(rng() * 5);
+    // ── zIndex ──
+    const zIndex = i + Math.floor(rng() * 5);
 
-      items.push({ slug: entry.slug, x, y, width, height, rotation, zIndex });
-    }
+    items.push({ slug: entry.slug, x, y, width, height, rotation, zIndex });
   }
 
   // ── 6. Collision relaxation ──
