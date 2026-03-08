@@ -1,6 +1,16 @@
 /**
  * Deterministic layout generator for infinite canvas items.
- * Positions are seeded from entry slugs so they're stable across renders.
+ *
+ * Algorithm:
+ * 1. Group entries by date for loose clustering
+ * 2. Assign cluster centroids across the world using seeded PRNG
+ * 3. Place items within clusters using Poisson-like spacing
+ * 4. Vary sizes (200-500px width) with aspect ratio seeded from slug
+ * 5. Run AABB collision relaxation passes to eliminate overlaps
+ * 6. Apply slight rotation (+-4 deg) seeded from slug
+ * 7. Assign zIndex based on placement order + random offset
+ *
+ * All randomness uses mulberry32 PRNG for determinism.
  */
 
 /* ── Seeded PRNG (mulberry32) ── */
@@ -24,6 +34,7 @@ function hashString(str: string): number {
 }
 
 /* ── Layout Types ── */
+
 export interface CanvasItemLayout {
   slug: string;
   x: number;
@@ -31,90 +42,273 @@ export interface CanvasItemLayout {
   width: number;
   height: number;
   rotation: number;
+  zIndex: number;
+}
+
+export interface LayoutEntry {
+  slug: string;
+  date: string;
+  image?: string;
 }
 
 interface LayoutConfig {
-  /** Virtual canvas width */
-  worldWidth: number;
-  /** Virtual canvas height */
-  worldHeight: number;
-  /** Base item size (px) */
-  baseSize: number;
-  /** Size variation range [min multiplier, max multiplier] */
-  sizeRange: [number, number];
+  /** Minimum gap between items (px) */
+  minGap: number;
   /** Max rotation in degrees */
   maxRotation: number;
-  /** Minimum distance between item centers */
-  minDistance: number;
+  /** Minimum item width (px) */
+  minWidth: number;
+  /** Maximum item width (px) */
+  maxWidth: number;
+  /** Number of collision relaxation passes */
+  relaxationPasses: number;
 }
 
 const DEFAULT_CONFIG: LayoutConfig = {
-  worldWidth: 3000,
-  worldHeight: 2500,
-  baseSize: 280,
-  sizeRange: [0.72, 1.43],  // yields ~200-400px width range
-  maxRotation: 3,
-  minDistance: 260,
+  minGap: 40,
+  maxRotation: 4,
+  minWidth: 200,
+  maxWidth: 500,
+  relaxationPasses: 30,
 };
+
+/* ── Helpers ── */
+
+function isVideoPath(path?: string): boolean {
+  if (!path) return false;
+  return /\.(mov|mp4|webm)$/i.test(path);
+}
+
+/** Determine aspect ratio category from slug hash */
+function getAspectRatio(rng: () => number, isVideo: boolean): number {
+  if (isVideo) {
+    // Videos are typically landscape
+    return 1.6 + rng() * 0.2; // 1.6:1 to 1.8:1
+  }
+
+  const roll = rng();
+  if (roll < 0.35) {
+    // Landscape — 35% of items
+    return 1.2 + rng() * 0.3; // 1.2:1 to 1.5:1
+  } else if (roll < 0.6) {
+    // Portrait — 25% of items
+    return 0.65 + rng() * 0.15; // 0.65:1 to 0.8:1
+  } else {
+    // Roughly square — 40% of items
+    return 0.9 + rng() * 0.2; // 0.9:1 to 1.1:1
+  }
+}
+
+/** AABB overlap check with padding */
+function overlaps(
+  a: { x: number; y: number; width: number; height: number },
+  b: { x: number; y: number; width: number; height: number },
+  gap: number
+): boolean {
+  return !(
+    a.x + a.width + gap <= b.x ||
+    b.x + b.width + gap <= a.x ||
+    a.y + a.height + gap <= b.y ||
+    b.y + b.height + gap <= a.y
+  );
+}
+
+/** Calculate overlap depth between two AABBs (returns 0 if no overlap) */
+function overlapDepth(
+  a: { x: number; y: number; width: number; height: number },
+  b: { x: number; y: number; width: number; height: number },
+  gap: number
+): { dx: number; dy: number } {
+  const overlapX = Math.min(a.x + a.width + gap, b.x + b.width + gap) - Math.max(a.x, b.x);
+  const overlapY = Math.min(a.y + a.height + gap, b.y + b.height + gap) - Math.max(a.y, b.y);
+
+  if (overlapX <= 0 || overlapY <= 0) {
+    return { dx: 0, dy: 0 };
+  }
+
+  // Push apart along the axis of least overlap
+  const aCenterX = a.x + a.width / 2;
+  const aCenterY = a.y + a.height / 2;
+  const bCenterX = b.x + b.width / 2;
+  const bCenterY = b.y + b.height / 2;
+
+  if (overlapX < overlapY) {
+    // Push horizontally
+    const sign = aCenterX < bCenterX ? -1 : 1;
+    return { dx: sign * overlapX, dy: 0 };
+  } else {
+    // Push vertically
+    const sign = aCenterY < bCenterY ? -1 : 1;
+    return { dx: 0, dy: sign * overlapY };
+  }
+}
+
+/* ── Main Layout Algorithm ── */
 
 /**
  * Generate deterministic, scattered positions for canvas items.
- * Uses rejection sampling to avoid overlapping items.
+ * Items from the same date cluster loosely together.
+ * Layout is collision-free with organic, desk-like spacing.
  */
 export function generateLayout(
-  slugs: string[],
+  entries: LayoutEntry[],
   config: Partial<LayoutConfig> = {}
 ): CanvasItemLayout[] {
   const cfg = { ...DEFAULT_CONFIG, ...config };
+
+  if (entries.length === 0) return [];
+
+  // ── 1. Group entries by date ──
+  const dateGroups = new Map<string, LayoutEntry[]>();
+  for (const entry of entries) {
+    const group = dateGroups.get(entry.date) || [];
+    group.push(entry);
+    dateGroups.set(entry.date, group);
+  }
+
+  // Sort date keys for deterministic ordering
+  const sortedDates = Array.from(dateGroups.keys()).sort();
+
+  // ── 2. Calculate world size ──
+  const itemCount = entries.length;
+  const worldDim = Math.max(2000, Math.round(Math.sqrt(itemCount) * 800));
+  const worldWidth = worldDim;
+  const worldHeight = worldDim;
+
+  // ── 3. Global PRNG for cluster placement ──
+  // Use a fixed seed combined with the total item count for global layout decisions
+  const globalSeed = hashString("canvas-layout-global") + itemCount;
+  const globalRng = mulberry32(globalSeed);
+
+  // ── 4. Assign cluster centroids ──
+  // Distribute date groups across the world with generous margins
+  const margin = worldDim * 0.12;
+  const usableWidth = worldWidth - margin * 2;
+  const usableHeight = worldHeight - margin * 2;
+
+  const clusterCentroids = new Map<string, { cx: number; cy: number }>();
+
+  if (sortedDates.length === 1) {
+    // Single date: center the cluster
+    clusterCentroids.set(sortedDates[0], {
+      cx: worldWidth / 2,
+      cy: worldHeight / 2,
+    });
+  } else {
+    // Multiple dates: scatter centroids across the world
+    // Use a soft grid with jitter for even distribution
+    const gridCols = Math.ceil(Math.sqrt(sortedDates.length));
+    const gridRows = Math.ceil(sortedDates.length / gridCols);
+    const cellWidth = usableWidth / gridCols;
+    const cellHeight = usableHeight / gridRows;
+
+    for (let i = 0; i < sortedDates.length; i++) {
+      const col = i % gridCols;
+      const row = Math.floor(i / gridCols);
+
+      // Base position at cell center
+      const baseCx = margin + (col + 0.5) * cellWidth;
+      const baseCy = margin + (row + 0.5) * cellHeight;
+
+      // Add jitter: +-30% of cell size
+      const jitterX = (globalRng() - 0.5) * cellWidth * 0.6;
+      const jitterY = (globalRng() - 0.5) * cellHeight * 0.6;
+
+      clusterCentroids.set(sortedDates[i], {
+        cx: baseCx + jitterX,
+        cy: baseCy + jitterY,
+      });
+    }
+  }
+
+  // ── 5. Place items within clusters ──
   const items: CanvasItemLayout[] = [];
-  const padding = 100; // Keep items away from edges
 
-  for (const slug of slugs) {
-    const seed = hashString(slug);
-    const rng = mulberry32(seed);
+  for (const date of sortedDates) {
+    const group = dateGroups.get(date)!;
+    const centroid = clusterCentroids.get(date)!;
 
-    const sizeMult = cfg.sizeRange[0] + rng() * (cfg.sizeRange[1] - cfg.sizeRange[0]);
-    const width = cfg.baseSize * sizeMult;
-    const height = cfg.baseSize * sizeMult;
-    const rotation = (rng() - 0.5) * 2 * cfg.maxRotation;
+    // Cluster scatter radius scales with group size
+    const clusterRadius = Math.max(150, Math.sqrt(group.length) * 180);
 
-    // Try up to 50 positions to find one that doesn't overlap
-    let bestX = padding + rng() * (cfg.worldWidth - width - padding * 2);
-    let bestY = padding + rng() * (cfg.worldHeight - height - padding * 2);
-    let bestMinDist = 0;
+    for (let gi = 0; gi < group.length; gi++) {
+      const entry = group[gi];
+      const slugSeed = hashString(entry.slug);
+      const rng = mulberry32(slugSeed);
 
-    for (let attempt = 0; attempt < 50; attempt++) {
-      const candidateX =
-        padding + rng() * (cfg.worldWidth - width - padding * 2);
-      const candidateY =
-        padding + rng() * (cfg.worldHeight - height - padding * 2);
+      // ── Size ──
+      const video = isVideoPath(entry.image);
+      const widthBase = cfg.minWidth + rng() * (cfg.maxWidth - cfg.minWidth);
+      // Videos get a size boost
+      const width = Math.round(video ? widthBase * 1.15 : widthBase);
+      const aspectRatio = getAspectRatio(rng, video);
+      const height = Math.round(width / aspectRatio);
 
-      // Find minimum distance to existing items
-      let minDist = Infinity;
-      for (const existing of items) {
-        const cx = candidateX + width / 2;
-        const cy = candidateY + height / 2;
-        const ex = existing.x + existing.width / 2;
-        const ey = existing.y + existing.height / 2;
-        const dist = Math.sqrt((cx - ex) ** 2 + (cy - ey) ** 2);
-        minDist = Math.min(minDist, dist);
-      }
+      // ── Position within cluster ──
+      // Use polar coordinates for organic scattering
+      const angle = rng() * Math.PI * 2;
+      const dist = rng() * clusterRadius;
 
-      if (minDist >= cfg.minDistance) {
-        bestX = candidateX;
-        bestY = candidateY;
-        break;
-      }
+      const x = centroid.cx + Math.cos(angle) * dist - width / 2;
+      const y = centroid.cy + Math.sin(angle) * dist - height / 2;
 
-      // Keep the best candidate so far
-      if (minDist > bestMinDist) {
-        bestMinDist = minDist;
-        bestX = candidateX;
-        bestY = candidateY;
+      // ── Rotation ──
+      const rotation = (rng() - 0.5) * 2 * cfg.maxRotation;
+
+      // ── zIndex ──
+      // Base on placement order with a small random offset for variety
+      const zIndex = items.length + Math.floor(rng() * 5);
+
+      items.push({ slug: entry.slug, x, y, width, height, rotation, zIndex });
+    }
+  }
+
+  // ── 6. Collision relaxation ──
+  // Iteratively push overlapping items apart
+  for (let pass = 0; pass < cfg.relaxationPasses; pass++) {
+    let hadOverlap = false;
+
+    for (let i = 0; i < items.length; i++) {
+      for (let j = i + 1; j < items.length; j++) {
+        if (overlaps(items[i], items[j], cfg.minGap)) {
+          hadOverlap = true;
+          const depth = overlapDepth(items[i], items[j], cfg.minGap);
+
+          // Split the correction between both items
+          const halfDx = depth.dx / 2;
+          const halfDy = depth.dy / 2;
+
+          items[i].x += halfDx;
+          items[i].y += halfDy;
+          items[j].x -= halfDx;
+          items[j].y -= halfDy;
+        }
       }
     }
 
-    items.push({ slug, x: bestX, y: bestY, width, height, rotation });
+    // Early exit if no overlaps remain
+    if (!hadOverlap) break;
+  }
+
+  // ── 7. Normalize positions ──
+  // Shift all items so the minimum x,y starts at a reasonable margin
+  if (items.length > 0) {
+    let minX = Infinity;
+    let minY = Infinity;
+
+    for (const item of items) {
+      minX = Math.min(minX, item.x);
+      minY = Math.min(minY, item.y);
+    }
+
+    const normalizeMargin = 80;
+    const shiftX = normalizeMargin - minX;
+    const shiftY = normalizeMargin - minY;
+
+    for (const item of items) {
+      item.x = Math.round(item.x + shiftX);
+      item.y = Math.round(item.y + shiftY);
+    }
   }
 
   return items;
