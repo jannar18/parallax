@@ -1,19 +1,16 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
-import {
-  generateLayout,
-  getInitialCamera,
-  type CanvasItemLayout,
-} from "@/lib/canvas-layout";
 import ArtifactPopover, {
   type ArtifactEntry,
 } from "@/components/interactive/ArtifactPopover";
 
-/* ── Types ── */
+function isVideo(src: string) {
+  return /\.(mov|mp4|webm)$/i.test(src);
+}
 
-interface CanvasEntry {
+interface ColumnsEntry {
   slug: string;
   date: string;
   mood?: string;
@@ -24,86 +21,180 @@ interface CanvasEntry {
   description?: string;
 }
 
-interface InfiniteCanvasProps {
-  entries: CanvasEntry[];
+interface ColumnsLayoutProps {
+  entries: ColumnsEntry[];
 }
 
-function isVideo(src: string) {
-  return /\.(mov|mp4|webm)$/i.test(src);
-}
+/* ── Layout constants ── */
+const COL_WIDTH = 240;
+const GAP = 12;
+const CHUNK_SIZE = 6;
+const CHUNK_GAP = 80; // horizontal gap between chunks
+const COLS_PER_CHUNK = 2;
+const CHUNK_CONTENT_WIDTH = COLS_PER_CHUNK * COL_WIDTH + GAP;
 
-/* ── Constants ── */
+/* ── Camera constants (copied from InfiniteCanvas) ── */
 const MIN_SCALE = 0.2;
 const MAX_SCALE = 2.5;
 const ZOOM_FACTOR_IN = 1.08;
 const ZOOM_FACTOR_OUT = 0.92;
 const DRAG_THRESHOLD = 5;
 const LERP_FACTOR = 0.12;
-const LERP_FACTOR_INSTANT = 1; // for reduced motion
+const LERP_FACTOR_INSTANT = 1;
 const CONVERGENCE_EPSILON = 0.01;
 const MOMENTUM_DECAY = 0.95;
 const MOMENTUM_MIN = 0.1;
 const VELOCITY_SAMPLE_COUNT = 5;
 const KEYBOARD_PAN_STEP = 60;
-const EDGE_MARGIN_RATIO = 0.5; // allow panning half a viewport beyond content
+const EDGE_MARGIN_RATIO = 0.5;
 
-/* ── Component ── */
+/* ── Chunk layout types ── */
 
-export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
+interface ChunkItem {
+  entry: ColumnsEntry;
+  x: number; // relative to chunk origin
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface Chunk {
+  items: ChunkItem[];
+  x: number; // world x of this chunk
+  width: number;
+  height: number;
+}
+
+/**
+ * Lay out entries in chunks of ~CHUNK_SIZE, each chunk a 2-column masonry.
+ * Chunks are placed left-to-right horizontally.
+ */
+function buildChunks(entries: ColumnsEntry[]): Chunk[] {
+  const chunks: Chunk[] = [];
+  let worldX = 80;
+
+  for (let i = 0; i < entries.length; i += CHUNK_SIZE) {
+    const slice = entries.slice(i, i + CHUNK_SIZE);
+    const colHeights = [0, 0];
+    const items: ChunkItem[] = [];
+
+    for (const entry of slice) {
+      // Place in shortest column
+      const colIdx = colHeights[0] <= colHeights[1] ? 0 : 1;
+      const aspect = Math.max(0.3, Math.min(3, entry.imageWidth / entry.imageHeight));
+      const itemWidth = COL_WIDTH;
+      const maxHeight = COL_WIDTH * 2.5; // cap tall items
+      const itemHeight = Math.min(Math.round(itemWidth / aspect), maxHeight);
+
+      items.push({
+        entry,
+        x: colIdx * (COL_WIDTH + GAP),
+        y: colHeights[colIdx],
+        width: itemWidth,
+        height: itemHeight,
+      });
+
+      colHeights[colIdx] += itemHeight + GAP;
+    }
+
+    const chunkHeight = Math.max(...colHeights);
+    chunks.push({
+      items,
+      x: worldX,
+      width: CHUNK_CONTENT_WIDTH,
+      height: chunkHeight,
+    });
+
+    worldX += CHUNK_CONTENT_WIDTH + CHUNK_GAP;
+  }
+
+  return chunks;
+}
+
+export default function ColumnsLayout({ entries }: ColumnsLayoutProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<HTMLDivElement>(null);
 
-  // Dual-state camera: current lerps toward target each frame
+  // Camera state (same dual-state pattern as InfiniteCanvas)
   const current = useRef({ x: 0, y: 0, scale: 1 });
   const target = useRef({ x: 0, y: 0, scale: 1 });
   const animating = useRef(false);
   const rafId = useRef(0);
-
-  // Initial camera position for reset (ASMV-62)
   const initialCamera = useRef({ x: 0, y: 0, scale: 1 });
 
-  // Drag state
+  // Drag
   const isDragging = useRef(false);
   const lastPointer = useRef({ x: 0, y: 0 });
   const hasDragged = useRef(false);
   const dragOrigin = useRef({ x: 0, y: 0 });
 
-  // Momentum/inertia (ASMV-62)
+  // Momentum
   const velocityHistory = useRef<{ x: number; y: number; t: number }[]>([]);
   const velocity = useRef({ x: 0, y: 0 });
 
-  // Multi-touch / pinch zoom (ASMV-63)
+  // Pinch
   const pointers = useRef<Map<number, { x: number; y: number }>>(new Map());
   const initialPinchDist = useRef(0);
   const initialPinchScale = useRef(1);
   const prevMidpoint = useRef({ x: 0, y: 0 });
   const isPinching = useRef(false);
 
-  // Popover (ASMV-64)
-  const [activeEntry, setActiveEntry] = useState<ArtifactEntry | null>(null);
-
-  // Mobile detection for hint text
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-
-  // Reduced motion preference
-  const prefersReducedMotion = useRef(false);
-
-  // Content bounding box for edge constraints
+  // Content bounds
   const contentBounds = useRef({ minX: 0, minY: 0, maxX: 2000, maxY: 2000 });
 
-  // Layout
-  const [layout, setLayout] = useState<CanvasItemLayout[]>([]);
+  // Popover
+  const [activeEntry, setActiveEntry] = useState<ArtifactEntry | null>(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const prefersReducedMotion = useRef(false);
   const [ready, setReady] = useState(false);
 
-  // Detect touch capability and reduced motion
+  // Visible chunks (viewport culling)
+  const [visibleRange, setVisibleRange] = useState<[number, number]>([0, 10]);
+
   useEffect(() => {
     setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
     prefersReducedMotion.current =
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }, []);
 
-  /* ── rAF animation loop ── */
+  // Build chunks from entries
+  const chunks = useMemo(() => buildChunks(entries), [entries]);
 
+  /* ── Viewport culling ── */
+  const updateVisibleChunks = useCallback(() => {
+    const c = current.current;
+    const vw = containerRef.current?.clientWidth ?? window.innerWidth;
+
+    // Screen left/right in world coordinates
+    const worldLeft = -c.x / c.scale;
+    const worldRight = (vw - c.x) / c.scale;
+    const buffer = 600; // render 1 chunk buffer on each side
+
+    let firstVisible = 0;
+    let lastVisible = chunks.length - 1;
+
+    for (let i = 0; i < chunks.length; i++) {
+      if (chunks[i].x + chunks[i].width + buffer >= worldLeft) {
+        firstVisible = i;
+        break;
+      }
+    }
+    for (let i = chunks.length - 1; i >= 0; i--) {
+      if (chunks[i].x - buffer <= worldRight) {
+        lastVisible = i;
+        break;
+      }
+    }
+
+    setVisibleRange((prev) => {
+      if (prev[0] !== firstVisible || prev[1] !== lastVisible) {
+        return [firstVisible, lastVisible];
+      }
+      return prev;
+    });
+  }, [chunks]);
+
+  /* ── rAF animation loop ── */
   const startAnimation = useCallback(() => {
     if (animating.current) return;
     animating.current = true;
@@ -112,10 +203,10 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
       const c = current.current;
       const t = target.current;
       const v = velocity.current;
-      const lerp = prefersReducedMotion.current ? LERP_FACTOR_INSTANT : LERP_FACTOR;
+      const lerp = prefersReducedMotion.current
+        ? LERP_FACTOR_INSTANT
+        : LERP_FACTOR;
 
-      // Apply momentum to target (decaying each frame)
-      // Skip momentum entirely for reduced motion
       if (!prefersReducedMotion.current && (v.x !== 0 || v.y !== 0)) {
         t.x += v.x;
         t.y += v.y;
@@ -127,7 +218,7 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
         }
       }
 
-      // Edge constraints — soft clamp target within content bounds + margin
+      // Edge constraints
       const vw = containerRef.current?.clientWidth ?? window.innerWidth;
       const vh = containerRef.current?.clientHeight ?? window.innerHeight;
       const marginX = vw * EDGE_MARGIN_RATIO;
@@ -140,7 +231,6 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
       const minTy = vh - (bounds.maxY - bounds.minY) * t.scale - marginY;
 
       if (maxTx > minTx) {
-        // Content fits in viewport — center it
         t.x = Math.max(minTx, Math.min(maxTx, t.x));
       }
       if (maxTy > minTy) {
@@ -155,7 +245,9 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
         worldRef.current.style.transform = `translate(${c.x}px, ${c.y}px) scale(${c.scale})`;
       }
 
-      // Continue if not converged (includes momentum check)
+      // Update visible chunks
+      updateVisibleChunks();
+
       const dx = Math.abs(t.x - c.x);
       const dy = Math.abs(t.y - c.y);
       const ds = Math.abs(t.scale - c.scale);
@@ -169,7 +261,6 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
       ) {
         rafId.current = requestAnimationFrame(tick);
       } else {
-        // Snap to target
         c.x = t.x;
         c.y = t.y;
         c.scale = t.scale;
@@ -181,69 +272,63 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
     };
 
     rafId.current = requestAnimationFrame(tick);
-  }, []);
+  }, [updateVisibleChunks]);
 
-  // Cleanup rAF on unmount
   useEffect(() => {
     return () => cancelAnimationFrame(rafId.current);
   }, []);
 
-  /* ── Init layout & camera ── */
-
+  /* ── Init camera ── */
   useEffect(() => {
-    const items = generateLayout(
-      entries.map((e) => ({
-        slug: e.slug,
-        date: e.date,
-        image: e.image,
-        imageWidth: e.imageWidth,
-        imageHeight: e.imageHeight,
-      }))
-    );
-    setLayout(items);
+    if (chunks.length === 0) return;
 
-    // Store content bounds for edge constraints
-    if (items.length > 0) {
-      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-      for (const item of items) {
-        minX = Math.min(minX, item.x);
-        minY = Math.min(minY, item.y);
-        maxX = Math.max(maxX, item.x + item.width);
-        maxY = Math.max(maxY, item.y + item.height);
-      }
-      contentBounds.current = { minX, minY, maxX, maxY };
+    // Content bounds from chunks
+    const minX = chunks[0].x;
+    const maxX =
+      chunks[chunks.length - 1].x + chunks[chunks.length - 1].width;
+    let maxY = 0;
+    for (const chunk of chunks) {
+      maxY = Math.max(maxY, chunk.height);
     }
+    contentBounds.current = { minX, minY: 0, maxX, maxY: maxY + 80 };
 
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-    const initial = getInitialCamera(items, vw, vh);
+    const contentWidth = maxX - minX;
+    const contentHeight = maxY;
+    const centerX = minX + contentWidth / 2;
+    const centerY = contentHeight / 2;
 
-    // Store initial camera for reset (ASMV-62)
+    const scaleX = vw / (contentWidth + 200);
+    const scaleY = vh / (contentHeight + 200);
+    const fitScale = Math.min(scaleX, scaleY, 1);
+    // Don't zoom out past readable size — show a portion, let user pan
+    const scale = Math.max(fitScale, 0.8);
+
+    const x = vw / 2 - centerX * scale;
+    const y = vh / 2 - centerY * scale;
+
+    const initial = { x, y, scale };
     initialCamera.current = { ...initial };
-
-    // Set both current and target to initial (no animation on load)
     current.current = { ...initial };
     target.current = { ...initial };
 
     if (worldRef.current) {
-      worldRef.current.style.transform = `translate(${initial.x}px, ${initial.y}px) scale(${initial.scale})`;
+      worldRef.current.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
     }
+
+    updateVisibleChunks();
     setReady(true);
-  }, [entries]);
+  }, [chunks, updateVisibleChunks]);
 
-  /* ── Reset View (ASMV-62) ── */
-
+  /* ── Reset view ── */
   const resetView = useCallback(() => {
-    // Kill any momentum
     velocity.current = { x: 0, y: 0 };
-
-    // Animate target back to initial camera position
     target.current = { ...initialCamera.current };
     startAnimation();
   }, [startAnimation]);
 
-  /* ── Pinch helpers (ASMV-63) ── */
-
+  /* ── Pinch helpers ── */
   const getPinchDistance = useCallback(() => {
     const pts = Array.from(pointers.current.values());
     if (pts.length < 2) return 0;
@@ -261,32 +346,25 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
     };
   }, []);
 
-  /* ── Pointer Events ── */
-
+  /* ── Pointer events ── */
   const handlePointerDown = useCallback(
     (e: React.PointerEvent) => {
-      if (e.button === 2) return; // ignore right-click
-
-      // Track this pointer for multi-touch
+      if (e.button === 2) return;
       pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
       if (pointers.current.size === 2) {
-        // Two pointers: start pinch
         isPinching.current = true;
         isDragging.current = false;
         initialPinchDist.current = getPinchDistance();
         initialPinchScale.current = target.current.scale;
         prevMidpoint.current = getPinchMidpoint();
-        // Kill any existing momentum when starting a pinch
         velocity.current = { x: 0, y: 0 };
       } else if (pointers.current.size === 1) {
-        // Single pointer: start drag
         isDragging.current = true;
         hasDragged.current = false;
         lastPointer.current = { x: e.clientX, y: e.clientY };
         dragOrigin.current = { x: e.clientX, y: e.clientY };
         velocityHistory.current = [];
-        // Kill any existing momentum when starting a new drag
         velocity.current = { x: 0, y: 0 };
       }
 
@@ -300,12 +378,10 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent) => {
-      // Update tracked pointer position
       if (pointers.current.has(e.pointerId)) {
         pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
       }
 
-      // Pinch zoom (two pointers)
       if (isPinching.current && pointers.current.size >= 2) {
         const dist = getPinchDistance();
         if (initialPinchDist.current > 0) {
@@ -315,7 +391,6 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
             Math.max(MIN_SCALE, initialPinchScale.current * ratio)
           );
 
-          // Zoom toward pinch midpoint
           const container = containerRef.current;
           if (container) {
             const midpoint = getPinchMidpoint();
@@ -323,7 +398,6 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
             const midX = midpoint.x - rect.left;
             const midY = midpoint.y - rect.top;
 
-            // Convert midpoint to world coordinates at current target scale
             const worldX = (midX - target.current.x) / target.current.scale;
             const worldY = (midY - target.current.y) / target.current.scale;
 
@@ -331,12 +405,10 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
             target.current.x = midX - worldX * newScale;
             target.current.y = midY - worldY * newScale;
 
-            // Two-finger pan: track midpoint delta
             const mdx = midpoint.x - prevMidpoint.current.x;
             const mdy = midpoint.y - prevMidpoint.current.y;
             target.current.x += mdx;
             target.current.y += mdy;
-
             prevMidpoint.current = midpoint;
           }
         }
@@ -344,13 +416,11 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
         return;
       }
 
-      // Single pointer drag
       if (!isDragging.current) return;
 
       const dx = e.clientX - lastPointer.current.x;
       const dy = e.clientY - lastPointer.current.y;
 
-      // Check if we've moved past the drag threshold
       const totalDx = e.clientX - dragOrigin.current.x;
       const totalDy = e.clientY - dragOrigin.current.y;
       if (
@@ -360,12 +430,9 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
         hasDragged.current = true;
       }
 
-      // Screen-space offset: translate is applied before scale in the transform,
-      // so 1:1 screen-pixel mapping gives constant pan speed at any zoom level
       target.current.x += dx;
       target.current.y += dy;
 
-      // Track velocity samples for momentum (ASMV-62)
       const now = performance.now();
       velocityHistory.current.push({ x: dx, y: dy, t: now });
       if (velocityHistory.current.length > VELOCITY_SAMPLE_COUNT) {
@@ -380,18 +447,15 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
 
   const handlePointerUp = useCallback(
     (e: React.PointerEvent) => {
-      // Remove tracked pointer
       pointers.current.delete(e.pointerId);
 
       if (isPinching.current) {
-        // If we go from 2 pointers to 1, transition out of pinch
         if (pointers.current.size < 2) {
           isPinching.current = false;
-          // If one pointer remains, resume drag from its current position
           if (pointers.current.size === 1) {
             const remaining = Array.from(pointers.current.values())[0];
             isDragging.current = true;
-            hasDragged.current = true; // Prevent click from firing after pinch
+            hasDragged.current = true;
             lastPointer.current = { x: remaining.x, y: remaining.y };
             dragOrigin.current = { x: remaining.x, y: remaining.y };
             velocityHistory.current = [];
@@ -401,13 +465,14 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
         return;
       }
 
-      // Apply momentum from velocity history (ASMV-62)
-      // Skip for reduced motion preference
-      if (isDragging.current && hasDragged.current && !prefersReducedMotion.current) {
+      if (
+        isDragging.current &&
+        hasDragged.current &&
+        !prefersReducedMotion.current
+      ) {
         const history = velocityHistory.current;
         if (history.length >= 2) {
           const now = performance.now();
-          // Only use samples from the last 100ms for responsive feel
           const recentSamples = history.filter((s) => now - s.t < 100);
           if (recentSamples.length >= 1) {
             let totalDx = 0;
@@ -433,15 +498,13 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
     [startAnimation]
   );
 
-  /* ── Wheel Zoom (zoom toward cursor) ── */
-
+  /* ── Wheel zoom ── */
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
-
       const t = target.current;
       const zoomFactor = e.deltaY > 0 ? ZOOM_FACTOR_OUT : ZOOM_FACTOR_IN;
       const newScale = Math.min(
@@ -449,16 +512,12 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
         Math.max(MIN_SCALE, t.scale * zoomFactor)
       );
 
-      // Zoom toward cursor position
       const rect = container.getBoundingClientRect();
       const cursorX = e.clientX - rect.left;
       const cursorY = e.clientY - rect.top;
-
-      // Convert cursor to world coordinates before scale change
       const worldX = (cursorX - t.x) / t.scale;
       const worldY = (cursorY - t.y) / t.scale;
 
-      // Adjust offset so the world point under cursor stays under cursor
       target.current.scale = newScale;
       target.current.x = cursorX - worldX * newScale;
       target.current.y = cursorY - worldY * newScale;
@@ -470,20 +529,15 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
     return () => container.removeEventListener("wheel", handleWheel);
   }, [startAnimation]);
 
-  /* ── Keyboard navigation (ASMV-65) ── */
-
+  /* ── Keyboard ── */
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      // Escape closes popover
       if (e.key === "Escape" && activeEntry) {
         setActiveEntry(null);
         return;
       }
-
-      // Don't capture keys when popover is open
       if (activeEntry) return;
 
-      // Arrow keys: pan
       const panStep = KEYBOARD_PAN_STEP;
       switch (e.key) {
         case "ArrowUp":
@@ -508,32 +562,30 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
           break;
         case "=":
         case "+": {
-          // Zoom in toward center
           const vw = containerRef.current?.clientWidth ?? window.innerWidth;
           const vh = containerRef.current?.clientHeight ?? window.innerHeight;
           const t = target.current;
           const newScale = Math.min(MAX_SCALE, t.scale * ZOOM_FACTOR_IN);
-          const worldX = (vw / 2 - t.x) / t.scale;
-          const worldY = (vh / 2 - t.y) / t.scale;
+          const wX = (vw / 2 - t.x) / t.scale;
+          const wY = (vh / 2 - t.y) / t.scale;
           target.current.scale = newScale;
-          target.current.x = vw / 2 - worldX * newScale;
-          target.current.y = vh / 2 - worldY * newScale;
+          target.current.x = vw / 2 - wX * newScale;
+          target.current.y = vh / 2 - wY * newScale;
           startAnimation();
           e.preventDefault();
           break;
         }
         case "-":
         case "_": {
-          // Zoom out from center
           const vw = containerRef.current?.clientWidth ?? window.innerWidth;
           const vh = containerRef.current?.clientHeight ?? window.innerHeight;
           const t = target.current;
           const newScale = Math.max(MIN_SCALE, t.scale * ZOOM_FACTOR_OUT);
-          const worldX = (vw / 2 - t.x) / t.scale;
-          const worldY = (vh / 2 - t.y) / t.scale;
+          const wX = (vw / 2 - t.x) / t.scale;
+          const wY = (vh / 2 - t.y) / t.scale;
           target.current.scale = newScale;
-          target.current.x = vw / 2 - worldX * newScale;
-          target.current.y = vh / 2 - worldY * newScale;
+          target.current.x = vw / 2 - wX * newScale;
+          target.current.y = vh / 2 - wY * newScale;
           startAnimation();
           e.preventDefault();
           break;
@@ -545,9 +597,16 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
     return () => window.removeEventListener("keydown", handleKey);
   }, [activeEntry, startAnimation]);
 
-  /* ── Render ── */
-
-  const entryMap = new Map(entries.map((e) => [e.slug, e]));
+  const handleItemClick = useCallback((entry: ColumnsEntry) => {
+    setActiveEntry({
+      slug: entry.slug,
+      date: entry.date,
+      mood: entry.mood,
+      image: entry.image,
+      project: entry.project,
+      description: entry.description,
+    });
+  }, []);
 
   return (
     <div
@@ -559,10 +618,9 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
     >
-      {/* Grain texture overlay */}
       <div className="grain-texture absolute inset-0 pointer-events-none z-10" />
 
-      {/* World container — single CSS transform, no React re-renders */}
+      {/* World container */}
       <div
         ref={worldRef}
         className="absolute top-0 left-0"
@@ -573,57 +631,64 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
           transition: "opacity 0.4s ease",
         }}
       >
-        {layout.map((item) => {
-          const entry = entryMap.get(item.slug);
-          if (!entry) return null;
+        {chunks.map((chunk, chunkIdx) => {
+          // Viewport culling: only render visible chunks + 1 buffer
+          if (chunkIdx < visibleRange[0] || chunkIdx > visibleRange[1])
+            return null;
 
           return (
             <div
-              key={item.slug}
-              className="absolute overflow-hidden"
-              data-slug={item.slug}
-              style={{
-                left: item.x,
-                top: item.y,
-                width: item.width,
-                height: item.height,
-                transform: item.rotation ? `rotate(${item.rotation}deg)` : undefined,
-                zIndex: item.zIndex,
-              }}
-              onClick={() => {
-                if (!hasDragged.current) {
-                  setActiveEntry(entry);
-                }
-              }}
+              key={chunkIdx}
+              className="absolute top-[80px]"
+              style={{ left: chunk.x, width: chunk.width }}
             >
-              <div className="artifact-treatment w-full h-full cursor-pointer hover:scale-[1.02] transition-transform duration-200 ease-out">
-                {isVideo(entry.image) ? (
-                  <video
-                    src={entry.image}
-                    muted
-                    autoPlay
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover pointer-events-none"
-                  />
-                ) : (
-                  <Image
-                    src={entry.image}
-                    alt={entry.description || `Artifact from ${entry.date}`}
-                    width={item.width}
-                    height={item.height}
-                    className="w-full h-full object-contain pointer-events-none"
-                    loading="lazy"
-                    unoptimized
-                  />
-                )}
-              </div>
+              {chunk.items.map((item) => (
+                <div
+                  key={item.entry.slug}
+                  className="absolute overflow-hidden"
+                  style={{
+                    left: item.x,
+                    top: item.y,
+                    width: item.width,
+                    height: item.height,
+                  }}
+                  onClick={() => {
+                    if (!hasDragged.current) handleItemClick(item.entry);
+                  }}
+                >
+                  <div className="artifact-treatment w-full h-full cursor-pointer hover:scale-[1.02] transition-transform duration-200 ease-out">
+                    {isVideo(item.entry.image) ? (
+                      <video
+                        src={item.entry.image}
+                        muted
+                        autoPlay
+                        loop
+                        playsInline
+                        className="w-full h-full object-cover pointer-events-none"
+                      />
+                    ) : (
+                      <Image
+                        src={item.entry.image}
+                        alt={
+                          item.entry.description ||
+                          `Artifact from ${item.entry.date}`
+                        }
+                        width={item.width}
+                        height={item.height}
+                        className="w-full h-full object-contain pointer-events-none"
+                        loading="lazy"
+                        unoptimized
+                      />
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           );
         })}
       </div>
 
-      {/* Title overlay — pushed below header */}
+      {/* Title overlay */}
       <div className="absolute top-20 left-6 z-20 pointer-events-none">
         <h1
           className="font-serif font-bold italic text-ink"
@@ -644,22 +709,7 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
         </p>
       </div>
 
-      {/* Right-side note */}
-      <div className="absolute top-20 right-6 z-20 pointer-events-none text-right">
-        <p
-          className="font-mono text-ink-lighter"
-          style={{
-            fontSize: "clamp(0.55rem, 0.7vw, 0.65rem)",
-            letterSpacing: "0.05em",
-          }}
-        >
-          updated daily by claude
-          <br />
-          with a /update-site skill
-        </p>
-      </div>
-
-      {/* Reset view button (ASMV-62) */}
+      {/* Reset view button */}
       <button
         onClick={resetView}
         className="absolute bottom-6 right-6 z-20 pointer-events-auto
@@ -672,7 +722,7 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
         Reset view
       </button>
 
-      {/* Popover detail view (ASMV-64) */}
+      {/* Popover */}
       {activeEntry && (
         <ArtifactPopover
           entry={activeEntry}

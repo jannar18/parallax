@@ -47,6 +47,8 @@ export interface LayoutEntry {
   slug: string;
   date: string;
   image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 }
 
 interface LayoutConfig {
@@ -63,11 +65,11 @@ interface LayoutConfig {
 }
 
 const DEFAULT_CONFIG: LayoutConfig = {
-  minGap: 120,
+  minGap: 40,
   maxRotation: 0,
-  minWidth: 250,
-  maxWidth: 380,
-  relaxationPasses: 60,
+  minWidth: 280,
+  maxWidth: 420,
+  relaxationPasses: 100,
 };
 
 /* ── Helpers ── */
@@ -80,8 +82,8 @@ function isVideoPath(path?: string): boolean {
 /** Determine aspect ratio category from slug hash */
 function getAspectRatio(rng: () => number, isVideo: boolean): number {
   if (isVideo) {
-    // Videos are typically landscape
-    return 1.6 + rng() * 0.2; // 1.6:1 to 1.8:1
+    // Videos are typically portrait phone recordings
+    return 0.5 + rng() * 0.15; // 0.5:1 to 0.65:1
   }
 
   const roll = rng();
@@ -165,11 +167,12 @@ export function generateLayout(
   const cols = Math.ceil(Math.sqrt(itemCount * 1.5)); // slightly wider than tall
   const rows = Math.ceil(itemCount / cols);
 
-  // Cell size must fit the TALLEST possible item (portrait at 0.65:1 ratio)
-  // plus gap on all sides. This prevents overlaps regardless of aspect ratio.
-  const maxItemHeight = Math.round(cfg.maxWidth / 0.65); // ~585px for 380px width
-  const cellWidth = cfg.maxWidth + cfg.minGap * 2;
-  const cellHeight = maxItemHeight + cfg.minGap * 2;
+  // Square cells based on maxWidth — tall items overflow and get resolved by
+  // collision relaxation. This keeps the grid compact for the common case
+  // (landscape/square items) instead of sizing every cell for the rare tall portrait.
+  const cellSize = cfg.maxWidth + cfg.minGap * 2;
+  const cellWidth = cellSize;
+  const cellHeight = cellSize;
 
   // Global PRNG for grid-level jitter
   const globalSeed = hashString("canvas-layout-even") + itemCount;
@@ -197,8 +200,20 @@ export function generateLayout(
     const widthBase = cfg.minWidth + rng() * (cfg.maxWidth - cfg.minWidth);
     // Clamp video boost so it doesn't exceed maxWidth
     const width = Math.round(Math.min(video ? widthBase * 1.1 : widthBase, cfg.maxWidth));
-    const aspectRatio = getAspectRatio(rng, video);
-    const height = Math.round(width / aspectRatio);
+
+    // Use real image dimensions when available, fall back to random aspect ratio
+    // Clamp aspect ratio to prevent extremely tall/wide items from breaking grid
+    const MIN_ASPECT = 0.5; // at most 2:1 portrait
+    const MAX_ASPECT = 2.5; // at most 2.5:1 landscape
+    let height: number;
+    if (entry.imageWidth && entry.imageHeight) {
+      const rawAspect = entry.imageWidth / entry.imageHeight;
+      const realAspect = Math.min(MAX_ASPECT, Math.max(MIN_ASPECT, rawAspect));
+      height = Math.round(width / realAspect);
+    } else {
+      const aspectRatio = getAspectRatio(rng, video);
+      height = Math.round(width / aspectRatio);
+    }
 
     // ── Position: grid cell center + jitter ──
     const cellIdx = cellIndices[i];
@@ -310,7 +325,12 @@ export function getInitialCamera(
   // Scale to fit with some padding
   const scaleX = viewportWidth / (contentWidth + 200);
   const scaleY = viewportHeight / (contentHeight + 200);
-  const scale = Math.min(scaleX, scaleY, 1); // Don't zoom in past 1:1
+  const fitScale = Math.min(scaleX, scaleY, 1); // Don't zoom in past 1:1
+
+  // Fill the viewport: items should appear large, not as a bird's-eye overview.
+  // The canvas should feel dense with room to explore, not zoomed out to fit everything.
+  const minReadableScale = 0.65;
+  const scale = Math.max(fitScale, minReadableScale);
 
   const x = viewportWidth / 2 - centerX * scale;
   const y = viewportHeight / 2 - centerY * scale;
