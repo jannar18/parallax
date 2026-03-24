@@ -37,7 +37,7 @@ Run silently. Only surface failures.
 1. **Directories.** Create if missing:
    ```bash
    mkdir -p ~/Documents/Artifacts/{raw,archive}
-   mkdir -p "$SITE_REPO/public/images/now/$TODAY"
+   mkdir -p "$SITE_REPO/public/images/studio-desk-archive/$TODAY"
    ```
 
 ---
@@ -129,7 +129,7 @@ cat > /tmp/artifact-render.html << 'EOF'
 <!-- Styled HTML with file content, dark terminal theme, syntax-highlighted -->
 EOF
 qlmanage -t -s 1800 -o /tmp /tmp/artifact-render.html
-cp /tmp/artifact-render.html.png "$SITE_REPO/public/images/now/$TODAY/<short-name>.png"
+cp /tmp/artifact-render.html.png "$SITE_REPO/public/images/studio-desk-archive/$TODAY/<short-name>.png"
 ```
 
 ### Priority 4: Text-only placeholder (absolute last resort)
@@ -153,7 +153,7 @@ Refactored the content loader to support multiple entries per day. No screenshot
 
 For each selected artifact (from raw/ and self-generated), copy directly to the site image directory. Give each file a short, descriptive kebab-case name:
 ```bash
-cp "<source>" "$SITE_REPO/public/images/now/$TODAY/<short-name>.<ext>"
+cp "<source>" "$SITE_REPO/public/images/studio-desk-archive/$TODAY/<short-name>.<ext>"
 ```
 
 **Naming:** Replace the original filename with a short descriptive name. Examples:
@@ -164,12 +164,12 @@ cp "<source>" "$SITE_REPO/public/images/now/$TODAY/<short-name>.<ext>"
 **PDF conversion:** If the file is a `.pdf`, convert to PNG using Quick Look at high resolution:
 ```bash
 qlmanage -t -s 2880 -o /tmp "<source>"
-cp "/tmp/<filename>.png" "$SITE_REPO/public/images/now/$TODAY/<short-name>.png"
+cp "/tmp/<filename>.png" "$SITE_REPO/public/images/studio-desk-archive/$TODAY/<short-name>.png"
 ```
 
 **HEIC conversion:** If the file is `.heic`, convert to PNG:
 ```bash
-sips -s format png "<source>" --out "$SITE_REPO/public/images/now/$TODAY/<short-name>.png"
+sips -s format png "<source>" --out "$SITE_REPO/public/images/studio-desk-archive/$TODAY/<short-name>.png"
 ```
 
 **Videos (.mp4, .mov):** Copy as-is. Videos don't get the artifact treatment class.
@@ -259,7 +259,7 @@ If entries exist for today:
 date: "$TODAY"
 mood: "<shared mood>"
 tags: [<artifact-specific tags>]
-image: "/images/now/$TODAY/<short-name>.<ext>"
+image: "/images/studio-desk-archive/$TODAY/<short-name>.<ext>"
 project: "<shared project>"
 description: "<artifact-specific description>"
 ---
@@ -279,7 +279,7 @@ interface NowEntry {
   date: string;       // YYYY-MM-DD (required)
   mood?: string;      // one word
   tags?: string[];    // 2-3 tags
-  image?: string;     // /images/now/YYYY-MM-DD/<short-name>.<ext>
+  image?: string;     // /images/studio-desk-archive/YYYY-MM-DD/<short-name>.<ext>
   project?: string;   // project name
   description?: string; // artifact description
   content: string;    // MDX body — DO NOT include in frontmatter
@@ -331,7 +331,7 @@ If running, note: "Dev server detected — entries visible at http://localhost:3
 Stage and commit all entries in a single commit:
 ```bash
 git add "src/content/now/$TODAY"*.mdx
-git add "public/images/now/$TODAY/" 2>/dev/null
+git add "public/images/studio-desk-archive/$TODAY/" 2>/dev/null
 git commit -m "now: $TODAY — <mood> (<N> artifacts)"
 ```
 
@@ -356,7 +356,7 @@ Print:
 ```
 Daily update complete.
   Entries:  N files in src/content/now/
-  Images:   public/images/now/$TODAY/ (N files) | none
+  Images:   public/images/studio-desk-archive/$TODAY/ (N files) | none
   Mood:     <mood>
   Project:  <project>
   Commit:   <short hash>

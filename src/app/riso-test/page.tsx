@@ -17,7 +17,7 @@ export default function RisoTestPage() {
           <div className="space-y-4">
             <h2 className="text-xl font-medium uppercase tracking-wider">Software Split (Spruce)</h2>
             <RisoImage 
-              src="/images/homepage/processed/software-split-riso.png" 
+              src="/images/home/software-split.riso.1.png" 
               alt="Test 1"
               breathability={0.7}
               inkColor="#4a635d"
@@ -27,7 +27,7 @@ export default function RisoTestPage() {
           <div className="space-y-4">
             <h2 className="text-xl font-medium uppercase tracking-wider">AI+Arch Merge (Scarlet)</h2>
             <RisoImage 
-              src="/images/home%20page/AI+architecture%20merge%20view%20temporary.png" 
+              src="/images/home/merge.riso.1.png" 
               alt="Test 2"
               breathability={0.8}
               inkColor="#f65058"

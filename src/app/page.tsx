@@ -70,7 +70,7 @@ export default function HomePage() {
         </div>
         <div className="relative overflow-hidden">
           <Image
-            src="/images/homepage/processed/software-split-riso.png"
+            src="/images/home/software-split.riso.1.png"
             alt="Software split view"
             fill
             className="object-cover"

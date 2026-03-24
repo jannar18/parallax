@@ -33,7 +33,7 @@ export default function HeroBrandVisual() {
     const imgs: HTMLImageElement[] = [];
     for (let i = 1; i <= PHOTO_COUNT; i++) {
       const img = new Image();
-      img.src = `/images/hero/photo-${String(i).padStart(2, "0")}.jpg`;
+      img.src = `/images/home/hero/hero.raw.${i}.jpg`;
       imgs.push(img);
     }
     photosRef.current = imgs;

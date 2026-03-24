@@ -65,7 +65,7 @@ Each capture is: one image file + one caption text file. Sequential numbering pr
 **Workflow:**
 1. User invokes `/update-site "debugging agent coordination all day"` (or similar)
 2. Skill reads captures from `src/content/now/.captures/YYYY-MM-DD/`
-3. Each raw capture -> styled through LoRA pipeline -> saved to `public/images/now/YYYY-MM-DD/`
+3. Each raw capture -> styled through LoRA pipeline -> saved to `public/images/studio-desk-archive/YYYY-MM-DD/`
 4. Skill auto-derives: mood (from sentence + artifact types), tags (from topics/files touched)
 5. Skill composes MDX file at `src/content/now/YYYY-MM-DD.mdx`
 6. User reviews before the entry goes live
@@ -83,17 +83,17 @@ summary: "Debugging agent coordination — finally got the handoff working"  # O
 
 # Artifact manifest — ordered list of styled artifacts for the pinboard layout
 artifacts:
-  - src: "/images/now/2026-03-04/001-commit-grain-overlay.png"
+  - src: "/images/studio-desk-archive/2026-03-04/001-commit-grain-overlay.png"
     alt: "Terminal showing successful grain overlay component creation"
     caption: "Created GrainOverlay.tsx — first texture component"
     size: "large"          # large | medium | small — controls pinboard placement
     type: "code"           # code | architecture | photo | text — affects styling treatment
-  - src: "/images/now/2026-03-04/002-snap-failing-tests.png"
+  - src: "/images/studio-desk-archive/2026-03-04/002-snap-failing-tests.png"
     alt: "Test runner showing 2 failures in overlay compositing"
     caption: "Two compositing tests failing — the blend mode was wrong"
     size: "medium"
     type: "code"
-  - src: "/images/now/2026-03-04/003-snap-green-tests.png"
+  - src: "/images/studio-desk-archive/2026-03-04/003-snap-green-tests.png"
     alt: "All 14 tests passing after the fix"
     caption: "All green after switching to multiply blend"
     size: "small"

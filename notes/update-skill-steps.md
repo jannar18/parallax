@@ -15,13 +15,13 @@ Documented from the 2026-03-06 content pipeline practice run. Each step below is
 **What the skill should ask:** "What's the artifact? (file path, or should I generate something?)"
 
 ### Step 2: Process the artifact image (AUTOMATED)
-1. Create directory: `public/images/now/YYYY-MM-DD/`
+1. Create directory: `public/images/studio-desk-archive/YYYY-MM-DD/`
 2. Copy or generate the image into that directory
 3. For v1: no image treatment (grain/monochrome deferred to later iteration)
 4. For future: apply grain overlay + desaturation via Sharp or CSS filter
 
 **Input needed:** Source image path or generation parameters
-**Output:** `/images/now/YYYY-MM-DD/<filename>.png`
+**Output:** `/images/studio-desk-archive/YYYY-MM-DD/<filename>.png`
 
 ### Step 3: Write the MDX entry (SEMI-AUTOMATED)
 1. Create `src/content/now/YYYY-MM-DD.mdx`
@@ -74,7 +74,7 @@ The skill asks all questions from Step 3, allows the user to write longer body t
 | Extend NowEntry schema | One-time setup | Already done — schema now has image, project, description |
 | Build ArtifactBar component | One-time setup | Already done — renders on homepage |
 | Generate texture image | Automated | `node canvas-paper-texture.mjs --output ... --seed 42` |
-| Create image directory | Automated | `mkdir -p public/images/now/YYYY-MM-DD/` |
+| Create image directory | Automated | `mkdir -p public/images/studio-desk-archive/YYYY-MM-DD/` |
 | Copy/process artifact | Automated | `cp` or Sharp processing |
 | Write MDX frontmatter | Semi-auto | Date auto-derived; mood, project, description need user input |
 | Write MDX body | Manual | User writes or approves draft |
@@ -109,5 +109,5 @@ interface NowEntry {
 ## File Conventions
 
 - MDX entries: `src/content/now/YYYY-MM-DD.mdx`
-- Artifact images: `public/images/now/YYYY-MM-DD/<name>.<ext>`
+- Artifact images: `public/images/studio-desk-archive/YYYY-MM-DD/<name>.<ext>`
 - Generated textures: `public/textures/<name>.<ext>` (site-wide, not per-entry)
