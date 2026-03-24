@@ -49,7 +49,7 @@ Invoke the `/update` skill to create the combined Now entry. The skill will:
 
 1. **Discover** raw images from `~/Documents/Artifacts/raw/`
 2. **Riso process** them via `scripts/riso_engine.py` (applies the brand's warm/stipple aesthetic)
-3. **Copy** processed images to `public/images/now/2026-03-06/` (or today's date)
+3. **Copy** processed images to `public/images/studio-desk-archive/2026-03-06/` (or today's date)
 4. **Gather input** — mood, project, description from Julianna
 5. **Generate MDX** at `src/content/now/YYYY-MM-DD.mdx`
 6. **Validate** with `pnpm build`
@@ -61,7 +61,7 @@ Invoke the `/update` skill to create the combined Now entry. The skill will:
 date: "2026-03-06"
 mood: "reviewing"
 tags: ["software", "portfolio", "projects"]
-image: /images/now/2026-03-06/software-review.png  # hero/composite image
+image: /images/studio-desk-archive/2026-03-06/software-review.png  # hero/composite image
 project: "parallax.studio"
 description: "Reviewing live software projects — Schelling Points, Arch Cupid, Rainbow Crawler, Snails vs Garden"
 ---
@@ -108,7 +108,7 @@ This is prep work — the actual software portfolio pages will be built in a sep
 | `scripts/riso_engine.py` | Riso image processing script |
 | `src/content/now/*.mdx` | Existing daily entries (4 so far) |
 | `src/lib/content.ts` | Content loading utilities (`NowEntry`, `SoftwareProject` types) |
-| `public/images/now/` | Processed daily images |
+| `public/images/studio-desk-archive/` | Processed daily images |
 
 ## What Julianna Does vs What the Agent Does
 

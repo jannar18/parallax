@@ -29,7 +29,7 @@ export default function MergeVideo() {
         onEnded={() => setShowCover(true)}
       >
         <source
-          src="/images/homepage/processed/merge-demo.mp4"
+          src="/images/home/merge.riso.1.mp4"
           type="video/mp4"
         />
       </video>
@@ -48,7 +48,7 @@ export default function MergeVideo() {
 
       {/* Riso cover — fades out when video plays, back in when it ends */}
       <Image
-        src="/images/homepage/processed/merge-fallback.png"
+        src="/images/home/merge.riso.1.png"
         alt="Architecture and software merged"
         fill
         className={`object-cover transition-opacity duration-[2500ms] ease-in-out ${

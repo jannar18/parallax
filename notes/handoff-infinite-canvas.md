@@ -15,7 +15,7 @@ parallax.studio (parallax.haus) is a personal site for Julianna — an architect
 ### Content Structure (`src/lib/content.ts`)
 - `NowEntry` interface: `{ slug, date, mood?, tags?, image?, project?, description?, content }`
 - Entries are MDX files in `src/content/now/` with frontmatter
-- Images/videos in `public/images/now/YYYY-MM-DD/`
+- Images/videos in `public/images/studio-desk-archive/YYYY-MM-DD/`
 - Currently ~30+ entries across multiple dates, mix of PNGs, MOVs, and MP4s
 
 ### Existing Interactive Patterns

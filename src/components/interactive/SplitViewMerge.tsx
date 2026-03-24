@@ -60,7 +60,7 @@ export default function SplitViewMerge() {
         >
           <div className="absolute inset-0 bg-paper/70" />
           <Image
-            src="/images/homepage/processed/arch-split-riso.png"
+            src="/images/home/arch-split.riso.1.png"
             alt="Architecture split view"
             fill
             className="object-cover"
@@ -117,7 +117,7 @@ export default function SplitViewMerge() {
             style={{ transform: "translateY(-100%)", opacity: 0 }}
           >
             <Image
-              src="/images/homepage/processed/software-split-riso.png"
+              src="/images/home/software-split.riso.1.png"
               alt="Software split view"
               fill
               className="object-cover"

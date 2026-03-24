@@ -17,7 +17,7 @@ export default function Footer() {
     <footer className="relative flex h-screen flex-col justify-between bg-ink overflow-hidden">
       {/* Background: brick wall photo */}
       <Image
-        src="/images/hero/photo-01.jpg"
+        src="/images/home/hero/hero.raw.1.jpg"
         alt=""
         fill
         className="object-cover opacity-[0.1] mix-blend-screen pointer-events-none"
