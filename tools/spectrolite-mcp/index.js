@@ -271,11 +271,13 @@ function findOrCreatePrecomp(imagePath, imageHash, profileID) {
     if (precompFiles.length > 0) return join(imageDir, precompFiles[0]);
   }
 
-  // Tier 3: try to create one via CLI
-  const profilePath = join(PROFILES_DIR, `${profileID}-3.0.prof`);
+  // Tier 3: create one via CLI
+  // IMPORTANT: Do NOT pass -p (--profile) flag — it triggers a Go panic in
+  // profile.LoadPreviewProfile. The GUI also omits the profile flag.
+  // The profile is only needed at separation time, not precomputation.
   mkdirSync(join(SPECTROLITE_TEMP, imageHash), { recursive: true });
   try {
-    execFileSync(CLI, ["precompute-image", "-v", "-i", imagePath, "-o", expectedPath, "-p", profilePath], {
+    execFileSync(CLI, ["precompute-image", "-v", "-i", imagePath, "-o", expectedPath], {
       encoding: "utf-8",
       timeout: 60000,
     });
@@ -307,6 +309,12 @@ function runSeparation(imagePath, paletteName, options = {}) {
       effectiveProfileID = PALETTES["brand-full"].profileID;
       precomputedPath = findOrCreatePrecomp(imagePath, imageHash, effectiveProfileID);
     }
+  }
+
+  if (!precomputedPath && palette.profileID) {
+    throw new Error(
+      "Precomputation failed for all profiles. Check that spectrolite_cli is installed and working."
+    );
   }
 
   // Build and write inputs (uses effective profile which may differ from palette's own)
