@@ -57,6 +57,7 @@ export interface SoftwareProject {
   stack?: string[];
   url?: string;
   repo?: string;
+  thumbImage?: string;
   heroImage?: string;
   tags?: string[];
   order?: number;
