@@ -14,6 +14,7 @@ Parse `$ARGUMENTS` for these flags (combinable):
 |------|--------|
 | `--blog` | Enter blog writing mode — user writes longer body text alongside artifacts |
 | `--raw` | Skip CSS treatment class on images (use plain `<img>`) |
+| `--portfolio <project>` | Portfolio update mode — follow Pipeline 3 in `docs/site-update-guide.md` for the given project slug |
 
 Anything in `$ARGUMENTS` that is not a flag is treated as a file path to a specific artifact (overrides auto-scan).
 
@@ -22,7 +23,7 @@ Anything in `$ARGUMENTS` that is not a flag is treated as a file path to a speci
 ```
 SITE_REPO="$(git rev-parse --show-toplevel)"
 CONTENT_DIR="$SITE_REPO/src/content/now"
-IMAGE_DIR="$SITE_REPO/public/images/now"
+IMAGE_DIR="$SITE_REPO/public/images/studio-desk-archive"
 RAW_DIR="$HOME/Documents/Artifacts/raw"
 ARCHIVE_DIR="$HOME/Documents/Artifacts/archive"
 TODAY="$(date +%Y-%m-%d)"

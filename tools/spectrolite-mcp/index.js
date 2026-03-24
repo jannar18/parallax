@@ -181,8 +181,13 @@ function buildInputsJson(imagePath, palette, precomputedPath, workDir, options =
         return 1;
       });
     } else {
-      inkIDs = palette.inks.map((ink) => ink.name);
-      cmykOpacities = inkOpacities;
+      // CMYK-ish always needs exactly 4 channels (C, M, Y, K).
+      // For palettes with fewer than 4 inks, pad unused channels with
+      // the first ink name (opacity 0 ensures they don't affect output).
+      // The Go CLI rejects empty-string inkIDs even for zero-opacity channels.
+      const fallbackInk = palette.inks[0].name;
+      inkIDs = Array.from({ length: 4 }, (_, i) => palette.inks[i]?.name ?? fallbackInk);
+      cmykOpacities = Array.from({ length: 4 }, (_, i) => (i < inkCount ? inkOpacities[i] : 0));
     }
 
     colorSeparationInputs.cmykishInputs = {
@@ -282,7 +287,8 @@ function findOrCreatePrecomp(imagePath, imageHash, profileID) {
       timeout: 60000,
     });
     return expectedPath;
-  } catch {
+  } catch (err) {
+    console.error(`precompute-image failed: ${err.message}`);
     return null;
   }
 }
