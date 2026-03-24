@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "spectrolite": {
+      "command": "node",
+      "args": ["/Users/jules/Documents/dev/personalsite-mission-asimov/tools/spectrolite-mcp/index.js"],
+      "env": {
+        "HOME": "/Users/jules"
+      }
+    }
+  }
+}

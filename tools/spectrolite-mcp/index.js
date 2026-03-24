@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { execSync, execFileSync } from "child_process";
-import { mkdirSync, writeFileSync, readFileSync, existsSync, copyFileSync } from "fs";
+import { mkdirSync, writeFileSync, readFileSync, existsSync, copyFileSync, readdirSync } from "fs";
 import { join, basename, parse as parsePath } from "path";
 import { tmpdir } from "os";
 import crypto from "crypto";
@@ -267,15 +267,32 @@ function runSeparation(imagePath, paletteName, options = {}) {
   let precomputedPath = "";
   if (palette.profileID) {
     const profilePath = join(PROFILES_DIR, `${palette.profileID}-3.0.prof`);
-    precomputedPath = join(SPECTROLITE_TEMP, imageHash, `${md5(palette.profileID)}.precomp`);
-    if (!existsSync(precomputedPath)) {
-      try {
-        execFileSync(CLI, ["precompute-image", "-v", "-i", imagePath, "-o", precomputedPath, "-p", profilePath], {
-          encoding: "utf-8",
-          timeout: 60000,
-        });
-      } catch {
-        precomputedPath = "";
+    const expectedPath = join(SPECTROLITE_TEMP, imageHash, `${md5(palette.profileID)}.precomp`);
+
+    if (existsSync(expectedPath)) {
+      precomputedPath = expectedPath;
+    } else {
+      // Spectrolite GUI may have created a precomp with a different naming convention.
+      // Scan the image's temp directory for any existing .precomp file.
+      const imageDir = join(SPECTROLITE_TEMP, imageHash);
+      if (existsSync(imageDir)) {
+        const precompFiles = readdirSync(imageDir).filter((f) => f.endsWith(".precomp"));
+        if (precompFiles.length > 0) {
+          precomputedPath = join(imageDir, precompFiles[0]);
+        }
+      }
+
+      // If still no precomp found, try to create one
+      if (!precomputedPath) {
+        try {
+          execFileSync(CLI, ["precompute-image", "-v", "-i", imagePath, "-o", expectedPath, "-p", profilePath], {
+            encoding: "utf-8",
+            timeout: 60000,
+          });
+          precomputedPath = expectedPath;
+        } catch {
+          precomputedPath = "";
+        }
       }
     }
   }
@@ -380,7 +397,7 @@ Examples:
       })
       .optional()
       .describe('Map CMYK channels to ink names. E.g. {"c":"scarlet","m":"scarlet","y":"scarlet","k":"spruce"}. Shorthand: "CMY=scarlet K=spruce".'),
-    output_path: z.string().optional().describe("Where to save output PNG (default: source dir with -riso suffix)"),
+    output_path: z.string().optional().describe("Where to save output PNG (default: Artifacts/processed/ mirror of source path, or source dir with -riso suffix)"),
   },
   async ({ image_path, palette, effect, lpi, halftone_shape, dither_algorithm, ink_opacity, cmyk_map, output_path }) => {
     try {
@@ -412,6 +429,12 @@ Examples:
         (() => {
           const p = parsePath(image_path);
           const suffix = effect !== "none" ? `-riso-${effect}` : "-riso";
+          // If source is under Artifacts/raw/, output to the mirror path under Artifacts/processed/
+          const rawPrefix = join(process.env.HOME, "Documents/Artifacts/raw");
+          if (p.dir.startsWith(rawPrefix)) {
+            const relDir = p.dir.slice(rawPrefix.length); // e.g. "/software/rainbow-crawler"
+            return join(process.env.HOME, "Documents/Artifacts/processed", relDir, `${p.name}${suffix}.png`);
+          }
           return join(p.dir, `${p.name}${suffix}.png`);
         })();
 
