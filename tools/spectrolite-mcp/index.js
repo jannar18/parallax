@@ -126,11 +126,13 @@ function buildPostprocessing(effect, inkCount, baseManifestPath) {
   return null;
 }
 
-function buildInputsJson(imagePath, palette, precomputedPath, workDir, options = {}) {
+function buildInputsJson(imagePath, palette, precomputedPath, workDir, options = {}, effectiveProfileID = null) {
   const imageHash = md5File(imagePath);
   const inkCount = palette.inks.length;
-  const profilePath = palette.profileID
-    ? join(PROFILES_DIR, `${palette.profileID}-3.0.prof`)
+  // effectiveProfileID may differ from palette.profileID when falling back to brand-full
+  const profileID = effectiveProfileID || palette.profileID;
+  const profilePath = profileID
+    ? join(PROFILES_DIR, `${profileID}-3.0.prof`)
     : null;
 
   // Copy original to working dir so CLI can find it
@@ -187,7 +189,7 @@ function buildInputsJson(imagePath, palette, precomputedPath, workDir, options =
       opacities: cmykOpacities,
       inkIDs,
     };
-    colorSeparationInputs.inkOpacityMultipliers = Array(inkIDs.length).fill(1);
+    colorSeparationInputs.inkOpacityMultipliers = Array(inkCount).fill(1);
   }
 
   if (isPosterize) {
@@ -211,11 +213,11 @@ function buildInputsJson(imagePath, palette, precomputedPath, workDir, options =
       name: palette.name,
       inks: palette.inks,
       userDefined: true,
-      profileID: palette.profileID || "",
+      profileID: profileID || "",
     },
     profile: profilePath
       ? {
-          file: { path: profilePath, name: basename(profilePath), hash: palette.profileID, originalDir: "" },
+          file: { path: profilePath, name: basename(profilePath), hash: profileID, originalDir: "" },
           inks: palette.inks,
           profileGenVersion: "3.0",
         }
@@ -254,6 +256,35 @@ function runCli(args) {
   });
 }
 
+// Try to find or create a precomputed image for a given profile.
+// Returns the path to the .precomp file, or null if all attempts fail.
+function findOrCreatePrecomp(imagePath, imageHash, profileID) {
+  const expectedPath = join(SPECTROLITE_TEMP, imageHash, `${md5(profileID)}.precomp`);
+
+  // Tier 1: exact match for this profile's naming convention
+  if (existsSync(expectedPath)) return expectedPath;
+
+  // Tier 2: scan for any existing .precomp (may be GUI-created with different naming)
+  const imageDir = join(SPECTROLITE_TEMP, imageHash);
+  if (existsSync(imageDir)) {
+    const precompFiles = readdirSync(imageDir).filter((f) => f.endsWith(".precomp"));
+    if (precompFiles.length > 0) return join(imageDir, precompFiles[0]);
+  }
+
+  // Tier 3: try to create one via CLI
+  const profilePath = join(PROFILES_DIR, `${profileID}-3.0.prof`);
+  mkdirSync(join(SPECTROLITE_TEMP, imageHash), { recursive: true });
+  try {
+    execFileSync(CLI, ["precompute-image", "-v", "-i", imagePath, "-o", expectedPath, "-p", profilePath], {
+      encoding: "utf-8",
+      timeout: 60000,
+    });
+    return expectedPath;
+  } catch {
+    return null;
+  }
+}
+
 function runSeparation(imagePath, paletteName, options = {}) {
   const palette = PALETTES[paletteName];
   if (!palette) throw new Error(`Unknown palette: ${paletteName}. Available: ${Object.keys(PALETTES).join(", ")}`);
@@ -263,46 +294,27 @@ function runSeparation(imagePath, paletteName, options = {}) {
   const workDir = join(SPECTROLITE_TEMP, imageHash, sepHash);
   mkdirSync(workDir, { recursive: true });
 
-  // Precompute if profile exists
-  let precomputedPath = "";
+  // Resolve precomputed image — try selected palette's profile, fall back to brand-full.
+  // All palettes use subsets of brand-full's 4 inks, so brand-full's profile is universally compatible.
+  let precomputedPath = null;
+  let effectiveProfileID = palette.profileID;
+
   if (palette.profileID) {
-    const profilePath = join(PROFILES_DIR, `${palette.profileID}-3.0.prof`);
-    const expectedPath = join(SPECTROLITE_TEMP, imageHash, `${md5(palette.profileID)}.precomp`);
+    precomputedPath = findOrCreatePrecomp(imagePath, imageHash, palette.profileID);
 
-    if (existsSync(expectedPath)) {
-      precomputedPath = expectedPath;
-    } else {
-      // Spectrolite GUI may have created a precomp with a different naming convention.
-      // Scan the image's temp directory for any existing .precomp file.
-      const imageDir = join(SPECTROLITE_TEMP, imageHash);
-      if (existsSync(imageDir)) {
-        const precompFiles = readdirSync(imageDir).filter((f) => f.endsWith(".precomp"));
-        if (precompFiles.length > 0) {
-          precomputedPath = join(imageDir, precompFiles[0]);
-        }
-      }
-
-      // If still no precomp found, try to create one
-      if (!precomputedPath) {
-        try {
-          execFileSync(CLI, ["precompute-image", "-v", "-i", imagePath, "-o", expectedPath, "-p", profilePath], {
-            encoding: "utf-8",
-            timeout: 60000,
-          });
-          precomputedPath = expectedPath;
-        } catch {
-          precomputedPath = "";
-        }
-      }
+    // Fallback: if selected profile failed, try brand-full (broadest profile)
+    if (!precomputedPath && palette.profileID !== PALETTES["brand-full"].profileID) {
+      effectiveProfileID = PALETTES["brand-full"].profileID;
+      precomputedPath = findOrCreatePrecomp(imagePath, imageHash, effectiveProfileID);
     }
   }
 
-  // Build and write inputs
-  const inputs = buildInputsJson(imagePath, palette, precomputedPath, workDir, options);
+  // Build and write inputs (uses effective profile which may differ from palette's own)
+  const inputs = buildInputsJson(imagePath, palette, precomputedPath || "", workDir, options, effectiveProfileID);
   const inputsPath = join(workDir, "inputs.json");
   writeFileSync(inputsPath, JSON.stringify(inputs));
 
-  // Run base separation
+  // Run base separation (generates channel PNGs + manifest)
   runCli(["separate", "separate", "-i", inputsPath, "-v"]);
 
   const manifestPath = join(workDir, "manifest.json");
@@ -319,13 +331,12 @@ function runSeparation(imagePath, paletteName, options = {}) {
       const ppDir = join(workDir, `${effect.type}-${ppId}`);
       mkdirSync(ppDir, { recursive: true });
 
-      // Build postprocessing inputs — same as base but with postprocessing and new manifest
       const ppInputs = { ...inputs };
       ppInputs.postprocessing = { ...postprocessing, id: `${effect.type}-${ppId}` };
       ppInputs.manifest = { path: join(ppDir, "manifest.json"), name: "", hash: "", originalDir: "" };
       ppInputs.colorSeparationInputs = {
         ...ppInputs.colorSeparationInputs,
-        method: "spectrolite-default", // halftone/dithering requires spectrolite-default base
+        method: "spectrolite-default",
       };
       delete ppInputs.colorSeparationInputs.cmykishInputs;
 
@@ -336,12 +347,18 @@ function runSeparation(imagePath, paletteName, options = {}) {
 
       const ppManifestPath = join(ppDir, "manifest.json");
       if (existsSync(ppManifestPath)) {
+        // Generate composite preview
+        runCli(["separate", "preview", "-i", ppInputsPath, "-v"]);
         const ppManifest = JSON.parse(readFileSync(ppManifestPath, "utf-8"));
         return { success: true, previewPath: ppManifest.previewPath || null, workDir: ppDir };
       }
     }
   }
 
+  // Generate composite preview from channel separations
+  runCli(["separate", "preview", "-i", inputsPath, "-v"]);
+
+  // Re-read manifest (now includes previewPath)
   const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
   return { success: true, previewPath: manifest.previewPath || null, workDir };
 }
