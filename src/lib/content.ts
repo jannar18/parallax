@@ -61,6 +61,7 @@ export interface SoftwareProject {
   thumbPosition?: string;
   heroImage?: string;
   heroVideo?: string;
+  videos?: string[];
   posterImage?: string;
   screenshots?: string[];
   videos?: string[];

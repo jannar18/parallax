@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { getSoftwareProject } from "@/lib/content";
 import ProjectPanel from "@/components/ui/ProjectPanel";
 import HoverVideo from "@/components/ui/HoverVideo";
