@@ -73,6 +73,16 @@ export default function Footer() {
           >
             Software
           </Link>
+          <Link
+            href="/about"
+            className="font-mono uppercase text-paper/40 transition-colors hover:text-paper/80"
+            style={{
+              fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)",
+              letterSpacing: "var(--tracking-wider)",
+            }}
+          >
+            About
+          </Link>
         </nav>
 
         {/* Bottom: wordmark + year */}
