@@ -430,7 +430,7 @@ Post body in MDX. Supports React components.
 | Daily MDX entries | `YYYY-MM-DD-<short-name>.mdx` | `2026-03-06-hero-full.mdx` |
 | Studio desk image dirs | `public/images/studio-desk-archive/YYYY-MM-DD/` | `public/images/studio-desk-archive/2026-03-06/` |
 | Architecture project slugs | `<kebab-case-project-name>` | `timber-pavilion` |
-| Software project slugs | `<kebab-case-project-name>` | `parallax-site-automation` |
+| Software project slugs | `<kebab-case-project-name>` | `rainbow-crawler` |
 | Writing slugs | `<kebab-case-title>` | `hello-world` |
 
 ### Metadata Schemas
