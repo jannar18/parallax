@@ -22,7 +22,7 @@ import Link from "next/link";
 
 const allLinks = [
   { href: "/work/architecture", label: "Architecture" },
-  { href: "/now", label: "Now" },
+  { href: "/archive", label: "Archive" },
   { href: "/writing", label: "Writing" },
   { href: "/work/software", label: "Software" },
   { href: "/about", label: "About" },
@@ -30,7 +30,7 @@ const allLinks = [
 
 const leftLinks = [
   { href: "/work/architecture", label: "Architecture" },
-  { href: "/now", label: "Now" },
+  { href: "/archive", label: "Archive" },
 ];
 
 const rightLinks = [

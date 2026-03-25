@@ -37,7 +37,7 @@ export default function StudioDeskScroll({ entries }: StudioDeskScrollProps) {
         {cards.map((entry) => (
           <Link
             key={entry.slug}
-            href="/now"
+            href="/archive"
             className="group block h-full flex-shrink-0"
           >
             <div

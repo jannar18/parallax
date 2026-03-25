@@ -4,6 +4,15 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  async redirects() {
+    return [
+      {
+        source: "/now",
+        destination: "/archive",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

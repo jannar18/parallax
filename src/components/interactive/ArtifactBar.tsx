@@ -169,7 +169,7 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
                   </p>
                 )}
                 <Link
-                  href="/now"
+                  href="/archive"
                   className="mt-3 inline-block font-sans text-xs text-scarlet hover:text-scarlet-dark transition-colors"
                   style={{ letterSpacing: "0.05em" }}
                   onClick={(e) => e.stopPropagation()}

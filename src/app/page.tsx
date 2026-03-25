@@ -178,7 +178,7 @@ export default function HomePage() {
         {/* Studio desk — artifact bar (lower 2/3 of virtual slide 8) */}
         <div className="relative">
           <Link
-            href="/now"
+            href="/archive"
             className="absolute top-0 left-0 right-0 text-center font-serif font-bold italic text-ink z-10 -translate-y-1/2 transition-colors hover:text-scarlet"
             style={{ fontSize: "clamp(1.75rem, 3.5vw, 3.5rem)" }}
           >

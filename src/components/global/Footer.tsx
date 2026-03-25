@@ -44,14 +44,14 @@ export default function Footer() {
             Architecture
           </Link>
           <Link
-            href="/now"
+            href="/archive"
             className="font-mono uppercase text-paper/40 transition-colors hover:text-paper/80"
             style={{
               fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)",
               letterSpacing: "var(--tracking-wider)",
             }}
           >
-            Daily Archive
+            Archive
           </Link>
           <Link
             href="/writing"
