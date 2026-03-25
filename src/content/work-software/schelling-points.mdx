@@ -7,9 +7,13 @@ url: ""
 repo: ""
 thumbImage: "/images/software/schelling-points/riso.1.png"
 heroImage: "/images/software/schelling-points/raw.1.png"
+heroVideo: "/images/software/schelling-points/recording.1.mp4"
+posterImage: "/images/software/schelling-points/raw.1.png"
 tags: ["game-theory", "multiplayer", "mobile"]
 order: 3
 featured: true
 ---
 
-Brief placeholder body — Julianna will flesh this out with process writeup later.
+A real-time party game built around Thomas Schelling's focal point theory — the idea that people can coordinate without communication by gravitating toward answers that feel obvious. Players join a lobby, then face 20 rounds of single-word prompts. Everyone answers independently. The game scores how well the group converges.
+
+The interface uses an orbital visualization — colored dots representing players drift around concentric rings. When answers align, the dots collapse inward. A "Mind Meld" triggers confetti. The whole thing runs over WebSockets with a Node relay server, React Native on the client side, and Expo for cross-platform builds.
