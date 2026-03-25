@@ -63,6 +63,7 @@ export interface SoftwareProject {
   heroVideo?: string;
   posterImage?: string;
   screenshots?: string[];
+  videos?: string[];
   tags?: string[];
   order?: number;
   featured?: boolean;

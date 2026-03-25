@@ -59,6 +59,16 @@ export default async function SoftwarePanelPage({
           />
         </div>
 
+        {/* Additional videos */}
+        {project.videos?.map((videoSrc) => (
+          <div key={videoSrc} className="flex-shrink-0" style={{ height: "calc(75vh - 4vh)" }}>
+            <HoverVideo
+              src={videoSrc}
+              alt={project.title}
+            />
+          </div>
+        ))}
+
         {/* Screenshots — all forced to same explicit height */}
         {project.screenshots?.map((src) => (
           <img

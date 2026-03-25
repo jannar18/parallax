@@ -4,9 +4,24 @@ description: "An MCP server that gives AI agents access to architectural knowled
 date: "2026-03-20"
 stack: ["Python", "MCP", "Claude Code"]
 thumbImage: "/images/home/merge.riso.1.png"
+heroVideo: "/videos/software/arch-voice-mcp/c18.mp4"
+videos:
+  - "/videos/software/arch-voice-mcp/c03.mp4"
+  - "/videos/software/arch-voice-mcp/c06.mp4"
+  - "/videos/software/arch-voice-mcp/c07.mp4"
+  - "/videos/software/arch-voice-mcp/c08.mp4"
+  - "/videos/software/arch-voice-mcp/c10.mp4"
+  - "/videos/software/arch-voice-mcp/c13.mp4"
+  - "/videos/software/arch-voice-mcp/c21.mp4"
 tags: ["mcp", "architecture", "ai"]
 order: 2
 featured: false
 ---
 
-Brief placeholder body — Julianna will flesh this out with process writeup later.
+Arch Voice MCP is a Model Context Protocol server that bridges architectural knowledge and AI-assisted design workflows. It indexes reference material — Francis D.K. Ching's canonical texts on architectural form, space, and order — and exposes it as searchable, structured context that any MCP-compatible AI agent can query in real time.
+
+The server provides four core tools: semantic search across the full knowledge base, topic retrieval for specific sections, vocabulary lookup for architectural terms, and a topic listing endpoint for discovery. An architect working with Claude Code can ask "what are the principles of radial organization" or look up "fenestration" and get precise, sourced definitions drawn directly from the indexed material — no hallucination, no paraphrasing.
+
+The motivation was practical: AI agents are powerful collaborators for design exploration, but they lack grounded architectural vocabulary. They'll approximate terminology or invent plausible-sounding concepts that don't hold up. Arch Voice MCP solves this by giving the agent a curated reference library it can consult mid-conversation, the same way a student would reach for Ching on the shelf.
+
+Built in Python with the MCP SDK, the server uses a lightweight embedding pipeline for semantic search and serves results as structured text blocks. It runs locally alongside Claude Code or any MCP client, with no external API dependencies beyond the initial embedding model.
