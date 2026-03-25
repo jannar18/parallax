@@ -29,6 +29,7 @@ export default function SoftwarePage() {
                     alt={project.title}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                    style={project.thumbPosition ? { objectPosition: project.thumbPosition } : undefined}
                   />
                 </div>
               )}
