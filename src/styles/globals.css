@@ -156,3 +156,49 @@
   filter: sepia(0.1) saturate(1.05) contrast(0.97);
   z-index: 1;
 }
+
+/* ── Print Styles (About/Resume page) ── */
+@media print {
+  @page {
+    size: letter;
+    margin: 0.5in;
+  }
+
+  /* Hide site chrome */
+  header, footer, nav,
+  .grain-overlay,
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 10pt !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Remove top padding (no header in print) */
+  section:first-of-type {
+    padding-top: 0 !important;
+  }
+
+  /* Flatten all clamp() sizes for print */
+  h2 {
+    font-size: 14pt !important;
+  }
+
+  h3 {
+    font-size: 11pt !important;
+  }
+
+  a {
+    color: black !important;
+    text-decoration: none !important;
+  }
+
+  /* Prevent page breaks inside sections */
+  section {
+    break-inside: avoid;
+  }
+}

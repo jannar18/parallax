@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import PrintButton from "@/components/ui/PrintButton";
 
 export const metadata: Metadata = {
   title: "About",
@@ -16,106 +16,59 @@ export const metadata: Metadata = {
  */
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-content px-5">
-      {/* ─── Section 1: Hero / Identity Block ─── */}
-      <section className="pb-16 pt-24 md:pb-24 md:pt-32">
-        <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-[1fr_280px] md:gap-16">
-          <div>
-            <h1
-              className="font-serif font-bold italic text-ink"
-              style={{ fontSize: "clamp(2.25rem, 5vw, 3.75rem)" }}
+    <div className="mx-auto px-5" style={{ maxWidth: "816px" }}>
+      {/* ─── Contact Links + Print ─── */}
+      <section className="pt-24 pb-6 md:pt-28 md:pb-8">
+        <div className="flex items-center justify-between">
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            <a
+              href="mailto:juliannaroberts18@gmail.com"
+              className="font-mono uppercase tracking-wider text-ink-lighter transition-colors hover:text-scarlet"
+              style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
             >
-              Julianna Roberts
-            </h1>
-            <p
-              className="mt-4 max-w-text font-sans text-ink-light leading-snug"
-              style={{ fontSize: "clamp(1rem, 1.5vw, 1.25rem)" }}
+              Email
+            </a>
+            <a
+              href="https://linkedin.com/in/julianna-roberts-1118m/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono uppercase tracking-wider text-ink-lighter transition-colors hover:text-scarlet"
+              style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
             >
-              Architectural designer and software engineer exploring what
-              happens when spatial thinking meets computational making.
-            </p>
-            {/* Contact links row */}
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-              <a
-                href="mailto:juliannaroberts18@gmail.com"
-                className="font-mono uppercase tracking-wider text-ink-lighter transition-colors hover:text-scarlet"
-                style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
-              >
-                Email
-              </a>
-              <a
-                href="https://linkedin.com/in/julianna-roberts-1118m/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono uppercase tracking-wider text-ink-lighter transition-colors hover:text-scarlet"
-                style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
-              >
-                LinkedIn
-              </a>
-              <a
-                href="https://github.com/jannar18"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono uppercase tracking-wider text-ink-lighter transition-colors hover:text-scarlet"
-                style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
-              >
-                GitHub
-              </a>
-            </div>
+              LinkedIn
+            </a>
+            <a
+              href="https://github.com/jannar18"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono uppercase tracking-wider text-ink-lighter transition-colors hover:text-scarlet"
+              style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
+            >
+              GitHub
+            </a>
           </div>
-
-          {/* Portrait */}
-          <div className="relative aspect-[3/4] w-full max-w-[280px] overflow-hidden">
-            <Image
-              src="/images/about/profile-pic.jpg"
-              alt="Julianna Roberts"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 280px"
-              priority
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Section 2: Bio ─── */}
-      <section className="border-t border-border py-16 md:py-24">
-        <div className="max-w-text">
-          <p className="font-sans text-ink leading-relaxed" style={{ fontSize: "clamp(0.9375rem, 1.2vw, 1.125rem)" }}>
-            I recently graduated from the Illinois Institute of Technology with
-            a Bachelor of Architecture, where I spent five years learning to see
-            the built environment with precision and intention. Somewhere along
-            the way, I started writing code — first as a way to automate tedious
-            workflows, then as a creative medium in its own right. Now I spend
-            most of my time building software and working with AI, bringing the
-            spatial thinking and material awareness of architecture into a new
-            discipline.
-          </p>
-          <p className="mt-6 font-sans text-ink leading-relaxed" style={{ fontSize: "clamp(0.9375rem, 1.2vw, 1.125rem)" }}>
-            I believe architecture and software share a common question: how do
-            we design systems that people can inhabit? A building and a piece of
-            software both succeed or fail on the same terms — clarity of
-            structure, honesty of materials, and care for the person moving
-            through them. My practice sits at this overlap, looking for what each
-            discipline knows that the other has not yet imagined.
-          </p>
-          <p className="mt-6 font-sans text-ink leading-relaxed" style={{ fontSize: "clamp(0.9375rem, 1.2vw, 1.125rem)" }}>
-            This site is where I collect ongoing work, experiments, research
-            notes, and observations. It is a practice of perception — shifting
-            between vantage points to find depth that no single position reveals.
-          </p>
+          <PrintButton />
         </div>
       </section>
 
       {/* ─── Section 3: Experience ─── */}
-      <section className="border-t border-border py-16 md:py-24">
+      <section className="border-t border-border py-6 md:py-8">
         <h2
           className="font-serif font-bold italic text-ink"
           style={{ fontSize: "clamp(1.5rem, 2.5vw, 1.875rem)" }}
         >
           Experience
         </h2>
-        <div className="mt-10 space-y-10">
+        <div className="mt-4 space-y-5">
+          <ExperienceEntry
+            role="Software Developer"
+            organization="Fractal Tech NYC"
+            dates="Feb 2026 — present"
+            bullets={[
+              "Built and shipped 6+ full-stack apps, software tools, and AI research projects with 451+ commits and 168+ PRs",
+              "Designed and built multiplayer games, MCP servers, dungeon crawlers, and AI-powered tools using React, Next.js, TypeScript, Python, WebSockets, and Three.js — with a focus on Claude Code research and harnessing AI as a development partner",
+            ]}
+          />
           <ExperienceEntry
             role="Gallery Educator + Greeter"
             organization="Wrightwood 659"
@@ -148,15 +101,37 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ─── Section 4: Education ─── */}
-      <section className="border-t border-border py-16 md:py-24">
+      {/* ─── Tech Stack ─── */}
+      <section className="border-t border-border py-6 md:py-8">
+        <h2
+          className="font-serif font-bold italic text-ink"
+          style={{ fontSize: "clamp(1.5rem, 2.5vw, 1.875rem)" }}
+        >
+          Tech Stack
+        </h2>
+        <ul className="mt-4 space-y-2">
+          <SkillLine label="Frontend" skills="React 19, TypeScript, Tailwind CSS, Vite, Shadcn UI, Radix UI, React Router, MDX" />
+          <SkillLine label="Backend" skills="Node.js, Express.js, FastAPI, Bun, WebSockets, Python" />
+          <SkillLine label="Full-Stack & Auth" skills="Next.js 15, Supabase (PostgreSQL), BetterAuth, Firebase, NextAuth" />
+          <SkillLine label="Databases" skills="PostgreSQL, SQLite, Supabase" />
+          <SkillLine label="AI / LLM" skills="Anthropic SDK (Claude), Model Context Protocol (MCP), Vercel AI SDK, Agents & Tool Use, RAG, Workflow Orchestration, Multimodal I/O, Streaming & Real-Time Systems" />
+          <SkillLine label="3D & Graphics" skills="Three.js, React Three Fiber, PixiJS v8, Rhino Python API" />
+          <SkillLine label="Testing" skills="Vitest" />
+          <SkillLine label="DevOps & Deployment" skills="Docker, Terraform, GitHub Actions, Vercel, Netlify, Sevalla, Render, AWS EC2, AWS S3, GCP Compute Engine" />
+          <SkillLine label="Observability" skills="OpenTelemetry, Grafana, Prometheus" />
+          <SkillLine label="Architecture & CAD" skills="AutoCAD, Rhino + V-Ray, SketchUp, Lumion, Adobe Creative Cloud, Laser Cutting" />
+        </ul>
+      </section>
+
+      {/* ─── Education ─── */}
+      <section className="border-t border-border py-6 md:py-8">
         <h2
           className="font-serif font-bold italic text-ink"
           style={{ fontSize: "clamp(1.5rem, 2.5vw, 1.875rem)" }}
         >
           Education
         </h2>
-        <div className="mt-10 space-y-10">
+        <div className="mt-4 space-y-5">
           <EducationEntry
             institution="Illinois Institute of Technology"
             degree="Bachelor of Architecture (NAAB Accredited)"
@@ -179,15 +154,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ─── Section 5: Awards & Leadership ─── */}
-      <section className="border-t border-border py-16 md:py-24">
+      {/* ─── Recognition ─── */}
+      <section className="border-t border-border py-6 md:py-8">
         <h2
           className="font-serif font-bold italic text-ink"
           style={{ fontSize: "clamp(1.5rem, 2.5vw, 1.875rem)" }}
         >
           Recognition
         </h2>
-        <div className="mt-10 grid grid-cols-1 gap-x-16 gap-y-10 md:grid-cols-2">
+        <div className="mt-4 grid grid-cols-1 gap-x-12 gap-y-5 md:grid-cols-2">
           {/* Awards */}
           <div>
             <h3
@@ -222,48 +197,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ─── Section 6: Skills ─── */}
-      <section className="border-t border-border py-16 md:py-24">
-        <h2
-          className="font-serif font-bold italic text-ink"
-          style={{ fontSize: "clamp(1.5rem, 2.5vw, 1.875rem)" }}
-        >
-          Tools & Skills
-        </h2>
-        <div className="mt-10 grid grid-cols-1 gap-x-16 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-          <SkillGroup
-            label="Architecture"
-            skills={[
-              "AutoCAD",
-              "Rhino + V-Ray",
-              "SketchUp",
-              "Lumion",
-              "Adobe Creative Cloud",
-              "Drafting & Sketching",
-              "Model Making",
-              "Laser Cutting",
-            ]}
-          />
-          <SkillGroup
-            label="Software & AI"
-            skills={[
-              "Placeholder — Julianna to fill in",
-            ]}
-          />
-          <SkillGroup
-            label="Professional"
-            skills={[
-              "Communication",
-              "Organization",
-              "Leadership",
-              "Attention to Detail",
-            ]}
-          />
-        </div>
-      </section>
-
       {/* Bottom spacer */}
-      <div className="h-16 md:h-24" />
+      <div className="h-10 md:h-16" />
     </div>
   );
 }
@@ -385,26 +320,19 @@ function RecognitionItem({ label, year }: { label: string; year: string }) {
   );
 }
 
-function SkillGroup({ label, skills }: { label: string; skills: string[] }) {
+function SkillLine({ label, skills }: { label: string; skills: string }) {
   return (
-    <div>
-      <h3
+    <li
+      className="font-sans text-ink-light leading-normal"
+      style={{ fontSize: "clamp(0.8125rem, 1vw, 0.9375rem)" }}
+    >
+      <span
         className="font-mono uppercase tracking-wider text-ink-lighter"
         style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
       >
-        {label}
-      </h3>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {skills.map((skill) => (
-          <span
-            key={skill}
-            className="font-mono text-ink-light"
-            style={{ fontSize: "clamp(0.75rem, 0.9vw, 0.8125rem)" }}
-          >
-            {skill}
-          </span>
-        ))}
-      </div>
-    </div>
+        {label}:
+      </span>{" "}
+      {skills}
+    </li>
   );
 }
