@@ -395,16 +395,25 @@ export default function MasonryLayout({ entries }: MasonryLayoutProps) {
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       const t = target.current;
-      const zoomFactor = e.deltaY > 0 ? ZOOM_FACTOR_OUT : ZOOM_FACTOR_IN;
-      const newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, t.scale * zoomFactor));
-      const rect = container.getBoundingClientRect();
-      const cursorX = e.clientX - rect.left;
-      const cursorY = e.clientY - rect.top;
-      const worldX = (cursorX - t.x) / t.scale;
-      const worldY = (cursorY - t.y) / t.scale;
-      target.current.scale = newScale;
-      target.current.x = cursorX - worldX * newScale;
-      target.current.y = cursorY - worldY * newScale;
+
+      // Pinch-to-zoom (trackpad) or Ctrl/Meta+scroll (mouse) → zoom
+      if (e.ctrlKey || e.metaKey) {
+        const zoomFactor = e.deltaY > 0 ? ZOOM_FACTOR_OUT : ZOOM_FACTOR_IN;
+        const newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, t.scale * zoomFactor));
+        const rect = container.getBoundingClientRect();
+        const cursorX = e.clientX - rect.left;
+        const cursorY = e.clientY - rect.top;
+        const worldX = (cursorX - t.x) / t.scale;
+        const worldY = (cursorY - t.y) / t.scale;
+        target.current.scale = newScale;
+        target.current.x = cursorX - worldX * newScale;
+        target.current.y = cursorY - worldY * newScale;
+      } else {
+        // Regular scroll/swipe → pan the canvas
+        target.current.x -= e.deltaX;
+        target.current.y -= e.deltaY;
+      }
+
       startAnimation();
     };
     container.addEventListener("wheel", handleWheel, { passive: false });

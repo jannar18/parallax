@@ -491,25 +491,33 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
       e.preventDefault();
 
       const t = target.current;
-      const zoomFactor = e.deltaY > 0 ? ZOOM_FACTOR_OUT : ZOOM_FACTOR_IN;
-      const newScale = Math.min(
-        MAX_SCALE,
-        Math.max(MIN_SCALE, t.scale * zoomFactor)
-      );
 
-      // Zoom toward cursor position
-      const rect = container.getBoundingClientRect();
-      const cursorX = e.clientX - rect.left;
-      const cursorY = e.clientY - rect.top;
+      // Pinch-to-zoom (trackpad) or Ctrl/Meta+scroll (mouse) → zoom
+      if (e.ctrlKey || e.metaKey) {
+        const zoomFactor = e.deltaY > 0 ? ZOOM_FACTOR_OUT : ZOOM_FACTOR_IN;
+        const newScale = Math.min(
+          MAX_SCALE,
+          Math.max(MIN_SCALE, t.scale * zoomFactor)
+        );
 
-      // Convert cursor to world coordinates before scale change
-      const worldX = (cursorX - t.x) / t.scale;
-      const worldY = (cursorY - t.y) / t.scale;
+        // Zoom toward cursor position
+        const rect = container.getBoundingClientRect();
+        const cursorX = e.clientX - rect.left;
+        const cursorY = e.clientY - rect.top;
 
-      // Adjust offset so the world point under cursor stays under cursor
-      target.current.scale = newScale;
-      target.current.x = cursorX - worldX * newScale;
-      target.current.y = cursorY - worldY * newScale;
+        // Convert cursor to world coordinates before scale change
+        const worldX = (cursorX - t.x) / t.scale;
+        const worldY = (cursorY - t.y) / t.scale;
+
+        // Adjust offset so the world point under cursor stays under cursor
+        target.current.scale = newScale;
+        target.current.x = cursorX - worldX * newScale;
+        target.current.y = cursorY - worldY * newScale;
+      } else {
+        // Regular scroll/swipe → pan the canvas
+        target.current.x -= e.deltaX;
+        target.current.y -= e.deltaY;
+      }
 
       startAnimation();
     };
