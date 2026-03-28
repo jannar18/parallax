@@ -71,8 +71,8 @@ export default function HeroBrandVisual() {
     handleResize();
     let skipFrame = false;
 
-    const DELAY_MS = 5000;
-    const DURATION_MS = 7000;
+    const DELAY_MS = 1500;
+    const DURATION_MS = 2800;
     const ease = (t: number) =>
       t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 

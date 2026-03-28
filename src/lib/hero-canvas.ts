@@ -140,7 +140,7 @@ export function generateWireNetwork(tier: PerfTier = "high"): WireNetwork {
       phase: Math.random() * Math.PI * 2,
       reveal: 0,
       revealTarget: 0,
-      revealDelay: i * 0.18 + Math.random() * 2,
+      revealDelay: i * 0.02 + Math.random() * 0.3,
     });
   }
 
@@ -169,7 +169,7 @@ export function generateWireNetwork(tier: PerfTier = "high"): WireNetwork {
         alpha: 0.15 + Math.random() * 0.4,
         phase: Math.random() * Math.PI * 2,
         signalPos: Math.random(),
-        signalSpeed: 0.003 + Math.random() * 0.006,
+        signalSpeed: 0.006 + Math.random() * 0.012,
         signalDir: Math.random() < 0.5 ? 1 : -1,
         drawProgress: 0,
       });
@@ -190,7 +190,7 @@ export function generateWireNetwork(tier: PerfTier = "high"): WireNetwork {
       alpha: 0.08 + Math.random() * 0.15,
       phase: Math.random() * Math.PI * 2,
       signalPos: Math.random(),
-      signalSpeed: 0.002 + Math.random() * 0.004,
+      signalSpeed: 0.004 + Math.random() * 0.008,
       signalDir: Math.random() < 0.5 ? 1 : -1,
       drawProgress: 0,
     });
@@ -387,7 +387,7 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
   // Reveal nodes over time
   for (const n of net.nodes) {
     if (ts > n.revealDelay) n.revealTarget = 1;
-    n.reveal += (n.revealTarget - n.reveal) * 0.2;
+    n.reveal += (n.revealTarget - n.reveal) * 0.4;
   }
 
   // Draw edges + signals
@@ -398,7 +398,7 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
     if (er < 0.01) continue;
 
     // Animate draw progress — line strokes from node A toward node B
-    edge.drawProgress += (1 - edge.drawProgress) * 0.06;
+    edge.drawProgress += (1 - edge.drawProgress) * 0.12;
 
     const pA = mapToQuad(nA.nx, nA.ny, pts);
     const pB = mapToQuad(nB.nx, nB.ny, pts);
