@@ -218,13 +218,14 @@ function ExperienceEntry({
         >
           {organization}
         </span>
+        <span className="font-sans text-ink-lighter" style={{ fontSize: "0.85em" }}>|</span>
+        <span
+          className="font-mono uppercase tracking-wider text-ink-lighter"
+          style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
+        >
+          {dates}
+        </span>
       </h3>
-      <p
-        className="mt-1 font-mono uppercase tracking-wider text-ink-lighter"
-        style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
-      >
-        {dates}
-      </p>
       {description ? (
         <p
           className="mt-3 font-sans text-ink-light leading-normal"
