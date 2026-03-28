@@ -207,24 +207,23 @@ function ExperienceEntry({
   return (
     <div>
       <h3
-        className="font-serif font-bold italic text-ink"
+        className="flex flex-wrap items-baseline gap-x-2"
         style={{ fontSize: "clamp(1.125rem, 1.5vw, 1.25rem)" }}
       >
-        {role}
-      </h3>
-      <p className="mt-1 flex flex-wrap items-baseline gap-x-3">
+        <span className="font-serif font-bold italic text-ink">{role}</span>
+        <span className="font-sans text-ink-lighter" style={{ fontSize: "0.85em" }}>|</span>
         <span
           className="font-sans text-ink-light"
           style={{ fontSize: "clamp(0.875rem, 1.1vw, 1rem)" }}
         >
           {organization}
         </span>
-        <span
-          className="font-mono uppercase tracking-wider text-ink-lighter"
-          style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
-        >
-          {dates}
-        </span>
+      </h3>
+      <p
+        className="mt-1 font-mono uppercase tracking-wider text-ink-lighter"
+        style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
+      >
+        {dates}
       </p>
       {description ? (
         <p
