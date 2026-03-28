@@ -2,32 +2,20 @@ import type { Metadata } from "next";
 import { getAllNowEntries } from "@/lib/content";
 import { getImageDimensions } from "@/lib/image-utils";
 import StudioDesk from "@/components/interactive/StudioDesk";
-import type { LayoutMode } from "@/components/interactive/LayoutSwitcher";
 
 export const metadata: Metadata = {
   title: "Archive",
   description: "A living archive of what I'm working on, thinking about, and making.",
 };
 
-const VALID_LAYOUTS: LayoutMode[] = ["scatter", "masonry"];
-
 /**
  * Archive / Studio Desk page.
  *
- * Switchable layout prototypes: ?layout=scatter|masonry
- * Default is scatter (infinite canvas).
+ * Layout switching (scatter|masonry) is handled client-side by StudioDesk
+ * via URL search params. This page is statically generated to stay under
+ * Vercel's 300MB serverless function size limit.
  */
-export default async function ArchivePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ layout?: string }>;
-}) {
-  const params = await searchParams;
-  const layoutParam = params.layout ?? "scatter";
-  const layout: LayoutMode = VALID_LAYOUTS.includes(layoutParam as LayoutMode)
-    ? (layoutParam as LayoutMode)
-    : "scatter";
-
+export default function ArchivePage() {
   const entries = getAllNowEntries();
 
   // Filter to entries with images/videos and compute real dimensions
@@ -47,5 +35,5 @@ export default async function ArchivePage({
       };
     });
 
-  return <StudioDesk entries={canvasEntries} layout={layout} />;
+  return <StudioDesk entries={canvasEntries} />;
 }

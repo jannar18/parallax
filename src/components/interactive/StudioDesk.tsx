@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { type LayoutMode } from "./LayoutSwitcher";
 import LayoutSwitcher from "./LayoutSwitcher";
 import InfiniteCanvas from "./InfiniteCanvas";
@@ -16,12 +17,18 @@ export interface StudioDeskEntry {
   description?: string;
 }
 
+const VALID_LAYOUTS: LayoutMode[] = ["scatter", "masonry"];
+
 interface StudioDeskProps {
   entries: StudioDeskEntry[];
-  layout: LayoutMode;
 }
 
-export default function StudioDesk({ entries, layout }: StudioDeskProps) {
+export default function StudioDesk({ entries }: StudioDeskProps) {
+  const searchParams = useSearchParams();
+  const layoutParam = searchParams.get("layout") ?? "scatter";
+  const layout: LayoutMode = VALID_LAYOUTS.includes(layoutParam as LayoutMode)
+    ? (layoutParam as LayoutMode)
+    : "scatter";
   return (
     <>
       {/* Subtle page subtitle -- fixed top-center, restrained */}
