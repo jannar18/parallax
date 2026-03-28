@@ -70,33 +70,22 @@ export default function AboutPage() {
             ]}
           />
           <ExperienceEntry
-            role="Gallery Educator + Greeter"
-            organization="Wrightwood 659"
-            dates="Apr 2024 — Jul 2024"
-            bullets={[
-              "Educated visitors on exhibitions spanning architecture, art, and social justice",
-              "Conducted independent research to develop and deliver educator-led gallery talks",
-            ]}
-          />
-          <ExperienceEntry
-            role="Gallery Service Assistant"
-            organization="Gallery 1957 at Expo Chicago"
-            dates="Apr 2023"
-            bullets={[
-              "Engaged collectors and visitors on behalf of a contemporary Ghanaian gallery",
-              "Represented artists and facilitated conversations connecting work to broader cultural context",
-            ]}
-          />
-          <ExperienceEntry
             role="Architectural Intern"
             organization="Studio KZ + Scottsdale Design Build"
             dates="May 2022 — Jul 2023"
-            bullets={[
-              "Produced construction document sets through CD and CA phases",
-              "Built SketchUp models for client presentations and design development",
-              "Performed field work including site visits, measurements, and documentation",
-              "Reviewed contractual documents and assisted with structural calculations",
-            ]}
+            description="Developed drawing sets through the CD & CA phases for both residential & commercial projects, built 3D SketchUp models for client presentations, participated in on-site field & construction work, assisted with contractual review, collaborated on structural calculations and detail design, drafted plans, elevations, sections & details for custom homes"
+          />
+          <ExperienceEntry
+            role="Gallery Educator + Greeter"
+            organization="Wrightwood 659"
+            dates="Apr 2024 — Jul 2024"
+            description={'Engaged & educated visitors on architecture & artworks, developed research & \u201Ceducator talk\u201D on artist'}
+          />
+          <ExperienceEntry
+            role="Gallery Service Assistant"
+            organization="Gallery 1957 | Expo Chicago"
+            dates="Apr 2023"
+            description="Engaged with potential clients, learned artists & their works quickly, promoted & represented artists to the public"
           />
         </div>
       </section>
@@ -137,9 +126,9 @@ export default function AboutPage() {
             degree="Bachelor of Architecture (NAAB Accredited)"
             dates="2020 — 2025"
             details={[
-              "GPA 3.71",
-              "Summer Study Abroad — Japan, 2023",
-              "U.S. Department of Energy Solar Decathlon participant",
+              "GPA: 3.71",
+              "Summer Study Abroad Course: Japan 2023",
+              "U.S. Department of Energy Solar Decathlon",
             ]}
           />
           <EducationEntry
@@ -147,8 +136,8 @@ export default function AboutPage() {
             degree="International Baccalaureate"
             dates="2016 — 2020"
             details={[
-              "Class Rank 1 / 638 — GPA 5.0",
-              "Seal of Biliteracy, National Honor Society Seal",
+              "Seal of Biliteracy & NHS Seal",
+              "Class Rank: 1 out of 638 | GPA: 5.0",
             ]}
           />
         </div>
@@ -210,11 +199,13 @@ function ExperienceEntry({
   organization,
   dates,
   bullets,
+  description,
 }: {
   role: string;
   organization: string;
   dates: string;
-  bullets: string[];
+  bullets?: string[];
+  description?: string;
 }) {
   return (
     <div>
@@ -238,17 +229,26 @@ function ExperienceEntry({
           {dates}
         </span>
       </p>
-      <ul className="mt-3 space-y-1.5">
-        {bullets.map((bullet, i) => (
-          <li
-            key={i}
-            className="font-sans text-ink-light leading-normal pl-4 relative before:absolute before:left-0 before:top-[0.6em] before:h-[3px] before:w-[3px] before:rounded-full before:bg-ink-lighter"
-            style={{ fontSize: "clamp(0.8125rem, 1vw, 0.9375rem)" }}
-          >
-            {bullet}
-          </li>
-        ))}
-      </ul>
+      {description ? (
+        <p
+          className="mt-3 font-sans text-ink-light leading-normal"
+          style={{ fontSize: "clamp(0.8125rem, 1vw, 0.9375rem)" }}
+        >
+          {description}
+        </p>
+      ) : bullets ? (
+        <ul className="mt-3 space-y-1.5">
+          {bullets.map((bullet, i) => (
+            <li
+              key={i}
+              className="font-sans text-ink-light leading-normal pl-4 relative before:absolute before:left-0 before:top-[0.6em] before:h-[3px] before:w-[3px] before:rounded-full before:bg-ink-lighter"
+              style={{ fontSize: "clamp(0.8125rem, 1vw, 0.9375rem)" }}
+            >
+              {bullet}
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   );
 }
