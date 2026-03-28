@@ -98,7 +98,7 @@ export default function AboutPage() {
         >
           Tech Stack
         </h2>
-        <ul className="mt-4 space-y-2">
+        <ul className="mt-4 space-y-0.5">
           <SkillLine label="Frontend" skills="React 19, TypeScript, Tailwind CSS, Vite, Shadcn UI, Radix UI, React Router, MDX" />
           <SkillLine label="Backend" skills="Node.js, Express.js, FastAPI, Bun, WebSockets, Python" />
           <SkillLine label="Full-Stack & Auth" skills="Next.js 15, Supabase (PostgreSQL), BetterAuth, Firebase, NextAuth" />
@@ -126,9 +126,7 @@ export default function AboutPage() {
             degree="Bachelor of Architecture (NAAB Accredited)"
             dates="2020 — 2025"
             details={[
-              "GPA: 3.71",
-              "Summer Study Abroad Course: Japan 2023",
-              "U.S. Department of Energy Solar Decathlon",
+              "GPA: 3.71 | Summer Study Abroad Course: Japan 2023 | U.S. Department of Energy Solar Decathlon",
             ]}
           />
           <EducationEntry
@@ -136,8 +134,7 @@ export default function AboutPage() {
             degree="International Baccalaureate"
             dates="2016 — 2020"
             details={[
-              "Seal of Biliteracy & NHS Seal",
-              "Class Rank: 1 out of 638 | GPA: 5.0",
+              "Class Rank: 1 out of 638 | GPA: 5.0 | Seal of Biliteracy & NHS Seal",
             ]}
           />
         </div>
