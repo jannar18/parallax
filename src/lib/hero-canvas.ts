@@ -61,6 +61,10 @@ export interface HeroState {
   nextPhoto: number;
   crossfade: number;
   photoHoldTimer: number;
+  /** Time-based slideshow hold timer (ms). Replaces frame-based timer for consistent timing across frame rates. */
+  photoHoldTimerMs: number;
+  /** Timestamp of the last drawFrame call for delta-time calculation */
+  lastFrameTime: number;
   perfTier: PerfTier;
   dpr: number;
 }
@@ -76,7 +80,12 @@ const PERF_LONG_EDGES_LOW = 6;
 
 // ── Constants ──
 
-export const HOLD_DURATION = 300; // ~5s per photo at 60fps
+// Slideshow timing uses real time (ms) so mobile (30fps) and desktop (60fps)
+// get the same photo hold duration and crossfade speed.
+export const HOLD_DURATION_MS = 5000; // 5 seconds per photo
+export const FADE_DURATION_MS = 2800; // ~2.8s crossfade
+// Legacy frame-based constants kept for reference/tests:
+export const HOLD_DURATION = 300;
 export const FADE_SPEED = 0.006;
 export const PHOTO_COUNT = 12;
 export const BG_COLOR = "#FDFCEA"; // --color-background (Riso Paper)
@@ -111,6 +120,8 @@ export function createInitialState(): HeroState {
     nextPhoto: 1,
     crossfade: 0,
     photoHoldTimer: 0,
+    photoHoldTimerMs: 0,
+    lastFrameTime: 0,
     perfTier: "high",
     dpr: 1,
   };
@@ -331,14 +342,19 @@ export function drawPhotoInQuad(
 
 // ── Slideshow ──
 
-export function updateSlideshow(s: HeroState) {
+export function updateSlideshow(s: HeroState, deltaMs: number) {
+  s.photoHoldTimerMs += deltaMs;
+  // Also increment legacy frame counter for backward compat
   s.photoHoldTimer++;
-  if (s.photoHoldTimer > HOLD_DURATION) {
-    s.crossfade += FADE_SPEED;
+
+  if (s.photoHoldTimerMs > HOLD_DURATION_MS) {
+    // Time-based crossfade: progress by fraction of fade duration
+    s.crossfade += deltaMs / FADE_DURATION_MS;
     if (s.crossfade >= 1) {
       s.currentPhoto = s.nextPhoto;
       s.nextPhoto = (s.nextPhoto + 1) % PHOTO_COUNT;
       s.crossfade = 0;
+      s.photoHoldTimerMs = 0;
       s.photoHoldTimer = 0;
     }
   }
@@ -472,7 +488,13 @@ export function drawFrame(
   ctx: CanvasRenderingContext2D,
   s: HeroState,
   photos: HTMLImageElement[],
+  nowMs?: number,
 ) {
+  // Compute delta time for time-based animations
+  const now = nowMs ?? performance.now();
+  const deltaMs = s.lastFrameTime > 0 ? Math.min(now - s.lastFrameTime, 100) : 16; // cap at 100ms to avoid jumps
+  s.lastFrameTime = now;
+
   s.frame++;
   s.mouseX += (s.targetMX - s.mouseX) * 0.05;
   s.mouseY += (s.targetMY - s.mouseY) * 0.05;
@@ -482,7 +504,7 @@ export function drawFrame(
   ctx.fillStyle = BG_COLOR;
   ctx.fillRect(0, 0, s.W, s.H);
 
-  updateSlideshow(s);
+  updateSlideshow(s, deltaMs);
   drawLeftPlane(ctx, s, photos);
   drawRightPlane(ctx, s);
 }

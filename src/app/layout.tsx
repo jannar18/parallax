@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { fontSans, fontSerif, fontMono } from "@/lib/fonts";
 import { siteMetadata } from "@/lib/metadata";
 import Header from "@/components/global/Header";
@@ -7,6 +7,10 @@ import GrainOverlay from "@/components/ui/GrainOverlay";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = siteMetadata;
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
 
 export default function RootLayout({
   children,

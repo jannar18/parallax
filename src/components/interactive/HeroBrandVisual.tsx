@@ -115,7 +115,7 @@ export default function HeroBrandVisual() {
       const dpr = s.dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      drawFrame(ctx, s, photosRef.current);
+      drawFrame(ctx, s, photosRef.current, now);
 
       if (s.frame % 30 === 0) {
         setMetadataLeft(getMetadataLeft(s));
@@ -130,10 +130,18 @@ export default function HeroBrandVisual() {
     return () => cancelAnimationFrame(rafRef.current);
   }, [handleResize]);
 
-  // ── Resize ──
+  // ── Resize + orientation change ──
   useEffect(() => {
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", () => {
+      // Orientation change fires before the viewport updates;
+      // defer resize to let the browser settle.
+      setTimeout(handleResize, 150);
+    });
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
   }, [handleResize]);
 
   // ── Intersection Observer (pause rAF offscreen) ──
@@ -150,7 +158,7 @@ export default function HeroBrandVisual() {
     return () => obs.disconnect();
   }, []);
 
-  // ── Parallax + dblclick wireframe regen ──
+  // ── Parallax (mouse + touch) + dblclick/doubletap wireframe regen ──
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const s = stateRef.current;
@@ -158,17 +166,41 @@ export default function HeroBrandVisual() {
       s.targetMY = e.clientY / (s.H || 1);
     };
 
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 0) return;
+      const t = e.touches[0];
+      const s = stateRef.current;
+      s.targetMX = t.clientX / (s.W || 1);
+      s.targetMY = t.clientY / (s.H || 1);
+    };
+
     const handleDblClick = () => {
       const s = stateRef.current;
       s.wireNetwork = generateWireNetwork(s.perfTier);
     };
 
+    // Double-tap detection for mobile wireframe regen
+    let lastTap = 0;
+    const handleTouchEnd = (e: TouchEvent) => {
+      const now = Date.now();
+      if (now - lastTap < 300) {
+        e.preventDefault();
+        const s = stateRef.current;
+        s.wireNetwork = generateWireNetwork(s.perfTier);
+      }
+      lastTap = now;
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
     window.addEventListener("dblclick", handleDblClick);
+    window.addEventListener("touchend", handleTouchEnd);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("dblclick", handleDblClick);
+      window.removeEventListener("touchend", handleTouchEnd);
     };
   }, []);
 
@@ -176,7 +208,8 @@ export default function HeroBrandVisual() {
     <div ref={scrollRef} className="relative">
       <section
         ref={stickyRef}
-        className="h-screen overflow-hidden"
+        className="overflow-hidden"
+        style={{ height: "100dvh" }}
       >
         {/* Canvas layer */}
         <canvas
@@ -192,7 +225,7 @@ export default function HeroBrandVisual() {
         >
           {/* Left metadata column */}
           <div
-            className="absolute left-7 top-1/2 -translate-y-1/2 font-mono uppercase whitespace-pre"
+            className="absolute top-1/2 -translate-y-1/2 font-mono uppercase whitespace-pre hidden md:block"
             style={{
               writingMode: "vertical-rl",
               fontSize: "8.75px",
@@ -200,6 +233,7 @@ export default function HeroBrandVisual() {
               letterSpacing: "1.8px",
               lineHeight: 1.8,
               color: "rgba(var(--color-ink-rgb),0.26)",
+              left: "max(1.75rem, env(safe-area-inset-left, 1.75rem))",
             }}
           >
             {metadataLeft}
@@ -207,7 +241,7 @@ export default function HeroBrandVisual() {
 
           {/* Right metadata column */}
           <div
-            className="absolute right-7 top-1/2 -translate-y-1/2 font-mono uppercase whitespace-pre"
+            className="absolute top-1/2 -translate-y-1/2 font-mono uppercase whitespace-pre hidden md:block"
             style={{
               writingMode: "vertical-rl",
               transform: "translateY(-50%) rotate(180deg)",
@@ -216,6 +250,7 @@ export default function HeroBrandVisual() {
               letterSpacing: "1.8px",
               lineHeight: 1.8,
               color: "rgba(var(--color-ink-rgb),0.26)",
+              right: "max(1.75rem, env(safe-area-inset-right, 1.75rem))",
             }}
           >
             {metadataRight}
@@ -223,12 +258,13 @@ export default function HeroBrandVisual() {
 
           {/* Bottom metadata bar */}
           <div
-            className="absolute bottom-[22px] left-0 right-0 flex justify-center items-center gap-5 font-mono uppercase"
+            className="absolute left-0 right-0 flex justify-center items-center gap-3 md:gap-5 font-mono uppercase"
             style={{
               fontSize: "8.25px",
               fontWeight: 300,
               letterSpacing: "3.5px",
               color: "rgba(var(--color-ink-rgb),0.19)",
+              bottom: "max(22px, env(safe-area-inset-bottom, 22px))",
             }}
           >
             {metadataBottom.map((item, i) =>
