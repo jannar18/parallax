@@ -1,0 +1,32 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 1,
+  "complexity": null,
+  "created_at": "2026-03-30T19:12:03Z",
+  "created_by": "agent:claude-opus-4",
+  "custom_fields": {},
+  "description": "Replace the single demo video on the home page architecture voice section with a horizontally scrollable series of video clips. Scroll left to reveal clips coming from the right. Use the same clips and clip order from the architecture voice portfolio page. Keep the riso thumbnail cover and hover-to-play interaction.",
+  "done_at": "2026-03-30T19:19:37Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KN02ZSZCXFKK37AAKM5SMTP0",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
+  "id": "task_01KN02J1DC4CPWR7S7Y9SP7N43",
+  "last_event_id": "ev_01KN02ZWVD006HKBJAQ8VA40FE",
+  "last_status_changed_at": "2026-03-30T19:19:37Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-81",
+  "status": "done",
+  "tags": null,
+  "title": "Improve arch voice home page demo video \u2014 horizontal scroll clip series",
+  "type": "task",
+  "updated_at": "2026-03-30T19:19:37Z",
+  "urgency": null
+}

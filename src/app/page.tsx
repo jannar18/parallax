@@ -4,7 +4,7 @@ import { getAllNowEntries } from "@/lib/content";
 import HeroBrandVisual from "@/components/interactive/HeroBrandVisual";
 import ArtifactBar from "@/components/interactive/ArtifactBar";
 import SplitViewMerge from "@/components/interactive/SplitViewMerge";
-import MergeVideo from "@/components/interactive/MergeVideo";
+import ClipReel from "@/components/interactive/ClipReel";
 import ScrollLine from "@/components/ui/ScrollLine";
 /**
  * Home page — viewport-fitted sections ("slides").
@@ -92,9 +92,9 @@ export default function HomePage() {
         <ScrollLine origin="center" />
       </div>
 
-      {/* ─── Section 5: Merged — architecture + software as one ─── */}
-      <section className="relative h-screen overflow-hidden bg-ink">
-        <MergeVideo />
+      {/* ─── Section 5: Arch Voice clip reel ─── */}
+      <section className="relative h-screen overflow-hidden bg-paper">
+        <ClipReel />
       </section>
 
       {/* ─── Sections 7+8: Text → Links (shared) → Studio Desk ───
