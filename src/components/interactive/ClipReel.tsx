@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 
+// Riso thumbnail is slide 0, then 16 video clips
+const RISO_COVER = "/images/home/merge.riso.1.png";
 const CLIPS = [
   "/videos/software/arch-voice-mcp/clip-01.mov",
   "/videos/software/arch-voice-mcp/clip-02.mp4",
@@ -22,45 +24,112 @@ const CLIPS = [
   "/videos/software/arch-voice-mcp/clip-16.mp4",
 ];
 
-/**
- * ClipReel — vertical scroll version.
- * Clips stack vertically, each viewport-height. Auto-play on scroll into view.
- * First clip has riso cover. Normal page scroll reveals clips one by one.
- */
+const TOTAL_SLIDES = 1 + CLIPS.length; // riso cover + clips
+
 export default function ClipReel() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [slideProgress, setSlideProgress] = useState<number[]>(
+    () => Array(TOTAL_SLIDES).fill(0)
+  );
+
+  useEffect(() => {
+    const onScroll = () => {
+      const wrapper = wrapperRef.current;
+      if (!wrapper) return;
+      const scrolled = -wrapper.getBoundingClientRect().top;
+      const sh = window.innerHeight;
+
+      setSlideProgress(
+        Array.from({ length: TOTAL_SLIDES }, (_, i) => {
+          const p = (scrolled - i * sh) / sh;
+          return Math.max(0, Math.min(1, p));
+        })
+      );
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <>
-      {CLIPS.map((src, i) => (
-        <ClipItem key={src} src={src} hasRisoCover={i === 0} />
-      ))}
-    </>
+    <div
+      ref={wrapperRef}
+      style={{ height: `${TOTAL_SLIDES * 100}vh` }}
+    >
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+        {/* Slide 0: Riso cover — same size as video clips, right-aligned */}
+        <div
+          className="absolute inset-0 flex items-center justify-end"
+          style={{
+            zIndex: TOTAL_SLIDES,
+            clipPath: `inset(0 0 ${slideProgress[0] * 100}% 0)`,
+          }}
+        >
+          <img
+            src={RISO_COVER}
+            alt="Architecture and software merged"
+            className="h-full w-auto object-contain"
+          />
+        </div>
+
+        {/* Slides 1–16: Video clips */}
+        {CLIPS.map((src, i) => (
+          <ClipSlide
+            key={src}
+            src={src}
+            z={TOTAL_SLIDES - 1 - i}
+            wipe={slideProgress[i + 1]}
+            active={
+              slideProgress[i + 1] < 1 &&
+              slideProgress[i] >= 1
+            }
+          />
+        ))}
+
+        {/* Wipe line — thin scarlet line at the active wipe edge */}
+        {(() => {
+          const idx = slideProgress.findIndex((p) => p > 0 && p < 1);
+          if (idx === -1) return null;
+          return (
+            <div
+              className="absolute left-0 right-0 pointer-events-none"
+              style={{
+                top: `${(1 - slideProgress[idx]) * 100}%`,
+                height: "2px",
+                backgroundColor: "var(--color-scarlet)",
+                zIndex: TOTAL_SLIDES + 1,
+              }}
+            />
+          );
+        })()}
+      </div>
+    </div>
   );
 }
 
-function ClipItem({ src, hasRisoCover }: { src: string; hasRisoCover: boolean }) {
-  const containerRef = useRef<HTMLDivElement>(null);
+function ClipSlide({
+  src,
+  z,
+  wipe,
+  active,
+}: {
+  src: string;
+  z: number;
+  wipe: number;
+  active: boolean;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 
-  // Auto-play when clip scrolls into view, pause when it leaves
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          videoRef.current?.play();
-          setPlaying(true);
-        } else {
-          videoRef.current?.pause();
-          setPlaying(false);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+    if (active) {
+      videoRef.current?.play();
+      setPlaying(true);
+    } else {
+      videoRef.current?.pause();
+      setPlaying(false);
+    }
+  }, [active]);
 
   const handleClick = useCallback(() => {
     if (playing) {
@@ -74,8 +143,11 @@ function ClipItem({ src, hasRisoCover }: { src: string; hasRisoCover: boolean })
 
   return (
     <div
-      ref={containerRef}
-      className="relative flex h-screen w-full items-center justify-center cursor-pointer"
+      className="absolute inset-0 flex items-center justify-end cursor-pointer"
+      style={{
+        zIndex: z,
+        clipPath: `inset(0 0 ${wipe * 100}% 0)`,
+      }}
       onClick={handleClick}
     >
       <video
@@ -87,18 +159,6 @@ function ClipItem({ src, hasRisoCover }: { src: string; hasRisoCover: boolean })
         preload="metadata"
         className="h-full w-auto object-contain"
       />
-
-      {hasRisoCover && (
-        <Image
-          src="/images/home/merge.riso.1.png"
-          alt="Architecture and software merged"
-          fill
-          className={`object-cover pointer-events-none transition-opacity duration-[2500ms] ease-in-out ${
-            playing ? "opacity-0" : "opacity-100"
-          }`}
-          unoptimized
-        />
-      )}
     </div>
   );
 }
