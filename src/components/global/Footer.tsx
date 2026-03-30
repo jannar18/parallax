@@ -30,7 +30,7 @@ export default function Footer() {
       {/* Grain texture overlay — localized to footer (uses shared .grain-texture class) */}
       <div className="grain-texture absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-soft-light" />
 
-      <div className="relative flex flex-1 flex-col justify-between px-[5vw] py-[6vh] font-sans">
+      <div className="relative flex flex-1 flex-col justify-between px-[2.5vw] py-[6vh] font-sans">
         {/* Navigation links — pushed down below the window */}
         <nav className="flex flex-wrap gap-[3vw] mt-auto mb-auto pt-[38vh] pl-0">
           <Link
