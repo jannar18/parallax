@@ -4,14 +4,22 @@ import { useRef, useState, useCallback, useEffect, forwardRef } from "react";
 import Image from "next/image";
 
 const CLIPS = [
-  "/videos/software/arch-voice-mcp/c02.mov",
-  "/videos/software/arch-voice-mcp/c06.mp4",
-  "/videos/software/arch-voice-mcp/c07.mp4",
-  "/videos/software/arch-voice-mcp/c08.mp4",
-  "/videos/software/arch-voice-mcp/c10.mp4",
-  "/videos/software/arch-voice-mcp/c13.mp4",
-  "/videos/software/arch-voice-mcp/c18.mp4",
-  "/videos/software/arch-voice-mcp/c21.mp4",
+  "/videos/software/arch-voice-mcp/clip-01.mov",
+  "/videos/software/arch-voice-mcp/clip-02.mp4",
+  "/videos/software/arch-voice-mcp/clip-03.mp4",
+  "/videos/software/arch-voice-mcp/clip-04.mp4",
+  "/videos/software/arch-voice-mcp/clip-05.mov",
+  "/videos/software/arch-voice-mcp/clip-06.mov",
+  "/videos/software/arch-voice-mcp/clip-07.mov",
+  "/videos/software/arch-voice-mcp/clip-08.mov",
+  "/videos/software/arch-voice-mcp/clip-09.mov",
+  "/videos/software/arch-voice-mcp/clip-10.mov",
+  "/videos/software/arch-voice-mcp/clip-11.mov",
+  "/videos/software/arch-voice-mcp/clip-12.mov",
+  "/videos/software/arch-voice-mcp/clip-13.mov",
+  "/videos/software/arch-voice-mcp/clip-14.mov",
+  "/videos/software/arch-voice-mcp/clip-15.mp4",
+  "/videos/software/arch-voice-mcp/clip-16.mp4",
 ];
 
 /**
@@ -28,7 +36,7 @@ export default function ClipReel() {
     if (!el) return;
     const ro = new ResizeObserver(([entry]) => {
       const w = entry.contentRect.width;
-      if (w > 0) setSpacer(`calc(50vw - ${w / 2}px)`);
+      if (w > 0) setSpacer(`calc(100vw - ${w}px)`);
     });
     ro.observe(el);
     return () => ro.disconnect();
