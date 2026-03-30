@@ -85,8 +85,7 @@ function computeMasonryLayout(
     const width = colWidth;
     const innerWidth = width - ITEM_PADDING * 2;
     const innerHeight = Math.round(innerWidth / aspect);
-    const maxInnerHeight = innerWidth * 2;
-    const height = Math.min(innerHeight, maxInnerHeight) + ITEM_PADDING * 2;
+    const height = innerHeight + ITEM_PADDING * 2;
 
     items.push({
       entry,
@@ -488,7 +487,7 @@ export default function MasonryLayout({ entries }: MasonryLayoutProps) {
                 <video
                   src={item.entry.image}
                   muted autoPlay loop playsInline
-                  className="w-full h-full object-cover pointer-events-none"
+                  className="w-full h-full object-contain pointer-events-none"
                 />
               ) : (
                 <Image
