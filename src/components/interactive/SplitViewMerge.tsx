@@ -102,7 +102,7 @@ export default function SplitViewMerge() {
               </p>
               <Link
                 href="/work/architecture"
-                className="mt-[3vh] inline-flex items-center gap-2 font-mono uppercase tracking-wide text-ink transition-colors hover:text-scarlet"
+                className="mt-[3vh] inline-flex items-center gap-2 font-mono uppercase tracking-wide text-scarlet transition-colors hover:text-ink"
                 style={{ fontSize: "clamp(0.7rem, 0.9vw, 0.825rem)" }}
               >
                 View Architecture Work <span>&rarr;</span>
