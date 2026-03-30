@@ -172,6 +172,19 @@ export default function HomePage() {
                 &rarr;
               </span>
             </Link>
+            <Link
+              href="/pretext"
+              className="group flex items-center gap-2 font-mono uppercase text-ink transition-colors hover:text-scarlet"
+              style={{
+                fontSize: "clamp(0.75rem, 1vw, 0.95rem)",
+                letterSpacing: "var(--tracking-wider)",
+              }}
+            >
+              Pretext
+              <span className="text-ink-lighter transition-transform group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </Link>
           </nav>
         </div>
 

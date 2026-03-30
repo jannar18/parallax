@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRACTAL — Sierpinski Carpet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #fdf0d5;
+    --red: #cc2936;
+    --blue: #1d3557;
+    --black: #1a1a1a;
+    --dark: #111111;
+    --gutter: #161616;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--dark);
+    font-family: 'Space Mono', monospace;
+    overflow: hidden;
+    color: var(--cream);
+  }
+
+  /* ── Layout ─────────────────────────────────────────────── */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    height: 100vh;
+  }
+
+  /* ── Panels (shared) ────────────────────────────────────── */
+  .panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel-label {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    font-size: 9px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: rgba(253,240,213,0.18);
+    padding: 14px 20px 10px;
+    text-indent: 6px;
+    font-weight: 700;
+    z-index: 1;
+  }
+
+  /* ── Left: Source Field (geometric shape) ───────────────── */
+  .field-panel {
+    background: var(--gutter);
+    border-right: 1px solid #2a2a2a;
+  }
+
+  #field-canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  /* ── Right: ASCII Carpet ────────────────────────────────── */
+  .carpet-panel {
+    background: var(--black);
+  }
+
+  #carpet {
+    font-family: 'Space Mono', 'Courier New', monospace;
+    color: var(--cream);
+    white-space: pre;
+    line-height: 1.0;
+    letter-spacing: 0;
+    user-select: none;
+    font-variant-ligatures: none;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Stats bar between panels and controls ──────────────── */
+  .stats-bar {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    font-size: 9px;
+    color: rgba(253,240,213,0.15);
+    letter-spacing: 2px;
+    padding: 6px 20px;
+    border-top: 1px solid #1e1e1e;
+    background: var(--dark);
+  }
+  .stats-bar span { color: rgba(253,240,213,0.35); }
+
+  /* ── Controls ───────────────────────────────────────────── */
+  .controls {
+    grid-column: 1 / -1;
+    background: var(--dark);
+    border-top: 1px solid #2a2a2a;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 14px;
+  }
+
+  .controls button {
+    background: none;
+    border: 1px solid #333;
+    color: rgba(253,240,213,0.5);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 5px 14px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .controls button:hover {
+    border-color: var(--red);
+    color: var(--red);
+  }
+  .controls button.on {
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  #slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: #333;
+    outline: none;
+    border-radius: 1px;
+  }
+  #slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--cream);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #slider::-webkit-slider-thumb:hover { background: var(--red); }
+  #slider::-moz-range-thumb {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: none;
+    cursor: pointer;
+  }
+
+  #level-display {
+    font-size: 9px;
+    color: rgba(253,240,213,0.3);
+    letter-spacing: 2px;
+    min-width: 90px;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ── Breathing animation on carpet text ─────────────────── */
+  @keyframes breathe {
+    0%, 100% { opacity: 0.88; }
+    50% { opacity: 1; }
+  }
+  .streaming #carpet {
+    animation: breathe 6s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <!-- LEFT: source field (geometric fractal shape) -->
+  <div class="panel field-panel">
+    <div class="panel-label">Source Field</div>
+    <canvas id="field-canvas"></canvas>
+  </div>
+
+  <!-- RIGHT: ASCII carpet -->
+  <div class="panel carpet-panel">
+    <div class="panel-label">ASCII Carpet</div>
+    <pre id="carpet"></pre>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div>FILLED <span id="stat-filled">0</span> / <span id="stat-total">0</span></div>
+    <div>HOLES <span id="stat-holes">0</span></div>
+    <div>DEPTH <span id="stat-depth">0</span></div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button id="play-btn">PLAY</button>
+    <button id="reset-btn">RESET</button>
+    <input type="range" id="slider" min="0" max="4" step="0.01" value="0">
+    <span id="level-display">LEVEL 0 / 4</span>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  QUOTES — from fractal-nyc-website-synthesis.md
+// ═══════════════════════════════════════════════════════════════
+const QUOTES = [
+  "THE GOLDEN AGE IS ALREADY IN THE COMPUTER",
+  "ALL WE HAVE TO DO IS ARRANGE THE MARKDOWN FILES",
+  "A SMALL GROUP OF PEOPLE WHO SHARE CONTEXT DEEPLY LIVE NEAR EACH OTHER AND BUILD TOOLS FOR EACH OTHER CAN MOVE DRAMATICALLY FASTER THAN INDIVIDUALS WORKING ALONE",
+  "IT IS NOT A COMPANY IT IS NOT AN APP IT IS AN OPEN SOURCE GOLDEN AGE PROTOCOL",
+  "A REPLICABLE ARRANGEMENT OF KNOWLEDGE RELATIONSHIPS AND INFRASTRUCTURE",
+  "DON'T BUILD POLISHED APPS LAY OUT ALL THE RAW MATERIAL",
+  "EVERYONE ALREADY HAS THEIR OWN AI AGENT WHAT THEY LACK IS PARTS",
+  "YOUR CLAUDE TALKS TO THE JUNKYARD MY CLAUDE TALKS TO THE JUNKYARD THE JUNKYARD IS THE THIRD BRAIN",
+  "IF IT FEELS LIKE A CHORE YOU'RE DOING IT WRONG IF IT FEELS LIKE A NEW MINECRAFT WORLD YOU'RE DOING IT RIGHT",
+  "SOCIAL TECHNOLOGY IS NOW FORKABLE ANYONE CAN FORK IT AND HOST THEIR OWN VERSION ANYWHERE IN THE WORLD",
+  "THE CONFIG IS THE LESSON",
+  "GAIN OF FUNCTION RESEARCH ON THE GOLDEN AGE VIRUS",
+  "MODERNITY ACTS LIKE A CENTRIFUGE SEPARATING PEOPLE BY AGE INCOME INTEREST GEOGRAPHY",
+  "THE ANTIDOTE IS INTENTIONAL INSTITUTIONS THAT RE-MINGLE WHAT THE CENTRIFUGE HAS SEPARATED",
+  "SPEEDRUNNING PEOPLE TOWARDS LIFE FULFILLMENT",
+  "A GROUP OF FRIENDS CAN WRITE A SINGLE MARKDOWN FILE AND INFLUENCE MILLIONS OF LIVES OVERNIGHT",
+  "IT SHOULD FEEL LIKE LOGGING INTO A WORLD NOT OPENING A DASHBOARD",
+  "THINK XEROX PARC THINK THE MANHATTAN PROJECT",
+  "YOU'RE A WIZARD NOW HARRY",
+  "TAKING THE FRACTAL PILL SHOULD JUST BE PUTTING A MARKDOWN FILE AT YOUR TOP",
+  "A ZIP FILE YOU CAN OPEN ANYWHERE AND TALK TO",
+  "PLAY FRACTAL",
+  "THE MMO",
+  "ONCE SOMEONE HAS SOLVED THEIR OWN PROBLEMS THEIR LOCUS OF CONCERN NATURALLY EXPANDS OUTWARD",
+  "100000 PEOPLE WHO HAVE FOUND DEEP LIFE SATISFACTION AND ARE READY FOR THE NEXT THING WHAT DO THEY DO TOGETHER",
+  "FRACTAL IS FIVE INTERCONNECTED INSTITUTIONS SHARING A PHYSICAL SPACE IN WILLIAMSBURG BROOKLYN",
+  "METRICS AS COWARDICE",
+  "THE COOPERATION MACHINE",
+  "TYRANNY OF THE MARGINAL USER",
+  "LIBERATING ARTS ENVIRONMENTS THAT LIBERATE THE SPIRIT AND ENCOURAGE EXPERIMENTATION",
+  "HOW DO WE BUILD A GOLDEN AGE STARTING WITH OUR FRIENDS",
+  "THE DEEPER GAME THE NETWORK IS SPEEDRUNNING PEOPLE TOWARDS LIFE FULFILLMENT",
+  "COMPOUND ENGINEERING EVERY UNIT OF WORK MAKES THE NEXT EASIER",
+  "FRACTAL TORONTO APPEARED SPONTANEOUSLY",
+  "A SKILLS AS PAMPHLETS THESIS",
+  "THE PEDAGOGY IS MONTESSORI DERIVED THE LIBERATING ARTS"
+];
+
+const SEP = " · ";
+const fullText = QUOTES.join(SEP);
+const textLen = fullText.length;
+
+// ═══════════════════════════════════════════════════════════════
+//  SIERPINSKI CARPET — precompute hole depth for each cell
+// ═══════════════════════════════════════════════════════════════
+const MAX_LEVEL = 4;
+const SIZE = 3 ** MAX_LEVEL; // 81
+
+// holeLevels[i]: the reveal-level (1–4) at which cell i becomes a hole.
+// 0 = never a hole (always filled).
+const holeLevels = new Uint8Array(SIZE * SIZE);
+
+for (let y = 0; y < SIZE; y++) {
+  for (let x = 0; x < SIZE; x++) {
+    for (let r = 1; r <= MAX_LEVEL; r++) {
+      const i = MAX_LEVEL - r + 1;
+      const p = 3 ** i;
+      const third = p / 3;
+      if (Math.floor((x % p) / third) === 1 &&
+          Math.floor((y % p) / third) === 1) {
+        holeLevels[y * SIZE + x] = r;
+        break;
+      }
+    }
+  }
+}
+
+// Precompute filled-cell counts per integer level
+const filledAtLevel = [];
+for (let lvl = 0; lvl <= MAX_LEVEL; lvl++) {
+  let c = 0;
+  for (let k = 0; k < SIZE * SIZE; k++) {
+    if (holeLevels[k] === 0 || holeLevels[k] > lvl) c++;
+  }
+  filledAtLevel[lvl] = c;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  CELL STATE — returns true if filled at a given fractional progress
+// ═══════════════════════════════════════════════════════════════
+function cellFilled(idx, progress) {
+  const hl = holeLevels[idx];
+  if (hl === 0) return true;
+  const fullLvl = Math.floor(progress);
+  if (hl <= fullLvl) return false;
+  const frac = progress - fullLvl;
+  if (hl === fullLvl + 1 && frac > 0) {
+    const x = idx % SIZE, y = (idx / SIZE) | 0;
+    const h = ((x * 7919 + y * 104729 + hl * 31) & 0x7FFFFFFF) % 1000;
+    return h >= (frac * 1000) | 0;
+  }
+  return true;
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  LEFT PANEL — draw geometric source field on canvas
+// ═══════════════════════════════════════════════════════════════
+const canvas  = document.getElementById('field-canvas');
+const ctx     = canvas.getContext('2d');
+
+// Colors for each hole depth — gives visual hierarchy
+const FILL_COLOR = '#fdf0d5';
+const HOLE_COLORS = [
+  null,         // unused (index 0)
+  '#cc2936',    // level 1 holes: red
+  '#1d3557',    // level 2 holes: blue
+  '#2a4a6b',    // level 3 holes: lighter blue
+  '#3d5d7e',    // level 4 holes: even lighter
+];
+const DISSOLVE_COLOR = 'rgba(253,240,213,0.35)';
+const BG_COLOR = '#111111';
+
+function drawField(progress) {
+  const panel  = document.querySelector('.field-panel');
+  const pad    = 60;
+  const maxDim = Math.min(panel.clientWidth - pad, panel.clientHeight - pad);
+  const cell   = Math.max(1, Math.floor(maxDim / SIZE));
+  const total  = cell * SIZE;
+
+  // Size canvas to exact pixel grid (no sub-pixel blur)
+  canvas.width  = total;
+  canvas.height = total;
+  canvas.style.width  = total + 'px';
+  canvas.style.height = total + 'px';
+
+  const fullLvl = Math.floor(progress);
+  const frac    = progress - fullLvl;
+
+  ctx.fillStyle = BG_COLOR;
+  ctx.fillRect(0, 0, total, total);
+
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+      const idx = y * SIZE + x;
+      const hl  = holeLevels[idx];
+
+      if (hl === 0) {
+        // Always filled
+        ctx.fillStyle = FILL_COLOR;
+        ctx.fillRect(x * cell, y * cell, cell, cell);
+      } else if (hl <= fullLvl) {
+        // Fully carved — show hole color for its depth
+        ctx.fillStyle = HOLE_COLORS[hl] || BG_COLOR;
+        ctx.fillRect(x * cell, y * cell, cell, cell);
+      } else if (hl === fullLvl + 1 && frac > 0) {
+        // Dissolving
+        const h = ((x * 7919 + y * 104729 + hl * 31) & 0x7FFFFFFF) % 1000;
+        if (h < (frac * 1000) | 0) {
+          ctx.fillStyle = HOLE_COLORS[hl] || BG_COLOR;
+        } else {
+          ctx.fillStyle = DISSOLVE_COLOR;
+        }
+        ctx.fillRect(x * cell, y * cell, cell, cell);
+      } else {
+        // Not yet carved — filled
+        ctx.fillStyle = FILL_COLOR;
+        ctx.fillRect(x * cell, y * cell, cell, cell);
+      }
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  RIGHT PANEL — render ASCII carpet text
+// ═══════════════════════════════════════════════════════════════
+const carpetEl = document.getElementById('carpet');
+
+function renderCarpet(progress, textOffset) {
+  const off = ((textOffset % textLen) + textLen) % textLen;
+  let ci = off;
+  const buf = [];
+
+  for (let y = 0; y < SIZE; y++) {
+    let line = '';
+    const row = y * SIZE;
+    for (let x = 0; x < SIZE; x++) {
+      if (cellFilled(row + x, progress)) {
+        line += fullText[ci];
+        ci = (ci + 1) % textLen;
+      } else {
+        line += ' ';
+      }
+    }
+    buf.push(line);
+  }
+  return buf.join('\n');
+}
+
+function resizeCarpet() {
+  const panel = document.querySelector('.carpet-panel');
+  const maxW  = panel.clientWidth - 40;
+  const maxH  = panel.clientHeight - 50;
+  const fzW   = maxW / (SIZE * 0.602);
+  const fzH   = maxH / SIZE;
+  carpetEl.style.fontSize = Math.max(3, Math.min(fzW, fzH, 20)).toFixed(2) + 'px';
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  STATE + ANIMATION
+// ═══════════════════════════════════════════════════════════════
+let progress   = 0;
+let textOffset = 0;
+let playing    = false;
+let phase      = 'grow'; // 'grow' | 'stream'
+
+const slider     = document.getElementById('slider');
+const playBtn    = document.getElementById('play-btn');
+const resetBtn   = document.getElementById('reset-btn');
+const levelDisp  = document.getElementById('level-display');
+const statFilled = document.getElementById('stat-filled');
+const statHoles  = document.getElementById('stat-holes');
+const statTotal  = document.getElementById('stat-total');
+const statDepth  = document.getElementById('stat-depth');
+
+statTotal.textContent = SIZE * SIZE;
+
+function filledCount(p) {
+  const full = Math.floor(p);
+  if (full >= MAX_LEVEL) return filledAtLevel[MAX_LEVEL];
+  const frac = p - full;
+  return Math.round(filledAtLevel[full] + (filledAtLevel[full + 1] - filledAtLevel[full]) * frac);
+}
+
+function updateDisplay() {
+  drawField(progress);
+  carpetEl.textContent = renderCarpet(progress, textOffset);
+
+  const fc = filledCount(progress);
+  statFilled.textContent = fc;
+  statHoles.textContent  = SIZE * SIZE - fc;
+  statDepth.textContent  = progress.toFixed(2);
+  levelDisp.textContent  = 'LEVEL ' + progress.toFixed(1) + ' / ' + MAX_LEVEL;
+
+  document.body.classList.toggle('streaming', phase === 'stream' && playing);
+}
+
+let lastTime  = 0;
+let streamAcc = 0;
+
+function tick(now) {
+  requestAnimationFrame(tick);
+  if (!playing) { lastTime = now; return; }
+
+  const dt = Math.min(now - lastTime, 50);
+  lastTime = now;
+
+  if (phase === 'grow') {
+    progress += dt * 0.0004;
+    if (progress >= MAX_LEVEL) {
+      progress = MAX_LEVEL;
+      phase = 'stream';
+      streamAcc = 0;
+    }
+    slider.value = progress;
+    updateDisplay();
+  } else if (phase === 'stream') {
+    streamAcc += dt;
+    if (streamAcc > 120) {
+      textOffset++;
+      streamAcc -= 120;
+      updateDisplay();
+    }
+  }
+}
+requestAnimationFrame(tick);
+
+// ═══════════════════════════════════════════════════════════════
+//  CONTROLS
+// ═══════════════════════════════════════════════════════════════
+playBtn.addEventListener('click', () => {
+  playing = !playing;
+  playBtn.textContent = playing ? 'PAUSE' : 'PLAY';
+  playBtn.classList.toggle('on', playing);
+  if (playing && progress >= MAX_LEVEL) phase = 'stream';
+  else if (playing) phase = 'grow';
+});
+
+resetBtn.addEventListener('click', () => {
+  progress = 0;
+  textOffset = 0;
+  phase = 'grow';
+  slider.value = 0;
+  playing = false;
+  playBtn.textContent = 'PLAY';
+  playBtn.classList.remove('on');
+  updateDisplay();
+});
+
+slider.addEventListener('input', () => {
+  progress = parseFloat(slider.value);
+  phase = progress >= MAX_LEVEL ? 'stream' : 'grow';
+  updateDisplay();
+});
+
+// ═══════════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════════
+function resizeAll() { drawField(progress); resizeCarpet(); }
+resizeAll();
+updateDisplay();
+window.addEventListener('resize', () => { resizeAll(); updateDisplay(); });
+</script>
+</body>
+</html>
