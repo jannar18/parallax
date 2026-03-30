@@ -92,8 +92,8 @@ export default function HomePage() {
         <ScrollLine origin="center" />
       </div>
 
-      {/* ─── Section 5: Arch Voice clip reel ─── */}
-      <section className="relative h-screen overflow-hidden bg-paper">
+      {/* ─── Section 5: Arch Voice clip reel (vertical scroll) ─── */}
+      <section className="relative bg-paper">
         <ClipReel />
       </section>
 

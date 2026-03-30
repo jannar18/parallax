@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect, forwardRef } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 
 const CLIPS = [
@@ -23,92 +23,82 @@ const CLIPS = [
 ];
 
 /**
- * ClipReel — horizontally scrollable video clips.
- * First clip centered via a spacer sized by ResizeObserver.
- * Riso cover on first clip only.
+ * ClipReel — vertical scroll version.
+ * Clips stack vertically, each viewport-height. Auto-play on scroll into view.
+ * First clip has riso cover. Normal page scroll reveals clips one by one.
  */
 export default function ClipReel() {
-  const firstRef = useRef<HTMLDivElement>(null);
-  const [spacer, setSpacer] = useState("50vw");
-
-  useEffect(() => {
-    const el = firstRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([entry]) => {
-      const w = entry.contentRect.width;
-      if (w > 0) setSpacer(`calc(100vw - ${w}px)`);
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
   return (
-    <div className="flex h-full items-center overflow-x-auto scrollbar-hide gap-[2vw]">
-      <div className="flex-shrink-0" style={{ width: spacer }} />
+    <>
       {CLIPS.map((src, i) => (
-        <ClipItem
-          key={src}
-          src={src}
-          hasRisoCover={i === 0}
-          ref={i === 0 ? firstRef : undefined}
-        />
+        <ClipItem key={src} src={src} hasRisoCover={i === 0} />
       ))}
-      <div className="flex-shrink-0 w-[3vw]" />
-    </div>
+    </>
   );
 }
 
-const ClipItem = forwardRef<HTMLDivElement, { src: string; hasRisoCover: boolean }>(
-  function ClipItem({ src, hasRisoCover }, ref) {
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const [playing, setPlaying] = useState(false);
+function ClipItem({ src, hasRisoCover }: { src: string; hasRisoCover: boolean }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
 
-    const play = useCallback(() => {
-      videoRef.current?.play();
-      setPlaying(true);
-    }, []);
+  // Auto-play when clip scrolls into view, pause when it leaves
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          videoRef.current?.play();
+          setPlaying(true);
+        } else {
+          videoRef.current?.pause();
+          setPlaying(false);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
-    const pause = useCallback(() => {
+  const handleClick = useCallback(() => {
+    if (playing) {
       videoRef.current?.pause();
       setPlaying(false);
-    }, []);
+    } else {
+      videoRef.current?.play();
+      setPlaying(true);
+    }
+  }, [playing]);
 
-    const handleClick = useCallback(() => {
-      if (playing) pause();
-      else play();
-    }, [playing, play, pause]);
+  return (
+    <div
+      ref={containerRef}
+      className="relative flex h-screen w-full items-center justify-center cursor-pointer"
+      onClick={handleClick}
+    >
+      <video
+        ref={videoRef}
+        src={src}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        className="h-full w-auto object-contain"
+      />
 
-    return (
-      <div
-        ref={ref}
-        className="relative flex-shrink-0 cursor-pointer"
-        style={{ height: "100vh" }}
-        onMouseEnter={play}
-        onMouseLeave={pause}
-        onClick={handleClick}
-      >
-        <video
-          ref={videoRef}
-          src={src}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className="h-full w-auto object-contain"
+      {hasRisoCover && (
+        <Image
+          src="/images/home/merge.riso.1.png"
+          alt="Architecture and software merged"
+          fill
+          className={`object-cover pointer-events-none transition-opacity duration-[2500ms] ease-in-out ${
+            playing ? "opacity-0" : "opacity-100"
+          }`}
+          unoptimized
         />
-
-        {hasRisoCover && (
-          <Image
-            src="/images/home/merge.riso.1.png"
-            alt="Architecture and software merged"
-            fill
-            className={`object-cover pointer-events-none transition-opacity duration-[2500ms] ease-in-out ${
-              playing ? "opacity-0" : "opacity-100"
-            }`}
-            unoptimized
-          />
-        )}
-      </div>
-    );
-  }
-);
+      )}
+    </div>
+  );
+}
