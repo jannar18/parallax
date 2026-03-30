@@ -74,7 +74,7 @@ function LazyVideo({ src }: { src: string }) {
       muted
       loop
       playsInline
-      className="w-full h-full object-cover pointer-events-none"
+      className="w-full h-full object-contain pointer-events-none"
     />
   );
 }
