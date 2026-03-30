@@ -151,7 +151,7 @@ export default function Header() {
         {/* Parallax wordmark — absolutely positioned, vertically centered with cross */}
         <Link
           href="/"
-          className={`absolute left-[3vw] top-1/2 -translate-y-1/2 no-underline pointer-events-auto transition-opacity duration-700 ${
+          className={`absolute left-[2.5vw] top-1/2 -translate-y-1/2 no-underline pointer-events-auto transition-opacity duration-700 ${
             brandRevealed
               ? "text-ink/80 opacity-100 hover:text-ink"
               : "opacity-0"
