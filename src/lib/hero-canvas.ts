@@ -90,6 +90,7 @@ export const FADE_SPEED = 0.006;
 export const PHOTO_COUNT = 12;
 export const BG_COLOR = "#FDFCEA"; // --color-background (Riso Paper)
 const INK_RGB = "71,31,32"; // Must match --color-ink-rgb in tokens.css (Riso Oxblood #471f20)
+const SCARLET_RGB = "246,80,88"; // --color-scarlet (#f65058)
 
 // ── State Factory ──
 
@@ -267,7 +268,7 @@ function clipToQuad(ctx: CanvasRenderingContext2D, pts: Point[]) {
 }
 
 function drawPlaneBorder(ctx: CanvasRenderingContext2D, pts: Point[], a: number) {
-  ctx.strokeStyle = `rgba(${INK_RGB},${a})`;
+  ctx.strokeStyle = `rgba(${SCARLET_RGB},${a})`;
   ctx.lineWidth = 0.7;
   ctx.beginPath();
   ctx.moveTo(pts[0].x, pts[0].y);
@@ -428,7 +429,7 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
       0.85,
     );
 
-    ctx.strokeStyle = `rgba(${INK_RGB},${a})`;
+    ctx.strokeStyle = `rgba(${SCARLET_RGB},${a})`;
     ctx.lineWidth = edge.weight * 1.8;
     ctx.beginPath();
     ctx.moveTo(pA.x + px, pA.y + py);
@@ -448,7 +449,7 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
     if (!isLow) {
       const sigX = pA.x + (pB.x - pA.x) * edge.signalPos + px;
       const sigY = pA.y + (pB.y - pA.y) * edge.signalPos + py;
-      ctx.fillStyle = `rgba(${INK_RGB},${Math.min(a * 1.4, 0.6) * er})`;
+      ctx.fillStyle = `rgba(${SCARLET_RGB},${Math.min(a * 1.4, 0.6) * er})`;
       ctx.beginPath();
       ctx.arc(sigX, sigY, 1.8, 0, Math.PI * 2);
       ctx.fill();
@@ -460,14 +461,14 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
     if (node.reveal < 0.01) continue;
     const p = mapToQuad(node.nx, node.ny, pts);
     const a = node.reveal * (0.35 + 0.1 * Math.sin(s.frame * 0.01 + node.phase));
-    ctx.fillStyle = `rgba(${INK_RGB},${a})`;
+    ctx.fillStyle = `rgba(${SCARLET_RGB},${a})`;
     ctx.beginPath();
     ctx.arc(p.x + px, p.y + py, 2.0, 0, Math.PI * 2);
     ctx.fill();
 
     // Cross marker on some nodes — skip on mobile
     if (!isLow && node.phase > Math.PI) {
-      ctx.strokeStyle = `rgba(${INK_RGB},${a * 0.4})`;
+      ctx.strokeStyle = `rgba(${SCARLET_RGB},${a * 0.4})`;
       ctx.lineWidth = 0.5;
       ctx.beginPath();
       ctx.moveTo(p.x + px - 3, p.y + py);

@@ -43,18 +43,6 @@ export default function PretextPage() {
     <div className="mx-auto max-w-content px-5">
       <section className="pb-24 pt-40">
         <p
-          className="font-mono uppercase tracking-wider text-ink-light"
-          style={{ fontSize: "clamp(0.7rem, 0.9vw, 0.825rem)" }}
-        >
-          Pretext
-        </p>
-        <h1
-          className="mt-3 font-serif font-bold italic text-ink"
-          style={{ fontSize: "clamp(1.75rem, 4vw, 3.5rem)" }}
-        >
-          Interactive Demos
-        </h1>
-        <p
           className="mt-4 max-w-text text-ink-light leading-relaxed font-sans"
           style={{ fontSize: "clamp(0.875rem, 1.3vw, 1.2rem)" }}
         >

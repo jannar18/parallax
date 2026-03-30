@@ -232,7 +232,7 @@ export default function HeroBrandVisual() {
               fontWeight: 300,
               letterSpacing: "1.8px",
               lineHeight: 1.8,
-              color: "rgba(var(--color-ink-rgb),0.26)",
+              color: "rgba(180,159,41,0.4)",
               left: "max(1.75rem, env(safe-area-inset-left, 1.75rem))",
             }}
           >
@@ -249,7 +249,7 @@ export default function HeroBrandVisual() {
               fontWeight: 300,
               letterSpacing: "1.8px",
               lineHeight: 1.8,
-              color: "rgba(var(--color-ink-rgb),0.26)",
+              color: "rgba(180,159,41,0.4)",
               right: "max(1.75rem, env(safe-area-inset-right, 1.75rem))",
             }}
           >
@@ -263,7 +263,7 @@ export default function HeroBrandVisual() {
               fontSize: "8.25px",
               fontWeight: 300,
               letterSpacing: "3.5px",
-              color: "rgba(var(--color-ink-rgb),0.19)",
+              color: "rgba(180,159,41,0.32)",
               bottom: "max(22px, env(safe-area-inset-bottom, 22px))",
             }}
           >
@@ -272,7 +272,7 @@ export default function HeroBrandVisual() {
                 <span
                   key={i}
                   className="inline-block w-[3px] h-[3px] rounded-full"
-                  style={{ background: "rgba(var(--color-ink-rgb),0.16)" }}
+                  style={{ background: "rgba(180,159,41,0.3)" }}
                 />
               ) : (
                 <span key={i}>{item.value}</span>
