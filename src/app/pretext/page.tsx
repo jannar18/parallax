@@ -16,6 +16,13 @@ const demos = [
     file: "/pretext/demos/sierpinski-carpet-photo.html",
   },
   {
+    slug: "sierpinski-carpet-photo-responsive",
+    title: "Sierpinski Photo Carpet (Responsive)",
+    description:
+      "Responsive variant of the photo carpet — adapts to viewport size, stretching the fractal grid to fill available space while maintaining the photographic source mapping.",
+    file: "/pretext/demos/sierpinski-carpet-photo-responsive.html",
+  },
+  {
     slug: "sierpinski-carpet-v2",
     title: "Sierpinski Carpet",
     description:
