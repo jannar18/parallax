@@ -192,19 +192,16 @@ export default function HomePage() {
         </div>
 
         {/* Studio desk — artifact bar (lower 2/3 of virtual slide 8) */}
-        <Link
-          href="/archive"
-          className="relative block cursor-pointer"
-          style={{ background: "color-mix(in srgb, rgba(246,80,88,0.5), rgba(104,114,77,0.5))" }}
-        >
-          <p
-            className="text-center font-mono uppercase tracking-wider text-ink-lighter pt-6"
-            style={{ fontSize: "clamp(0.6rem, 0.8vw, 0.75rem)" }}
+        <div className="relative">
+          <Link
+            href="/archive"
+            className="absolute top-0 left-0 right-0 text-center font-serif font-bold italic text-ink z-10 -translate-y-1/2 transition-colors hover:text-scarlet"
+            style={{ fontSize: "clamp(1.75rem, 3.5vw, 3.5rem)" }}
           >
-            click-in to enter the archives
-          </p>
+            the studio desk
+          </Link>
           <ArtifactBar artifacts={artifacts} />
-        </Link>
+        </div>
       </section>
     </div>
   );
