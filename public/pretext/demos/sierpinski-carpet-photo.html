@@ -144,6 +144,56 @@
   .streaming #canvas {
     animation: breathe 6s ease-in-out infinite;
   }
+
+  /* ── Mobile ─────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .panel-label {
+      font-size: 8px;
+      letter-spacing: 4px;
+      padding: 10px 14px 8px;
+    }
+
+    .stats-bar {
+      gap: 16px;
+      font-size: 8px;
+      padding: 6px 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .controls {
+      padding: 10px 12px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .controls button {
+      font-size: 9px;
+      padding: 8px 14px;
+    }
+
+    #slider {
+      min-width: 0;
+      width: 100%;
+      flex: 1 1 100%;
+      order: 10;
+      height: 4px;
+    }
+    #slider::-webkit-slider-thumb {
+      width: 20px; height: 20px;
+    }
+    #slider::-moz-range-thumb {
+      width: 20px; height: 20px;
+    }
+
+    #level-display {
+      font-size: 8px;
+      min-width: auto;
+      order: 11;
+      width: 100%;
+      text-align: center;
+    }
+  }
 </style>
 </head>
 <body>
@@ -283,9 +333,10 @@ let totalPx = 0;
 
 function resizeCanvas() {
   const panel = document.querySelector('.panel');
-  const pad   = 60;
+  const isMobile = window.innerWidth <= 768;
+  const pad   = isMobile ? 24 : 60;
   const max   = Math.min(panel.clientWidth - pad, panel.clientHeight - pad);
-  cellPx      = Math.max(4, Math.floor(max / SIZE));
+  cellPx      = Math.max(3, Math.floor(max / SIZE));
   totalPx     = cellPx * SIZE;
 
   const dpr = window.devicePixelRatio || 1;
