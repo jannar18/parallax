@@ -192,16 +192,6 @@ function MobileClipReel() {
 
   return (
     <div className="relative w-full bg-black" style={{ height: "100dvh" }}>
-      {/* Landscape prompt */}
-      <div className="absolute top-4 left-0 right-0 z-20 text-center portrait:block landscape:hidden">
-        <p
-          className="font-mono uppercase tracking-wider text-paper/60"
-          style={{ fontSize: "0.65rem" }}
-        >
-          rotate for best view ↻
-        </p>
-      </div>
-
       {/* Media area — tap center to play/pause */}
       <div
         className="absolute inset-0 flex items-center justify-center"
@@ -288,12 +278,10 @@ export default function ClipReel() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px)");
-    setIsMobile(mq.matches);
+    // Detect touch device once — stays stable across orientation changes
+    // so rotating to landscape doesn't switch to the desktop scroll wipe.
+    setIsMobile("ontouchstart" in window || navigator.maxTouchPoints > 0);
     setMounted(true);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
   }, []);
 
   // Avoid hydration mismatch — render nothing until client-side check
