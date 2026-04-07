@@ -25,7 +25,11 @@ const CLIPS = [
 
 const TOTAL_SLIDES = 1 + CLIPS.length; // riso cover + clips
 
-export default function ClipReel() {
+/* ─────────────────────────────────────────────
+ * Desktop: scroll-driven clip-path wipe
+ * ───────────────────────────────────────────── */
+
+function DesktopClipReel() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [slideProgress, setSlideProgress] = useState<number[]>(
     () => Array(TOTAL_SLIDES).fill(0)
@@ -36,8 +40,6 @@ export default function ClipReel() {
       const wrapper = wrapperRef.current;
       if (!wrapper) return;
       const scrolled = -wrapper.getBoundingClientRect().top;
-      // Use the wrapper's actual rendered height / slide count so the math
-      // matches regardless of whether the browser resolves vh, dvh, or svh.
       const sh = wrapper.clientHeight / TOTAL_SLIDES;
 
       setSlideProgress(
@@ -58,7 +60,7 @@ export default function ClipReel() {
       style={{ height: `${TOTAL_SLIDES * 100}dvh` }}
     >
       <div className="sticky top-0 w-full overflow-hidden" style={{ height: "100dvh" }}>
-        {/* Slide 0: Riso cover — same size as video clips, right-aligned */}
+        {/* Slide 0: Riso cover */}
         <div
           className="absolute inset-0 flex items-center justify-end"
           style={{
@@ -75,7 +77,7 @@ export default function ClipReel() {
 
         {/* Slides 1–16: Video clips */}
         {CLIPS.map((src, i) => (
-          <ClipSlide
+          <DesktopClipSlide
             key={src}
             src={src}
             z={TOTAL_SLIDES - 1 - i}
@@ -83,7 +85,7 @@ export default function ClipReel() {
           />
         ))}
 
-        {/* Wipe line — thin scarlet line at the active wipe edge */}
+        {/* Wipe line */}
         {(() => {
           const idx = slideProgress.findIndex((p) => p > 0 && p < 1);
           if (idx === -1) return null;
@@ -104,7 +106,7 @@ export default function ClipReel() {
   );
 }
 
-function ClipSlide({
+function DesktopClipSlide({
   src,
   z,
   wipe,
@@ -148,4 +150,154 @@ function ClipSlide({
       />
     </div>
   );
+}
+
+/* ─────────────────────────────────────────────
+ * Mobile: tap-through gallery
+ * ───────────────────────────────────────────── */
+
+function MobileClipReel() {
+  const [current, setCurrent] = useState(-1); // -1 = riso cover
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  const total = CLIPS.length;
+  const isRiso = current === -1;
+
+  // Auto-play when switching to a clip
+  useEffect(() => {
+    if (isRiso) return;
+    const v = videoRef.current;
+    if (!v) return;
+    v.load();
+    v.play().catch(() => {});
+    setPlaying(true);
+  }, [current, isRiso]);
+
+  const next = () => setCurrent((c) => (c < total - 1 ? c + 1 : c));
+  const prev = () => setCurrent((c) => (c > -1 ? c - 1 : c));
+
+  const togglePlay = () => {
+    if (isRiso) return;
+    const v = videoRef.current;
+    if (!v) return;
+    if (playing) {
+      v.pause();
+      setPlaying(false);
+    } else {
+      v.play().catch(() => {});
+      setPlaying(true);
+    }
+  };
+
+  return (
+    <div className="relative w-full bg-black" style={{ height: "100dvh" }}>
+      {/* Landscape prompt */}
+      <div className="absolute top-4 left-0 right-0 z-20 text-center portrait:block landscape:hidden">
+        <p
+          className="font-mono uppercase tracking-wider text-paper/60"
+          style={{ fontSize: "0.65rem" }}
+        >
+          rotate for best view ↻
+        </p>
+      </div>
+
+      {/* Media area — tap center to play/pause */}
+      <div
+        className="absolute inset-0 flex items-center justify-center"
+        onClick={togglePlay}
+      >
+        {isRiso ? (
+          <img
+            src={RISO_COVER}
+            alt="Architecture and software merged"
+            className="h-full w-auto object-contain"
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            key={current}
+            src={CLIPS[current]}
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="h-full w-auto object-contain"
+          />
+        )}
+      </div>
+
+      {/* Prev button — left edge */}
+      {current > -1 && (
+        <button
+          onClick={(e) => { e.stopPropagation(); prev(); }}
+          className="absolute left-0 top-0 bottom-0 w-16 z-10 flex items-center justify-center text-paper/40 active:text-paper/80 transition-colors"
+          aria-label="Previous clip"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+      )}
+
+      {/* Next button — right edge */}
+      {current < total - 1 && (
+        <button
+          onClick={(e) => { e.stopPropagation(); next(); }}
+          className="absolute right-0 top-0 bottom-0 w-16 z-10 flex items-center justify-center text-paper/40 active:text-paper/80 transition-colors"
+          aria-label="Next clip"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      )}
+
+      {/* Progress dots */}
+      <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center gap-1.5">
+        {Array.from({ length: total + 1 }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i - 1)}
+            className={`rounded-full transition-all ${
+              i - 1 === current
+                ? "w-2 h-2 bg-scarlet"
+                : "w-1.5 h-1.5 bg-paper/30"
+            }`}
+            aria-label={i === 0 ? "Cover" : `Clip ${i}`}
+          />
+        ))}
+      </div>
+
+      {/* Clip counter */}
+      <div className="absolute top-4 right-4 z-20">
+        <p className="font-mono text-paper/50" style={{ fontSize: "0.7rem" }}>
+          {isRiso ? "cover" : `${current + 1} / ${total}`}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+ * Export: picks layout based on screen width
+ * ───────────────────────────────────────────── */
+
+export default function ClipReel() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mq.matches);
+    setMounted(true);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  // Avoid hydration mismatch — render nothing until client-side check
+  if (!mounted) return <div style={{ height: "100dvh" }} />;
+
+  return isMobile ? <MobileClipReel /> : <DesktopClipReel />;
 }
