@@ -37,7 +37,9 @@ export default function ClipReel() {
       const wrapper = wrapperRef.current;
       if (!wrapper) return;
       const scrolled = -wrapper.getBoundingClientRect().top;
-      const sh = window.innerHeight;
+      // Use the wrapper's actual rendered height / slide count so the math
+      // matches regardless of whether the browser resolves vh, dvh, or svh.
+      const sh = wrapper.clientHeight / TOTAL_SLIDES;
 
       setSlideProgress(
         Array.from({ length: TOTAL_SLIDES }, (_, i) => {
@@ -54,9 +56,9 @@ export default function ClipReel() {
   return (
     <div
       ref={wrapperRef}
-      style={{ height: `${TOTAL_SLIDES * 100}vh` }}
+      style={{ height: `${TOTAL_SLIDES * 100}dvh` }}
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      <div className="sticky top-0 w-full overflow-hidden" style={{ height: "100dvh" }}>
         {/* Slide 0: Riso cover — same size as video clips, right-aligned */}
         <div
           className="absolute inset-0 flex items-center justify-end"
@@ -73,18 +75,25 @@ export default function ClipReel() {
         </div>
 
         {/* Slides 1–16: Video clips */}
-        {CLIPS.map((src, i) => (
-          <ClipSlide
-            key={src}
-            src={src}
-            z={TOTAL_SLIDES - 1 - i}
-            wipe={slideProgress[i + 1]}
-            active={
-              slideProgress[i + 1] < 1 &&
-              slideProgress[i] >= 1
-            }
-          />
-        ))}
+        {CLIPS.map((src, i) => {
+          const active =
+            slideProgress[i + 1] < 1 && slideProgress[i] >= 1;
+          // Only mount video src for the active clip and its neighbors.
+          // iOS Safari silently drops videos when too many are loaded.
+          const nearby =
+            active ||
+            (slideProgress[i] > 0.5 && slideProgress[i] < 1) ||
+            (slideProgress[i + 1] >= 1 && (i + 2 >= TOTAL_SLIDES || slideProgress[i + 2] < 0.5));
+          return (
+            <ClipSlide
+              key={src}
+              src={nearby ? src : undefined}
+              z={TOTAL_SLIDES - 1 - i}
+              wipe={slideProgress[i + 1]}
+              active={active}
+            />
+          );
+        })}
 
         {/* Wipe line — thin scarlet line at the active wipe edge */}
         {(() => {
@@ -113,7 +122,7 @@ function ClipSlide({
   wipe,
   active,
 }: {
-  src: string;
+  src: string | undefined;
   z: number;
   wipe: number;
   active: boolean;
@@ -122,14 +131,14 @@ function ClipSlide({
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
-    if (active) {
-      videoRef.current?.play();
+    if (active && src) {
+      videoRef.current?.play().catch(() => {});
       setPlaying(true);
     } else {
       videoRef.current?.pause();
       setPlaying(false);
     }
-  }, [active]);
+  }, [active, src]);
 
   const handleClick = useCallback(() => {
     if (playing) {
@@ -150,15 +159,17 @@ function ClipSlide({
       }}
       onClick={handleClick}
     >
-      <video
-        ref={videoRef}
-        src={src}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        className="h-full w-auto object-contain"
-      />
+      {src && (
+        <video
+          ref={videoRef}
+          src={src}
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="h-full w-auto object-contain"
+        />
+      )}
     </div>
   );
 }
