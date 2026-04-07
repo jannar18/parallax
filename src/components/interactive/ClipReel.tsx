@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import Image from "next/image";
 
 // Riso thumbnail is slide 0, then 16 video clips
 const RISO_COVER = "/images/home/merge.riso.1.png";
@@ -75,25 +74,14 @@ export default function ClipReel() {
         </div>
 
         {/* Slides 1–16: Video clips */}
-        {CLIPS.map((src, i) => {
-          const active =
-            slideProgress[i + 1] < 1 && slideProgress[i] >= 1;
-          // Only mount video src for the active clip and its neighbors.
-          // iOS Safari silently drops videos when too many are loaded.
-          const nearby =
-            active ||
-            (slideProgress[i] > 0.5 && slideProgress[i] < 1) ||
-            (slideProgress[i + 1] >= 1 && (i + 2 >= TOTAL_SLIDES || slideProgress[i + 2] < 0.5));
-          return (
-            <ClipSlide
-              key={src}
-              src={nearby ? src : undefined}
-              z={TOTAL_SLIDES - 1 - i}
-              wipe={slideProgress[i + 1]}
-              active={active}
-            />
-          );
-        })}
+        {CLIPS.map((src, i) => (
+          <ClipSlide
+            key={src}
+            src={src}
+            z={TOTAL_SLIDES - 1 - i}
+            wipe={slideProgress[i + 1]}
+          />
+        ))}
 
         {/* Wipe line — thin scarlet line at the active wipe edge */}
         {(() => {
@@ -120,32 +108,22 @@ function ClipSlide({
   src,
   z,
   wipe,
-  active,
 }: {
-  src: string | undefined;
+  src: string;
   z: number;
   wipe: number;
-  active: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 
-  useEffect(() => {
-    if (active && src) {
-      videoRef.current?.play().catch(() => {});
-      setPlaying(true);
-    } else {
-      videoRef.current?.pause();
-      setPlaying(false);
-    }
-  }, [active, src]);
-
   const handleClick = useCallback(() => {
+    const v = videoRef.current;
+    if (!v) return;
     if (playing) {
-      videoRef.current?.pause();
+      v.pause();
       setPlaying(false);
     } else {
-      videoRef.current?.play();
+      v.play().catch(() => {});
       setPlaying(true);
     }
   }, [playing]);
@@ -159,17 +137,15 @@ function ClipSlide({
       }}
       onClick={handleClick}
     >
-      {src && (
-        <video
-          ref={videoRef}
-          src={src}
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="h-full w-auto object-contain"
-        />
-      )}
+      <video
+        ref={videoRef}
+        src={src}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        className="h-full w-auto object-contain"
+      />
     </div>
   );
 }
