@@ -160,25 +160,40 @@ function MobileClipReel() {
   const [current, setCurrent] = useState(-1); // -1 = riso cover
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const total = CLIPS.length;
   const isRiso = current === -1;
 
-  // Auto-play when switching to a clip
+  // Swap src on a single persistent <video> element — no remounting.
+  // iOS Safari handles one video element far better than creating new ones.
   useEffect(() => {
-    if (isRiso) return;
     const v = videoRef.current;
     if (!v) return;
+    if (isRiso) {
+      v.removeAttribute("src");
+      v.load();
+      setPlaying(false);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    v.src = CLIPS[current];
     v.load();
-    v.play().catch(() => {});
-    setPlaying(true);
+    const onCanPlay = () => {
+      setLoading(false);
+      v.play().catch(() => {});
+      setPlaying(true);
+    };
+    v.addEventListener("canplay", onCanPlay, { once: true });
+    return () => v.removeEventListener("canplay", onCanPlay);
   }, [current, isRiso]);
 
   const next = () => setCurrent((c) => (c < total - 1 ? c + 1 : c));
   const prev = () => setCurrent((c) => (c > -1 ? c - 1 : c));
 
   const togglePlay = () => {
-    if (isRiso) return;
+    if (isRiso) { next(); return; }
     const v = videoRef.current;
     if (!v) return;
     if (playing) {
@@ -192,30 +207,35 @@ function MobileClipReel() {
 
   return (
     <div className="relative w-full bg-black" style={{ height: "100dvh" }}>
-      {/* Media area — tap center to play/pause */}
-      <div
-        className="absolute inset-0 flex items-center justify-center"
-        onClick={togglePlay}
-      >
-        {isRiso ? (
+      {/* Single persistent video element — hidden when showing riso cover */}
+      <video
+        ref={videoRef}
+        muted
+        loop
+        playsInline
+        className={`absolute inset-0 h-full w-full object-contain ${isRiso ? "hidden" : ""}`}
+      />
+
+      {/* Riso cover */}
+      {isRiso && (
+        <div className="absolute inset-0 flex items-center justify-center">
           <img
             src={RISO_COVER}
             alt="Architecture and software merged"
             className="h-full w-auto object-contain"
           />
-        ) : (
-          <video
-            ref={videoRef}
-            key={current}
-            src={CLIPS[current]}
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="h-full w-auto object-contain"
-          />
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* Loading indicator */}
+      {loading && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-paper/30 border-t-scarlet rounded-full animate-spin" />
+        </div>
+      )}
+
+      {/* Tap overlay for play/pause */}
+      <div className="absolute inset-0 z-[5]" onClick={togglePlay} />
 
       {/* Prev button — left edge */}
       {current > -1 && (
