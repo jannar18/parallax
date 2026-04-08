@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Pretext",
@@ -42,22 +41,50 @@ export default function PretextPage() {
   return (
     <div className="mx-auto max-w-content px-5">
       <section className="pb-24 pt-40">
-        <p
-          className="mt-4 max-w-text text-ink-light leading-relaxed font-sans"
-          style={{ fontSize: "clamp(0.875rem, 1.3vw, 1.2rem)" }}
-        >
-          My experiments using{" "}
-          <a
-            href="https://github.com/chenglou/pretext"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-ink underline decoration-ink-lighter underline-offset-2 transition-colors hover:text-scarlet hover:decoration-scarlet"
+        <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
+          <p
+            className="text-ink-light leading-relaxed font-sans"
+            style={{ fontSize: "clamp(0.875rem, 1.3vw, 1.2rem)" }}
           >
-            Pretext
-          </a>
-          , Cheng Lou&rsquo;s pure JS/TS library for text measurement and
-          layout.
-        </p>
+            My experiments using{" "}
+            <a
+              href="https://github.com/chenglou/pretext"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ink underline decoration-ink-lighter underline-offset-2 transition-colors hover:text-scarlet hover:decoration-scarlet"
+            >
+              Pretext
+            </a>
+            , Cheng Lou&rsquo;s pure JS/TS library for text measurement and
+            layout.
+          </p>
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            <a
+              href="https://github.com/chenglou/pretext"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-xs uppercase tracking-wide text-ink-lighter transition-colors hover:text-scarlet"
+            >
+              GitHub &nearr;
+            </a>
+            <a
+              href="https://chenglou.me/pretext/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-xs uppercase tracking-wide text-ink-lighter transition-colors hover:text-scarlet"
+            >
+              Official Demos &nearr;
+            </a>
+            <a
+              href="https://x.com/_chenglou/status/2037713766205608234"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-xs uppercase tracking-wide text-ink-lighter transition-colors hover:text-scarlet"
+            >
+              @_chenglou &nearr;
+            </a>
+          </div>
+        </div>
 
         <div className="mt-16 grid gap-8 md:grid-cols-2">
           {demos.map((demo) => (
@@ -95,40 +122,6 @@ export default function PretextPage() {
           ))}
         </div>
 
-        <div className="mt-16 flex flex-col gap-6 border-t border-border pt-8">
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            <a
-              href="https://github.com/chenglou/pretext"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-xs uppercase tracking-wide text-ink-lighter transition-colors hover:text-scarlet"
-            >
-              GitHub &nearr;
-            </a>
-            <a
-              href="https://chenglou.me/pretext/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-xs uppercase tracking-wide text-ink-lighter transition-colors hover:text-scarlet"
-            >
-              Official Demos &nearr;
-            </a>
-            <a
-              href="https://x.com/_chenglou/status/2037713766205608234"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-xs uppercase tracking-wide text-ink-lighter transition-colors hover:text-scarlet"
-            >
-              @_chenglou &nearr;
-            </a>
-          </div>
-          <Link
-            href="/"
-            className="font-mono text-xs uppercase tracking-wide text-ink-lighter transition-colors hover:text-scarlet"
-          >
-            &larr; Back home
-          </Link>
-        </div>
       </section>
     </div>
   );
