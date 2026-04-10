@@ -1,6 +1,13 @@
 {
   "assigned_to": null,
-  "branch_links": [],
+  "branch_links": [
+    {
+      "branch": "feature/asmv-82-transcode-mov-clips",
+      "linked_at": "2026-04-10T17:41:05Z",
+      "linked_by": "agent:claude-opus-4-asmv82",
+      "repo": null
+    }
+  ],
   "comment_count": 1,
   "complexity": null,
   "created_at": "2026-04-10T15:56:30Z",
@@ -10,17 +17,17 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KNW1QWMQH6K6Z5NN4B801JE9",
-  "last_event_id": "ev_01KNW2485BP3RQHRHWRRV7TT4K",
-  "last_status_changed_at": "2026-04-10T15:56:30Z",
+  "last_event_id": "ev_01KNW7QCF791GVQ50E9EDV49SE",
+  "last_status_changed_at": "2026-04-10T17:41:05Z",
   "priority": "medium",
   "relationships_out": [],
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-82",
-  "status": "backlog",
+  "status": "in_progress",
   "tags": null,
   "title": "Fix ClipReel video reliability \u2014 investigate why mobile fixes don't stick",
   "type": "task",
-  "updated_at": "2026-04-10T16:03:15Z",
+  "updated_at": "2026-04-10T17:41:05Z",
   "urgency": null
 }
