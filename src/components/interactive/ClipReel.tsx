@@ -23,132 +23,235 @@ const CLIPS = [
   "/videos/software/arch-voice-mcp/clip-16.mp4",
 ];
 
-const TOTAL_SLIDES = 1 + CLIPS.length; // riso cover + clips
-
 /* ─────────────────────────────────────────────
- * Desktop: scroll-driven clip-path wipe
+ * Desktop: click-driven gallery with side tracker
  * ───────────────────────────────────────────── */
 
 function DesktopClipReel() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const [slideProgress, setSlideProgress] = useState<number[]>(
-    () => Array(TOTAL_SLIDES).fill(0)
-  );
-
-  useEffect(() => {
-    const onScroll = () => {
-      const wrapper = wrapperRef.current;
-      if (!wrapper) return;
-      const scrolled = -wrapper.getBoundingClientRect().top;
-      const sh = wrapper.clientHeight / TOTAL_SLIDES;
-
-      setSlideProgress(
-        Array.from({ length: TOTAL_SLIDES }, (_, i) => {
-          const p = (scrolled - i * sh) / sh;
-          return Math.max(0, Math.min(1, p));
-        })
-      );
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  return (
-    <div
-      ref={wrapperRef}
-      style={{ height: `${TOTAL_SLIDES * 100}dvh` }}
-    >
-      <div className="sticky top-0 w-full overflow-hidden" style={{ height: "100dvh" }}>
-        {/* Slide 0: Riso cover */}
-        <div
-          className="absolute inset-0 flex items-center justify-end"
-          style={{
-            zIndex: TOTAL_SLIDES,
-            clipPath: `inset(0 0 ${slideProgress[0] * 100}% 0)`,
-          }}
-        >
-          <img
-            src={RISO_COVER}
-            alt="Architecture and software merged"
-            className="h-full w-auto object-contain"
-          />
-        </div>
-
-        {/* Slides 1–16: Video clips */}
-        {CLIPS.map((src, i) => (
-          <DesktopClipSlide
-            key={src}
-            src={src}
-            z={TOTAL_SLIDES - 1 - i}
-            wipe={slideProgress[i + 1]}
-          />
-        ))}
-
-        {/* Wipe line */}
-        {(() => {
-          const idx = slideProgress.findIndex((p) => p > 0 && p < 1);
-          if (idx === -1) return null;
-          return (
-            <div
-              className="absolute left-0 right-0 pointer-events-none"
-              style={{
-                top: `${(1 - slideProgress[idx]) * 100}%`,
-                height: "2px",
-                backgroundColor: "var(--color-scarlet)",
-                zIndex: TOTAL_SLIDES + 1,
-              }}
-            />
-          );
-        })()}
-      </div>
-    </div>
-  );
-}
-
-function DesktopClipSlide({
-  src,
-  z,
-  wipe,
-}: {
-  src: string;
-  z: number;
-  wipe: number;
-}) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [current, setCurrent] = useState(-1); // -1 = riso cover, 0..n = clip index
   const [playing, setPlaying] = useState(false);
+  const [loading, setLoading] = useState(false); // true between src swap and canplay+play
+  const [autoAdvance, setAutoAdvance] = useState(false); // playthrough mode
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const handleClick = useCallback(() => {
+  const isCover = current === -1;
+  const lastIdx = CLIPS.length - 1;
+
+  // Swap src on the single persistent <video> element when `current` changes.
+  // Cover slot is the entry point: it shows the play button and clicking it
+  // kicks off playthrough mode (autoAdvance=true) starting at clip 01. Once
+  // playthrough is on, the `ended` handler advances to the next clip. The
+  // user can pause / resume / jump via tracker or arrows without leaving
+  // playthrough mode. Returning to the cover resets playthrough.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (isCover) {
+      v.removeAttribute("src");
+      v.load();
+      setPlaying(false);
+      setLoading(false);
+      setAutoAdvance(false);
+      return;
+    }
+    v.src = CLIPS[current];
+    v.load();
+    setPlaying(false);
+    setLoading(true);
+    const onCanPlay = () => {
+      try {
+        v.currentTime = 0;
+      } catch {
+        /* ignore — some browsers throw if duration not yet known */
+      }
+      v.play()
+        .then(() => {
+          setPlaying(true);
+          setLoading(false);
+        })
+        .catch(() => {
+          // autoplay blocked — drop loading so the play hint appears and the
+          // user can click to start
+          setLoading(false);
+        });
+    };
+    v.addEventListener("canplay", onCanPlay, { once: true });
+    return () => v.removeEventListener("canplay", onCanPlay);
+  }, [current, isCover]);
+
+  const goPrev = useCallback(
+    () => setCurrent((c) => Math.max(-1, c - 1)),
+    []
+  );
+  const goNext = useCallback(
+    () => setCurrent((c) => Math.min(lastIdx, c + 1)),
+    [lastIdx]
+  );
+
+  const handleVideoClick = useCallback(() => {
+    // On the cover, a click means "start playthrough from clip 01".
+    if (isCover) {
+      setAutoAdvance(true);
+      setCurrent(0);
+      return;
+    }
     const v = videoRef.current;
     if (!v) return;
     if (playing) {
       v.pause();
       setPlaying(false);
-    } else {
-      v.play().catch(() => {});
-      setPlaying(true);
+      return;
     }
-  }, [playing]);
+    // If video has already ended, restart from 0; otherwise resume.
+    if (v.ended || (v.duration && v.currentTime >= v.duration - 0.05)) {
+      v.currentTime = 0;
+    }
+    v.play().catch(() => {});
+    setPlaying(true);
+  }, [isCover, playing]);
+
+  const handleEnded = useCallback(() => {
+    setPlaying(false);
+    // Playthrough mode: hop to the next clip if there is one. Otherwise the
+    // browser holds the last frame, which is exactly what we want.
+    if (autoAdvance) {
+      setCurrent((c) => (c < lastIdx ? c + 1 : c));
+    }
+  }, [autoAdvance, lastIdx]);
+
+  // Build tracker rows: cover + every clip
+  const rows: Array<{ idx: number; label: string }> = [
+    { idx: -1, label: "Cover" },
+    ...CLIPS.map((_, i) => ({
+      idx: i,
+      label: `Clip ${String(i + 1).padStart(2, "0")}`,
+    })),
+  ];
 
   return (
-    <div
-      className="absolute inset-0 flex items-center justify-end cursor-pointer"
-      style={{
-        zIndex: z,
-        clipPath: `inset(0 0 ${wipe * 100}% 0)`,
-      }}
-      onClick={handleClick}
-    >
-      <video
-        ref={videoRef}
-        src={src}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        className="h-full w-auto object-contain"
-      />
-    </div>
+    <section className="relative h-screen bg-paper overflow-hidden">
+      {/* Video stage — click to play/pause */}
+      <div
+        className="absolute inset-0 flex items-center justify-end cursor-pointer"
+        onClick={handleVideoClick}
+      >
+        <div className="relative h-full">
+          <video
+            ref={videoRef}
+            muted
+            playsInline
+            preload="metadata"
+            onEnded={handleEnded}
+            className={`block h-full w-auto object-contain ${isCover ? "hidden" : ""}`}
+          />
+          {isCover && (
+            <img
+              src={RISO_COVER}
+              alt="Architecture and software merged"
+              className="block h-full w-auto object-contain pointer-events-none"
+            />
+          )}
+
+          {/* Play indicator — visible on the cover (entry point to playthrough)
+              and on any paused/ended clip. Hidden during playback and during
+              the load-and-autoplay window so it doesn't flash. */}
+          <div
+            className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${
+              playing || loading ? "opacity-0" : "opacity-100"
+            }`}
+          >
+            <svg
+              width="96"
+              height="96"
+              viewBox="0 0 24 24"
+              fill="var(--color-scarlet)"
+            >
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Tracker — leftover space on the left */}
+      <nav
+        className="absolute left-[5vw] top-1/2 -translate-y-1/2 z-10 flex flex-col gap-[1vh]"
+        aria-label="Clip tracker"
+      >
+        {rows.map(({ idx, label }) => {
+          const active = idx === current;
+          return (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrent(idx);
+              }}
+              className={`group flex items-center gap-3 font-mono uppercase transition-colors ${
+                active ? "text-scarlet" : "text-ink-lighter hover:text-ink"
+              }`}
+              style={{
+                fontSize: "clamp(0.65rem, 0.8vw, 0.8rem)",
+                letterSpacing: "var(--tracking-wider)",
+              }}
+              aria-current={active ? "true" : undefined}
+            >
+              <span
+                className={`block w-2 h-2 rounded-full border transition-all ${
+                  active
+                    ? "bg-scarlet border-scarlet"
+                    : "border-ink-lighter group-hover:border-ink"
+                }`}
+              />
+              {label}
+            </button>
+          );
+        })}
+      </nav>
+
+      {/* Prev chevron — bottom-left so it doesn't fight the tracker */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          goPrev();
+        }}
+        disabled={current === -1}
+        className="absolute left-[5vw] bottom-[5vh] z-20 w-12 h-12 flex items-center justify-center text-scarlet hover:text-ink disabled:opacity-25 disabled:hover:text-scarlet disabled:cursor-not-allowed transition-colors"
+        aria-label="Previous clip"
+      >
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+
+      {/* Next chevron — bottom-right */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          goNext();
+        }}
+        disabled={current === lastIdx}
+        className="absolute right-[3vw] bottom-[5vh] z-20 w-12 h-12 flex items-center justify-center text-scarlet hover:text-ink disabled:opacity-25 disabled:hover:text-scarlet disabled:cursor-not-allowed transition-colors"
+        aria-label="Next clip"
+      >
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
+    </section>
   );
 }
 

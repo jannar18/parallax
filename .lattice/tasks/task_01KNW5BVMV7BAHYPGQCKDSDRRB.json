@@ -1,0 +1,33 @@
+{
+  "assigned_to": null,
+  "branch_links": [
+    {
+      "branch": "feature/asmv-90-clipreel-click-gallery",
+      "linked_at": "2026-04-10T17:10:31Z",
+      "linked_by": "agent:claude-opus-4-clipreel",
+      "repo": null
+    }
+  ],
+  "comment_count": 0,
+  "complexity": null,
+  "created_at": "2026-04-10T16:59:50Z",
+  "created_by": "agent:claude-opus-4-clipreel",
+  "custom_fields": {},
+  "description": null,
+  "done_at": null,
+  "evidence_refs": [],
+  "id": "task_01KNW5BVMV7BAHYPGQCKDSDRRB",
+  "last_event_id": "ev_01KNW5ZD0W573979YTJWN54J4P",
+  "last_status_changed_at": "2026-04-10T17:10:31Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-90",
+  "status": "in_progress",
+  "tags": null,
+  "title": "Replace ClipReel scroll-jacking with click-driven gallery + side tracker (desktop)",
+  "type": "task",
+  "updated_at": "2026-04-10T17:10:31Z",
+  "urgency": null
+}
