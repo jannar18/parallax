@@ -15,10 +15,8 @@ import ScrollLine from "@/components/ui/ScrollLine";
  */
 export default function HomePage() {
   const nowEntries = getAllNowEntries();
-  const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
   const artifacts = nowEntries
-    .filter((e) => e.image && new Date(e.date) >= oneWeekAgo)
+    .filter((e) => e.image)
     .map(({ slug, date, mood, image, project, description }) => ({
       slug,
       date,
@@ -192,19 +190,26 @@ export default function HomePage() {
         </div>
 
         {/* Studio desk — artifact bar (lower 2/3 of virtual slide 8) */}
-        <Link
-          href="/archive"
-          className="relative block cursor-pointer"
-          style={{ background: "color-mix(in srgb, rgba(246,80,88,0.5), rgba(104,114,77,0.5))" }}
-        >
-          <p
-            className="text-center font-mono uppercase tracking-wider text-ink-lighter pt-6"
-            style={{ fontSize: "clamp(0.6rem, 0.8vw, 0.75rem)" }}
+        <div className="relative">
+          <Link
+            href="/archive"
+            className="group absolute top-0 left-0 right-0 z-30 text-center -translate-y-1/2 transition-colors"
           >
-            click-in to enter the archives
-          </p>
+            <p
+              className="font-serif font-bold italic text-ink group-hover:text-scarlet transition-colors"
+              style={{ fontSize: "clamp(1.75rem, 3.5vw, 3.5rem)" }}
+            >
+              the studio desk
+            </p>
+            <p
+              className="mt-2 font-mono uppercase tracking-wider text-ink-lighter group-hover:text-ink transition-colors"
+              style={{ fontSize: "clamp(0.6rem, 0.8vw, 0.75rem)" }}
+            >
+              click-in to enter the archives
+            </p>
+          </Link>
           <ArtifactBar artifacts={artifacts} />
-        </Link>
+        </div>
       </section>
     </div>
   );
