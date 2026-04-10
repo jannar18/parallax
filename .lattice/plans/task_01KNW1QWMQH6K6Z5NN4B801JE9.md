@@ -1,0 +1,3 @@
+# ASMV-82: Fix ClipReel video reliability — investigate why mobile fixes don't stick
+
+User reports videos in homepage ClipReel still glitchy / not rendering despite multiple recent fix PRs (#86 #87 #88 #89 #90). Goal: stop the band-aid loop. Read every recent ClipReel commit, identify the underlying root cause (iOS Safari video lifecycle, hydration mismatch from touch detect, aggressive preload, etc.), and either fix it correctly or replace the implementation with something fundamentally simpler. Original goal of ClipReel: vertical scroll-driven wipe through 16 arch-voice clips on desktop (current); some mobile-friendly fallback. Re-evaluate whether the wipe metaphor is even the right thing on mobile, or whether a simpler poster→tap-to-play gallery is correct.

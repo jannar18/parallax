@@ -677,28 +677,28 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
       </div>
 
       {/* Title overlay — pushed below header */}
-      <div className="absolute top-20 left-6 z-20 pointer-events-none">
+      <div className="absolute top-20 left-[2.5vw] z-20 pointer-events-none">
         <h1
           className="font-serif font-bold italic text-ink"
           style={{ fontSize: "clamp(1.25rem, 2.5vw, 2rem)" }}
         >
           the studio desk
         </h1>
-        <p
-          className="font-mono text-ink-lighter uppercase"
+        <ul
+          className="font-mono text-ink-lighter uppercase mt-1 space-y-0.5"
           style={{
             fontSize: "clamp(0.55rem, 0.7vw, 0.65rem)",
             letterSpacing: "0.1em",
           }}
         >
-          {isTouchDevice
-            ? "drag to explore \u00B7 pinch to zoom \u00B7 tap to view"
-            : "drag to explore \u00B7 scroll to zoom \u00B7 click to view"}
-        </p>
+          <li>drag to explore</li>
+          <li>{isTouchDevice ? "pinch to zoom" : "scroll to zoom"}</li>
+          <li>{isTouchDevice ? "tap to view" : "click to view"}</li>
+        </ul>
       </div>
 
       {/* Right-side note */}
-      <div className="absolute top-20 right-6 z-20 pointer-events-none text-right">
+      <div className="absolute top-20 right-[2.5vw] z-20 pointer-events-none text-right">
         <p
           className="font-mono text-ink-lighter"
           style={{
