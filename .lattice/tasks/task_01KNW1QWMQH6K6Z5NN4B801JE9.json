@@ -8,7 +8,7 @@
       "repo": null
     }
   ],
-  "comment_count": 1,
+  "comment_count": 2,
   "complexity": null,
   "created_at": "2026-04-10T15:56:30Z",
   "created_by": "agent:claude-opus-4-planner",
@@ -17,17 +17,17 @@
   "done_at": null,
   "evidence_refs": [],
   "id": "task_01KNW1QWMQH6K6Z5NN4B801JE9",
-  "last_event_id": "ev_01KNW7QCF791GVQ50E9EDV49SE",
-  "last_status_changed_at": "2026-04-10T17:41:05Z",
+  "last_event_id": "ev_01KNW7W545886NMC9ND5M7VFQN",
+  "last_status_changed_at": "2026-04-10T17:43:41Z",
   "priority": "medium",
   "relationships_out": [],
   "reopened_count": 0,
   "schema_version": 1,
   "short_id": "ASMV-82",
-  "status": "in_progress",
+  "status": "review",
   "tags": null,
   "title": "Fix ClipReel video reliability \u2014 investigate why mobile fixes don't stick",
   "type": "task",
-  "updated_at": "2026-04-10T17:41:05Z",
+  "updated_at": "2026-04-10T17:43:41Z",
   "urgency": null
 }
