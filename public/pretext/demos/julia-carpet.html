@@ -177,6 +177,79 @@
   .streaming #carpet {
     animation: breathe 6s ease-in-out infinite;
   }
+
+  /* ── Mobile ─────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    html, body { overflow-y: auto; }
+
+    .layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: 50vh 50vh auto auto;
+      height: auto;
+      min-height: 100vh;
+    }
+
+    .field-panel {
+      border-right: none;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    .panel-label {
+      font-size: 8px;
+      letter-spacing: 4px;
+      padding: 10px 14px 8px;
+    }
+
+    .stats-bar {
+      gap: 12px;
+      font-size: 8px;
+      padding: 6px 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .controls {
+      padding: 10px 12px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .controls button {
+      font-size: 9px;
+      padding: 8px 10px;
+      letter-spacing: 1px;
+    }
+
+    .spacer { display: none; }
+
+    .preset {
+      flex: 1 1 auto;
+      text-align: center;
+      min-width: 0;
+    }
+
+    #slider {
+      min-width: 0;
+      width: 100%;
+      flex: 1 1 100%;
+      order: 10;
+      height: 4px;
+    }
+    #slider::-webkit-slider-thumb {
+      width: 20px; height: 20px;
+    }
+    #slider::-moz-range-thumb {
+      width: 20px; height: 20px;
+    }
+
+    #level-display {
+      font-size: 8px;
+      min-width: auto;
+      order: 11;
+      width: 100%;
+      text-align: center;
+    }
+  }
 </style>
 </head>
 <body>
@@ -428,8 +501,9 @@ function renderCarpet(threshold, textOffset) {
 
 function resizeCarpet() {
   const panel = document.querySelector('.carpet-panel');
-  const maxW  = panel.clientWidth - 40;
-  const maxH  = panel.clientHeight - 50;
+  const isMobile = window.innerWidth <= 768;
+  const maxW  = panel.clientWidth - (isMobile ? 16 : 40);
+  const maxH  = panel.clientHeight - (isMobile ? 30 : 50);
   const fzW   = maxW / (COLS * 0.602);
   const fzH   = maxH / ROWS;
   carpetEl.style.fontSize = Math.max(3, Math.min(fzW, fzH, 16)).toFixed(2) + 'px';
@@ -437,7 +511,8 @@ function resizeCarpet() {
 
 function resizeCanvas() {
   const panel = document.querySelector('.field-panel');
-  const pad   = 60;
+  const isMobile = window.innerWidth <= 768;
+  const pad   = isMobile ? 24 : 60;
   const maxW  = panel.clientWidth - pad;
   const maxH  = panel.clientHeight - pad;
   // Maintain canvas aspect ratio (CW:CH)
