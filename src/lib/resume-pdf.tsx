@@ -280,7 +280,7 @@ export function ResumePDF() {
             role="Software Developer"
             org="Fractal Tech NYC"
             dates="Feb 2026 — present"
-            description="Built and shipped 6+ full-stack apps, software tools, and AI research projects with 451+ commits and 168+ PRs — designed and built multiplayer games, MCP servers, dungeon crawlers, and AI-powered tools using React, Next.js, TypeScript, Python, WebSockets, and Three.js, with a focus on Claude Code research and harnessing AI as a development partner"
+            description="Built and shipped 10+ full-stack apps, software tools, and AI research projects with 528+ commits and 370+ PRs — created RhinoMCP (an MCP server bridging Rhino 3D and AI agents for computational design), multiplayer games, 3D environments, dungeon crawlers, and AI-powered tools using React, Next.js, TypeScript, Python, Three.js, and WebSockets, with a focus on 3D modeling, architecture-software integration, and Claude Code research"
           />
           <Entry
             role="Architectural Intern"
