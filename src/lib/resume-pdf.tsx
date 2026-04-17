@@ -256,6 +256,9 @@ export function ResumePDF() {
           <Link src="mailto:juliannaroberts18@gmail.com" style={s.headerLink}>
             Email
           </Link>
+          <Link src="https://parallax.haus" style={s.headerLink}>
+            parallax.haus
+          </Link>
           <Link src="https://linkedin.com/in/julianna-roberts-1118m/" style={s.headerLink}>
             LinkedIn
           </Link>
@@ -267,6 +270,12 @@ export function ResumePDF() {
         {/* Experience */}
         <View style={s.section}>
           <Text style={s.sectionTitle}>Experience</Text>
+          <Entry
+            role="AI Engineer Intern"
+            org="Renoverse AI"
+            dates="Apr 2026 — May 2026"
+            description="Building AI-powered product experiences for architects — shipping a refreshed Renoverse AI public-facing website and prototyping a mobile companion app that uses AI to triage communications and surface field notes in real time"
+          />
           <Entry
             role="Software Developer"
             org="Fractal Tech NYC"
