@@ -274,7 +274,7 @@ export function ResumePDF() {
             role="AI Engineer Intern"
             org="Renoverse AI"
             dates="Apr 2026 — May 2026"
-            description="Building AI-powered product experiences for architects — shipping a refreshed Renoverse AI public-facing website and prototyping a mobile companion app that uses AI to triage communications and surface field notes in real time"
+            description="Building AI-powered product experiences for architects"
           />
           <Entry
             role="Software Developer"
