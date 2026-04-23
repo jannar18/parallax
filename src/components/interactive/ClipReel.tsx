@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 
 // Riso thumbnail is slide 0, then 16 video clips
 const RISO_COVER = "/images/home/merge.riso.1.png";
@@ -22,6 +22,19 @@ const CLIPS = [
   "/videos/software/arch-voice-mcp/clip-15.mp4",
   "/videos/software/arch-voice-mcp/clip-16.mp4",
 ];
+
+// Hidden <video preload="auto"> elements warm the browser's HTTP cache for
+// upcoming clips so the next swap is (near-)instant. When a clip's URL is
+// later set on the visible element, ranged responses come from cache.
+function PrefetchClips({ indices }: { indices: number[] }) {
+  return (
+    <div aria-hidden className="absolute h-0 w-0 overflow-hidden opacity-0 pointer-events-none">
+      {indices.map((i) => (
+        <video key={i} src={CLIPS[i]} preload="auto" muted playsInline />
+      ))}
+    </div>
+  );
+}
 
 /* ─────────────────────────────────────────────
  * Desktop: click-driven gallery with side tracker
@@ -55,10 +68,11 @@ function DesktopClipReel() {
       return;
     }
     v.src = CLIPS[current];
-    v.load();
     setPlaying(false);
     setLoading(true);
-    const onCanPlay = () => {
+    // loadedmetadata fires as soon as duration is known (earlier than canplay),
+    // so we can seek + request play sooner; play() will wait on buffering.
+    const onReady = () => {
       try {
         v.currentTime = 0;
       } catch {
@@ -75,8 +89,8 @@ function DesktopClipReel() {
           setLoading(false);
         });
     };
-    v.addEventListener("canplay", onCanPlay, { once: true });
-    return () => v.removeEventListener("canplay", onCanPlay);
+    v.addEventListener("loadedmetadata", onReady, { once: true });
+    return () => v.removeEventListener("loadedmetadata", onReady);
   }, [current, isCover]);
 
   const goPrev = useCallback(
@@ -128,8 +142,18 @@ function DesktopClipReel() {
     })),
   ];
 
+  // Prefetch a sliding window around the current clip so neighbor swaps
+  // (next chevron, tracker jumps, auto-advance) hit a warm cache. On the
+  // cover, prime clip-01 + clip-02 so pressing play feels instant.
+  const prefetchIndices = useMemo(() => {
+    if (isCover) return [0, 1].filter((i) => i < CLIPS.length);
+    const window = [current - 1, current + 1, current + 2];
+    return window.filter((i) => i >= 0 && i < CLIPS.length && i !== current);
+  }, [current, isCover]);
+
   return (
     <section className="relative h-screen bg-paper overflow-hidden">
+      <PrefetchClips indices={prefetchIndices} />
       {/* Video stage — click to play/pause */}
       <div
         className="absolute inset-0 flex items-center justify-end cursor-pointer"
@@ -282,14 +306,19 @@ function MobileClipReel() {
     }
     setLoading(true);
     v.src = CLIPS[current];
-    v.load();
-    const onCanPlay = () => {
+    const onReady = () => {
       setLoading(false);
       v.play().catch(() => {});
       setPlaying(true);
     };
-    v.addEventListener("canplay", onCanPlay, { once: true });
-    return () => v.removeEventListener("canplay", onCanPlay);
+    v.addEventListener("loadedmetadata", onReady, { once: true });
+    return () => v.removeEventListener("loadedmetadata", onReady);
+  }, [current, isRiso]);
+
+  const prefetchIndices = useMemo(() => {
+    if (isRiso) return [0, 1].filter((i) => i < CLIPS.length);
+    const window = [current - 1, current + 1, current + 2];
+    return window.filter((i) => i >= 0 && i < CLIPS.length && i !== current);
   }, [current, isRiso]);
 
   const next = () => setCurrent((c) => (c < total - 1 ? c + 1 : c));
@@ -310,6 +339,7 @@ function MobileClipReel() {
 
   return (
     <div className="relative w-full bg-black" style={{ height: "100dvh" }}>
+      <PrefetchClips indices={prefetchIndices} />
       {/* Single persistent video element — hidden when showing riso cover */}
       <video
         ref={videoRef}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -19,6 +19,53 @@ interface ArtifactBarProps {
 
 function isVideo(src: string) {
   return /\.(mov|mp4|webm)$/i.test(src);
+}
+
+/**
+ * Autoplay-on-visible video thumbnail. Without this, every artifact video
+ * starts downloading the full file at page load — 100+ MB of concurrent
+ * traffic. Here: preload="metadata" only fetches the first chunk (enough
+ * for a poster frame), and the full fetch is deferred until the video
+ * actually enters the viewport.
+ */
+function ArtifactVideo({
+  src,
+  height,
+}: {
+  src: string;
+  height: string;
+}) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.play().catch(() => {});
+        } else {
+          el.pause();
+        }
+      },
+      { threshold: 0.2, rootMargin: "200px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      src={src}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      className="rounded-sm object-contain"
+      style={{ height, width: "auto" }}
+    />
+  );
 }
 
 /**
@@ -84,15 +131,7 @@ export default function ArtifactBar({ artifacts }: ArtifactBarProps) {
                 className="artifact-treatment group relative block cursor-pointer rounded-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
               >
                 {isVideo(artifact.image) ? (
-                  <video
-                    src={artifact.image}
-                    muted
-                    autoPlay
-                    loop
-                    playsInline
-                    className="rounded-sm object-contain"
-                    style={{ height: h, width: "auto" }}
-                  />
+                  <ArtifactVideo src={artifact.image} height={h} />
                 ) : (
                   <Image
                     src={artifact.image}
