@@ -132,15 +132,15 @@ export default function HeroBrandVisual() {
 
   // ── Resize + orientation change ──
   useEffect(() => {
+    // Orientation change fires before the viewport updates;
+    // defer resize to let the browser settle. Hoisted so add/remove
+    // share the same reference (previously leaked on every effect run).
+    const onOrientation = () => setTimeout(handleResize, 150);
     window.addEventListener("resize", handleResize);
-    window.addEventListener("orientationchange", () => {
-      // Orientation change fires before the viewport updates;
-      // defer resize to let the browser settle.
-      setTimeout(handleResize, 150);
-    });
+    window.addEventListener("orientationchange", onOrientation);
     return () => {
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("orientationchange", handleResize);
+      window.removeEventListener("orientationchange", onOrientation);
     };
   }, [handleResize]);
 
