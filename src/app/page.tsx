@@ -37,7 +37,7 @@ export default function HomePage() {
       </div>
 
       {/* ─── Section 2: Split A — text left, software right ─── */}
-      <section className="grid h-screen grid-cols-1 md:grid-cols-2">
+      <section className="grid grid-cols-1 md:h-screen md:grid-cols-2">
         <div className="flex items-center bg-paper px-[5vw] py-[5vh]">
           <div>
             <p
@@ -68,7 +68,7 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-        <div className="relative overflow-hidden">
+        <div className="relative aspect-square overflow-hidden md:aspect-auto md:h-full">
           <Image
             src="/images/home/software-split.riso.1.png"
             alt="Software split view"
