@@ -227,12 +227,30 @@ When building portfolio pages, follow these principles:
 - **Content pipeline spec exists (2026-03-06):** `notes/update-skill-steps.md` documents the full manual content pipeline — this is the implementation spec for the `/update-site` skill (ASMV-18). Read it before building that skill.
 - **Texture generation scripts (2026-03-06):** Scripts in `research/asset-workflows/` produce real output. Run with `node <script> --output <path> --seed <n>`. Note: `simplex-noise` and `@napi-rs/canvas` are NOT in package.json — install them before running these scripts.
 - **Worktree agent cleanup (2026-03-06):** After worktree agents finish, you must manually `git worktree remove <path>` + `git branch -d <scaffold-branch>`. The scaffold branches (e.g., `worktree-agent-*`) have no unique commits and are safe to delete. Also: `gh pr merge --delete-branch` deletes the remote branch on GitHub but doesn't prune local remote-tracking refs — run `git remote prune origin` to clean those up.
+- **Lattice runs on main, always (2026-04-29):** Every `lattice` CLI command must run on `main`, with the resulting `.lattice/` changes committed and pushed to `origin/main` immediately. Lattice state is git-tracked, so commits on a feature branch are invisible to other agents until the PR merges — that is exactly what causes duplicate task creation and two agents grabbing the same task. Branch-switching is cheap for agents; stale boards are not. See "All Lattice Operations Run on `main`" in the Lattice section for the full procedure.
 
 ## Lattice
 
 > **MANDATORY: This project has Lattice initialized (`.lattice/` exists). You MUST use Lattice to track all work. Creating tasks, updating statuses, and following the workflow below is not optional — it is a hard requirement. Failure to track work in Lattice is a coordination failure: other agents and humans cannot see, build on, or trust untracked work. If you are about to write code and no Lattice task exists for it, stop and create one first.**
 
 Lattice is file-based, event-sourced task tracking built for minds that think in tokens and act in tool calls. The `.lattice/` directory is the coordination state — it lives alongside the code, not behind an API.
+
+### All Lattice Operations Run on `main` (Non-Negotiable)
+
+**Rule:** Every `lattice` CLI command runs on the `main` branch. Period. After every lattice mutation, commit the resulting `.lattice/` changes to `main` and push to `origin/main` immediately.
+
+**Why:** Lattice state is git-tracked. If a task creation, status transition, or comment is committed on a feature branch, it is invisible to every other agent (and to you on a different branch) until the PR merges. That invisibility is what causes duplicate task creation, two agents grabbing the same task, and stale board reads. Keeping every lattice operation on `main` makes the board the single source of truth that every agent and machine can trust.
+
+**The drill, every time you need to run any `lattice` command (create, status, comment, link, branch-link, update, etc.):**
+1. If you have uncommitted code changes on a feature branch, `git stash` them.
+2. `git checkout main && git pull --ff-only origin main` — start from a current main.
+3. Run the `lattice` command.
+4. `git add .lattice/ && git commit -m "<concise lattice change description>" && git push origin main`.
+5. `git checkout <your-feature-branch>` and `git stash pop` if you stashed.
+
+**The only exception:** the implementation sub-agent committing code on a feature branch does not need to run lattice commands during the code work itself. The orchestrator handles status transitions on `main` before and after spawning each sub-agent. If a sub-agent needs to add a comment or update status mid-work, it must do the main-branch dance above.
+
+**This is not friction-bearing for agents.** Branch-switching is just more tool calls. Agents do not get tired. The cost of a stale board (duplicate work, wasted tokens, coordination failures) is far higher than the cost of a few extra `git checkout` commands. Treat the `main` branch as the lattice control plane and the feature branches as code-only.
 
 ### Creating Tasks (Non-Negotiable)
 
