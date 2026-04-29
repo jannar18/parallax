@@ -14,8 +14,8 @@ export default async function SoftwarePanelPage({
 
   return (
     <ProjectPanel>
-      {/* Left column — narrow text list */}
-      <div className="flex h-full w-[18%] flex-shrink-0 flex-col justify-center px-[3vw]">
+      {/* Left column — full-width on mobile, narrow text list on md+ */}
+      <div className="flex w-full flex-shrink-0 flex-col justify-center px-6 py-6 md:h-full md:w-[22%] md:px-[3vw] md:py-0">
         <h2 className="text-xl font-light text-paper">{project.title}</h2>
         {project.description && (
           <p className="mt-2 text-sm leading-relaxed text-paper/70">
@@ -43,13 +43,10 @@ export default async function SoftwarePanelPage({
         )}
       </div>
 
-      {/* Right area — video first, then screenshots, horizontally scrollable */}
-      <div
-        className="flex flex-1 items-center gap-[2vw] overflow-x-auto px-[2vw] scrollbar-hide"
-        style={{ height: "calc(75vh - 4vh)" }}
-      >
+      {/* Right area — video first, then screenshots, horizontally scrollable on md+ */}
+      <div className="flex flex-1 items-center gap-4 overflow-x-auto px-4 pb-6 md:gap-[2vw] md:px-[2vw] md:pb-0 scrollbar-hide h-[45dvh] md:h-[calc(75dvh-4vh)]">
         {/* Hero video — falls back to riso thumbnail if no video */}
-        <div className="flex-shrink-0" style={{ height: "calc(75vh - 4vh)" }}>
+        <div className="h-full flex-shrink-0">
           <HoverVideo
             src={project.heroVideo}
             poster={project.posterImage}
@@ -60,7 +57,7 @@ export default async function SoftwarePanelPage({
 
         {/* Additional videos */}
         {project.videos?.map((videoSrc) => (
-          <div key={videoSrc} className="flex-shrink-0" style={{ height: "calc(75vh - 4vh)" }}>
+          <div key={videoSrc} className="h-full flex-shrink-0">
             <HoverVideo
               src={videoSrc}
               alt={project.title}
@@ -70,12 +67,12 @@ export default async function SoftwarePanelPage({
 
         {/* Screenshots — all forced to same explicit height */}
         {project.screenshots?.map((src) => (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             key={src}
             src={src}
             alt={project.title}
-            style={{ height: "calc(75vh - 4vh)", width: "auto", maxWidth: "none" }}
-            className="flex-shrink-0"
+            className="h-full w-auto max-w-none flex-shrink-0"
           />
         ))}
       </div>

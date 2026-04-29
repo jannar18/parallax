@@ -59,9 +59,10 @@ export default function ProjectPanel({ children }: ProjectPanelProps) {
       {/* Close button — top right, above bar */}
       <button
         onClick={close}
-        className={`fixed top-6 right-6 z-[57] flex h-10 w-10 items-center justify-center text-paper/70 transition-all duration-300 hover:text-paper ${
+        className={`fixed right-6 z-[58] flex h-11 w-11 items-center justify-center text-paper/70 transition-all duration-300 hover:text-paper ${
           visible ? "opacity-100" : "opacity-0"
         }`}
+        style={{ top: "max(1rem, env(safe-area-inset-top, 1rem))" }}
         aria-label="Close panel"
       >
         <svg
@@ -76,16 +77,16 @@ export default function ProjectPanel({ children }: ProjectPanelProps) {
         </svg>
       </button>
 
-      {/* Bar — centered vertically, full width, 50vh */}
+      {/* Bar — centered vertically. Stacked + scrollable on mobile, horizontal bar on md+. */}
       <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
-        className={`fixed left-0 right-0 top-1/2 z-[56] h-[75vh] -translate-y-1/2 transition-all duration-300 ease-out motion-reduce:duration-0 ${
+        className={`fixed left-0 right-0 top-1/2 z-[56] -translate-y-1/2 transition-all duration-300 ease-out motion-reduce:duration-0 max-h-[90dvh] md:h-[75dvh] md:max-h-[75dvh] overflow-y-auto md:overflow-visible ${
           visible ? "opacity-100 scale-100" : "opacity-0 scale-[0.98]"
         }`}
       >
-        <div className="flex h-full w-full">
+        <div className="flex h-full w-full flex-col md:flex-row">
           {children}
         </div>
       </div>

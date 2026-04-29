@@ -114,6 +114,29 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
   // Popover (ASMV-64)
   const [activeEntry, setActiveEntry] = useState<ArtifactEntry | null>(null);
 
+  // ASMV-92: clean up pointer/drag state before opening the popover so a
+  // captured touch pointer + touch-action:none on this container can't
+  // interfere with the portal-rendered dialog.
+  const openArtifact = useCallback((entry: ArtifactEntry) => {
+    const container = containerRef.current;
+    if (container) {
+      for (const id of pointers.current.keys()) {
+        try {
+          container.releasePointerCapture(id);
+        } catch {
+          // ignore — pointer may already be released
+        }
+      }
+    }
+    pointers.current.clear();
+    isDragging.current = false;
+    isPinching.current = false;
+    hasDragged.current = false;
+    velocity.current = { x: 0, y: 0 };
+    velocityHistory.current = [];
+    setActiveEntry(entry);
+  }, []);
+
   // Mobile detection for hint text
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -646,13 +669,13 @@ export default function InfiniteCanvas({ entries }: InfiniteCanvasProps) {
               }}
               onClick={() => {
                 if (!hasDragged.current) {
-                  setActiveEntry(entry);
+                  openArtifact(entry);
                 }
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  setActiveEntry(entry);
+                  openArtifact(entry);
                 }
               }}
             >
