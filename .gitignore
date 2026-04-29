@@ -46,3 +46,7 @@ research/03-gemini-imagen-research.md
 _raw/*
 !_raw/.gitkeep
 .claude/worktrees/
+
+# Sibling worktrees created by scripts/new-lattice-worktree.sh
+# (siblings live outside the repo so this is belt-and-braces)
+worktree-*/

@@ -241,18 +241,20 @@ Lattice is file-based, event-sourced task tracking built for minds that think in
 
 **The standard solution: git worktrees with a shared `LATTICE_ROOT`.** This is the official Lattice protocol — see `~/.claude/skills/lattice/references/worktree-guide.md`. Each parallel agent works in its own sibling worktree (`../worktree-<task>`) on its own branch. All worktrees export `LATTICE_ROOT=/absolute/path/to/primary-checkout/.lattice`, so every `lattice` command writes to one physical `.lattice/` directory regardless of branch. Code commits stay branch-isolated; lattice state is shared by filesystem, not by git merges. The primary checkout sits on `main` and commits the lattice changes from there.
 
-**When spawning a parallel agent:**
-1. From the primary checkout (on `main`), create a sibling worktree:
+**When spawning a parallel agent — use the helper script:**
+```bash
+scripts/new-lattice-worktree.sh ASMV-96 mobile-nav-reorder
+```
+This creates `../worktree-ASMV-96/` on branch `feature/ASMV-96-mobile-nav-reorder` and prints the exact `export LATTICE_ROOT=…` and `cd` lines to paste into the agent's shell. The agent then operates inside the worktree. All `lattice` commands write to the primary checkout's shared `.lattice/` regardless of which worktree they run from.
+
+**When work is done:**
+1. The agent commits + pushes its branch and opens a PR.
+2. From the primary checkout (on `main`), the orchestrator commits any uncommitted `.lattice/` changes and pushes to `origin/main`.
+3. After the PR merges, tear down the worktree:
    ```bash
-   git worktree add ../worktree-ASMV-XX -b feature/ASMV-XX-<slug>
+   git worktree remove ../worktree-ASMV-XX
+   git branch -d feature/ASMV-XX-<slug>
    ```
-2. Set `LATTICE_ROOT` to the primary checkout's `.lattice/`:
-   ```bash
-   export LATTICE_ROOT=$(cd /Users/fractalos/Dev/parallax/.lattice && pwd)
-   ```
-3. The agent operates inside the worktree. All `lattice` commands work normally and update the shared state.
-4. When work is done, the orchestrator (on the primary checkout, on `main`) commits the `.lattice/` changes and pushes to `origin/main`.
-5. Tear down the worktree per the guide: `git worktree remove ../worktree-ASMV-XX`.
 
 **When working sequentially on a single task in the primary checkout (no parallel agents):** just stay on `main` for `lattice` commands. Switch to the feature branch only for code commits. Lattice changes go to `main` immediately and get pushed. This keeps the board authoritative on origin without worktree overhead.
 
