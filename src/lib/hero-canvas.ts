@@ -394,8 +394,13 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
   if (!net) return;
 
   const isLow = s.perfTier === "low";
-  const px = (s.mouseX - 0.5) * 6;
-  const py = (s.mouseY - 0.5) * 4;
+  // Autonomous Lissajous-like drift so the network stays alive on touch
+  // devices (where mouseX/mouseY never leave 0.5). On desktop the user's
+  // mouse parallax dominates and this drift is barely perceptible.
+  const driftT = s.frame * 0.012;
+  const driftAmp = isLow ? 4 : 2;
+  const px = (s.mouseX - 0.5) * 6 + Math.cos(driftT) * driftAmp;
+  const py = (s.mouseY - 0.5) * 4 + Math.sin(driftT * 1.3) * driftAmp * 0.7;
   const ts = s.frame / 60;
 
   ctx.save();
@@ -425,7 +430,7 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
     const endY = pA.y + (pB.y - pA.y) * edge.drawProgress;
 
     const a = Math.min(
-      edge.alpha * er * (0.7 + 0.15 * Math.sin(s.frame * 0.008 + edge.phase)) * 2.5,
+      edge.alpha * er * (0.65 + 0.25 * Math.sin(s.frame * 0.008 + edge.phase)) * 2.5,
       0.85,
     );
 
@@ -446,21 +451,21 @@ export function drawRightPlane(ctx: CanvasRenderingContext2D, s: HeroState) {
       edge.signalPos = 0;
       edge.signalDir = 1;
     }
-    if (!isLow) {
-      const sigX = pA.x + (pB.x - pA.x) * edge.signalPos + px;
-      const sigY = pA.y + (pB.y - pA.y) * edge.signalPos + py;
-      ctx.fillStyle = `rgba(${SCARLET_RGB},${Math.min(a * 1.4, 0.6) * er})`;
-      ctx.beginPath();
-      ctx.arc(sigX, sigY, 1.8, 0, Math.PI * 2);
-      ctx.fill();
-    }
+    // Signal dots are the most clearly-animated element; keep them on
+    // mobile so the network reads as alive. Cross markers stay gated.
+    const sigX = pA.x + (pB.x - pA.x) * edge.signalPos + px;
+    const sigY = pA.y + (pB.y - pA.y) * edge.signalPos + py;
+    ctx.fillStyle = `rgba(${SCARLET_RGB},${Math.min(a * 1.4, 0.6) * er})`;
+    ctx.beginPath();
+    ctx.arc(sigX, sigY, 1.8, 0, Math.PI * 2);
+    ctx.fill();
   }
 
   // Draw nodes
   for (const node of net.nodes) {
     if (node.reveal < 0.01) continue;
     const p = mapToQuad(node.nx, node.ny, pts);
-    const a = node.reveal * (0.35 + 0.1 * Math.sin(s.frame * 0.01 + node.phase));
+    const a = node.reveal * (0.3 + 0.18 * Math.sin(s.frame * 0.01 + node.phase));
     ctx.fillStyle = `rgba(${SCARLET_RGB},${a})`;
     ctx.beginPath();
     ctx.arc(p.x + px, p.y + py, 2.0, 0, Math.PI * 2);
