@@ -447,6 +447,28 @@ export default function MasonryLayout({ entries }: MasonryLayoutProps) {
   }, [activeEntry, startAnimation]);
 
   const handleItemClick = useCallback((entry: MasonryEntry) => {
+    // ASMV-92: release any in-flight pointer capture and reset drag/pinch
+    // state before opening the popover. Combined with rendering the dialog
+    // via a portal to <body>, this prevents the captured touch from leaking
+    // into the canvas and stops touch-action:none from inheriting into the
+    // popover on mobile.
+    const container = containerRef.current;
+    if (container) {
+      for (const id of pointers.current.keys()) {
+        try {
+          container.releasePointerCapture(id);
+        } catch {
+          // ignore — pointer may already be released
+        }
+      }
+    }
+    pointers.current.clear();
+    isDragging.current = false;
+    isPinching.current = false;
+    hasDragged.current = false;
+    velocity.current = { x: 0, y: 0 };
+    velocityHistory.current = [];
+
     setActiveEntry({
       slug: entry.slug, date: entry.date, mood: entry.mood,
       image: entry.image, project: entry.project, description: entry.description,

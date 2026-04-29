@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { isVideo } from "@/lib/media-utils";
 
@@ -23,9 +24,16 @@ export default function ArtifactPopover({
   onClose,
 }: ArtifactPopoverProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Mount guard for SSR / portal
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Focus trap + Escape key
   useEffect(() => {
+    if (!mounted) return;
     const el = dialogRef.current;
     if (!el) return;
 
@@ -59,14 +67,17 @@ export default function ArtifactPopover({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  }, [onClose, mounted]);
 
-  return (
+  if (!mounted) return null;
+
+  const content = (
     <>
       {/* Scrim */}
       <div
         className="fixed inset-0 z-[60] bg-ink/40 backdrop-blur-sm"
         onClick={onClose}
+        style={{ touchAction: "auto" }}
         aria-hidden="true"
       />
 
@@ -77,10 +88,14 @@ export default function ArtifactPopover({
         aria-modal="true"
         aria-label={entry.description || `Artifact from ${entry.date}`}
         tabIndex={-1}
-        className="fixed inset-0 z-[70] flex items-center justify-center p-8 pointer-events-none outline-none"
+        className="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-8 pointer-events-none outline-none"
+        style={{ touchAction: "auto" }}
       >
-        <div className="pointer-events-auto w-full max-w-3xl rounded-lg bg-surface shadow-2xl ring-1 ring-border overflow-hidden">
-          <div className="bg-paper p-6">
+        <div
+          className="pointer-events-auto w-full max-w-3xl rounded-lg bg-surface shadow-2xl ring-1 ring-border overflow-hidden flex flex-col"
+          style={{ maxHeight: "90dvh", touchAction: "auto" }}
+        >
+          <div className="bg-paper p-4 sm:p-6 overflow-y-auto flex-1 min-h-0">
             {isVideo(entry.image) ? (
               <video
                 src={entry.image}
@@ -89,7 +104,7 @@ export default function ArtifactPopover({
                 loop
                 playsInline
                 controls
-                className="mx-auto h-auto max-h-[75vh] w-auto object-contain"
+                className="mx-auto h-auto max-h-[60dvh] w-auto object-contain"
               />
             ) : (
               <Image
@@ -97,14 +112,14 @@ export default function ArtifactPopover({
                 alt={entry.description || `Artifact from ${entry.date}`}
                 width={1200}
                 height={1200}
-                className="mx-auto h-auto max-h-[75vh] w-auto object-contain"
+                className="mx-auto h-auto max-h-[60dvh] w-auto object-contain"
                 unoptimized
               />
             )}
           </div>
 
-          <div className="px-5 py-4 flex items-start justify-between">
-            <div>
+          <div className="px-4 sm:px-5 py-4 flex items-start justify-between gap-3 border-t border-border/50 shrink-0">
+            <div className="min-w-0 flex-1">
               <p
                 className="font-sans text-ink-lighter uppercase"
                 style={{ fontSize: "0.7rem", letterSpacing: "0.1em" }}
@@ -129,14 +144,19 @@ export default function ArtifactPopover({
             </div>
             <button
               onClick={onClose}
-              className="ml-4 shrink-0 font-mono text-xs uppercase tracking-wider text-ink-lighter hover:text-ink transition-colors"
+              className="shrink-0 inline-flex h-11 w-11 items-center justify-center rounded-full text-ink-lighter hover:text-ink hover:bg-ink/5 transition-colors -mr-2 -mt-1"
               aria-label="Close"
             >
-              Esc
+              <span aria-hidden="true" className="text-2xl leading-none font-light">
+                &times;
+              </span>
+              <span className="sr-only">Close</span>
             </button>
           </div>
         </div>
       </div>
     </>
   );
+
+  return createPortal(content, document.body);
 }
