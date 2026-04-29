@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getAllNowEntries } from "@/lib/content";
 import { getImageDimensions } from "@/lib/image-utils";
 import StudioDesk from "@/components/interactive/StudioDesk";
@@ -39,5 +40,20 @@ export default function ArchivePage() {
       };
     });
 
-  return <StudioDesk entries={canvasEntries} />;
+  return (
+    <>
+      <StudioDesk entries={canvasEntries} />
+      <Link
+        href="/pretext"
+        className="fixed right-5 z-30 font-mono uppercase text-ink-lighter/40 transition-colors hover:text-scarlet"
+        style={{
+          bottom: "max(1.25rem, env(safe-area-inset-bottom, 1rem))",
+          fontSize: "0.5rem",
+          letterSpacing: "0.08em",
+        }}
+      >
+        Pretext &rarr;
+      </Link>
+    </>
+  );
 }
