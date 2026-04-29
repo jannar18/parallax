@@ -227,7 +227,7 @@ When building portfolio pages, follow these principles:
 - **Content pipeline spec exists (2026-03-06):** `notes/update-skill-steps.md` documents the full manual content pipeline — this is the implementation spec for the `/update-site` skill (ASMV-18). Read it before building that skill.
 - **Texture generation scripts (2026-03-06):** Scripts in `research/asset-workflows/` produce real output. Run with `node <script> --output <path> --seed <n>`. Note: `simplex-noise` and `@napi-rs/canvas` are NOT in package.json — install them before running these scripts.
 - **Worktree agent cleanup (2026-03-06):** After worktree agents finish, you must manually `git worktree remove <path>` + `git branch -d <scaffold-branch>`. The scaffold branches (e.g., `worktree-agent-*`) have no unique commits and are safe to delete. Also: `gh pr merge --delete-branch` deletes the remote branch on GitHub but doesn't prune local remote-tracking refs — run `git remote prune origin` to clean those up.
-- **Lattice runs on main, always (2026-04-29):** Every `lattice` CLI command must run on `main`, with the resulting `.lattice/` changes committed and pushed to `origin/main` immediately. Lattice state is git-tracked, so commits on a feature branch are invisible to other agents until the PR merges — that is exactly what causes duplicate task creation and two agents grabbing the same task. Branch-switching is cheap for agents; stale boards are not. See "All Lattice Operations Run on `main`" in the Lattice section for the full procedure.
+- **Lattice state is shared via worktrees + `LATTICE_ROOT` (2026-04-29):** Lattice state is git-tracked, so committing lattice events on a feature branch hides them from every other agent until the PR merges — that is what caused today's duplicate task creation (ASMV-93/94 → ASMV-86/87). The official Lattice solution is git worktrees with `LATTICE_ROOT` pointing to the primary checkout's `.lattice/` (see `~/.claude/skills/lattice/references/worktree-guide.md`). For sequential single-task work, just run `lattice` commands on `main` in the primary checkout — never on a feature branch. See "Branch Isolation vs. Lattice State" in the Lattice section for the full procedure.
 
 ## Lattice
 
@@ -235,22 +235,28 @@ When building portfolio pages, follow these principles:
 
 Lattice is file-based, event-sourced task tracking built for minds that think in tokens and act in tool calls. The `.lattice/` directory is the coordination state — it lives alongside the code, not behind an API.
 
-### All Lattice Operations Run on `main` (Non-Negotiable)
+### Branch Isolation vs. Lattice State
 
-**Rule:** Every `lattice` CLI command runs on the `main` branch. Period. After every lattice mutation, commit the resulting `.lattice/` changes to `main` and push to `origin/main` immediately.
+**The problem:** Lattice state is git-tracked. If a `lattice` mutation is committed on a feature branch, it's invisible to other agents (and to you on a different branch) until the PR merges. That invisibility causes duplicate task creation, two agents grabbing the same task, and stale board reads.
 
-**Why:** Lattice state is git-tracked. If a task creation, status transition, or comment is committed on a feature branch, it is invisible to every other agent (and to you on a different branch) until the PR merges. That invisibility is what causes duplicate task creation, two agents grabbing the same task, and stale board reads. Keeping every lattice operation on `main` makes the board the single source of truth that every agent and machine can trust.
+**The standard solution: git worktrees with a shared `LATTICE_ROOT`.** This is the official Lattice protocol — see `~/.claude/skills/lattice/references/worktree-guide.md`. Each parallel agent works in its own sibling worktree (`../worktree-<task>`) on its own branch. All worktrees export `LATTICE_ROOT=/absolute/path/to/primary-checkout/.lattice`, so every `lattice` command writes to one physical `.lattice/` directory regardless of branch. Code commits stay branch-isolated; lattice state is shared by filesystem, not by git merges. The primary checkout sits on `main` and commits the lattice changes from there.
 
-**The drill, every time you need to run any `lattice` command (create, status, comment, link, branch-link, update, etc.):**
-1. If you have uncommitted code changes on a feature branch, `git stash` them.
-2. `git checkout main && git pull --ff-only origin main` — start from a current main.
-3. Run the `lattice` command.
-4. `git add .lattice/ && git commit -m "<concise lattice change description>" && git push origin main`.
-5. `git checkout <your-feature-branch>` and `git stash pop` if you stashed.
+**When spawning a parallel agent:**
+1. From the primary checkout (on `main`), create a sibling worktree:
+   ```bash
+   git worktree add ../worktree-ASMV-XX -b feature/ASMV-XX-<slug>
+   ```
+2. Set `LATTICE_ROOT` to the primary checkout's `.lattice/`:
+   ```bash
+   export LATTICE_ROOT=$(cd /Users/fractalos/Dev/parallax/.lattice && pwd)
+   ```
+3. The agent operates inside the worktree. All `lattice` commands work normally and update the shared state.
+4. When work is done, the orchestrator (on the primary checkout, on `main`) commits the `.lattice/` changes and pushes to `origin/main`.
+5. Tear down the worktree per the guide: `git worktree remove ../worktree-ASMV-XX`.
 
-**The only exception:** the implementation sub-agent committing code on a feature branch does not need to run lattice commands during the code work itself. The orchestrator handles status transitions on `main` before and after spawning each sub-agent. If a sub-agent needs to add a comment or update status mid-work, it must do the main-branch dance above.
+**When working sequentially on a single task in the primary checkout (no parallel agents):** just stay on `main` for `lattice` commands. Switch to the feature branch only for code commits. Lattice changes go to `main` immediately and get pushed. This keeps the board authoritative on origin without worktree overhead.
 
-**This is not friction-bearing for agents.** Branch-switching is just more tool calls. Agents do not get tired. The cost of a stale board (duplicate work, wasted tokens, coordination failures) is far higher than the cost of a few extra `git checkout` commands. Treat the `main` branch as the lattice control plane and the feature branches as code-only.
+**The thing you must never do:** run a `lattice` command from a feature branch in the primary checkout (without `LATTICE_ROOT` set elsewhere). That commits lattice events onto the feature branch, where they are invisible to every other agent until the PR merges. This is exactly the failure mode the worktree protocol was designed to prevent.
 
 ### Creating Tasks (Non-Negotiable)
 
