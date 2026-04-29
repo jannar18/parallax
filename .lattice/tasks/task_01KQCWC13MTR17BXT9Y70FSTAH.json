@@ -6,9 +6,15 @@
       "linked_at": "2026-04-29T15:08:14Z",
       "linked_by": "agent:claude-opus-4",
       "repo": null
+    },
+    {
+      "branch": "feature/ASMV-97-relocate-pretext-clean",
+      "linked_at": "2026-04-29T16:06:27Z",
+      "linked_by": "agent:claude-opus-4",
+      "repo": null
     }
   ],
-  "comment_count": 2,
+  "comment_count": 3,
   "complexity": null,
   "created_at": "2026-04-29T15:05:26Z",
   "created_by": "agent:claude-opus-4",
@@ -23,7 +29,7 @@
     }
   ],
   "id": "task_01KQCWC13MTR17BXT9Y70FSTAH",
-  "last_event_id": "ev_01KQCWMZ9ZPC5N2EJW3QHNE51C",
+  "last_event_id": "ev_01KQCZVRBJQ2QT7V9QZS95NX62",
   "last_status_changed_at": "2026-04-29T15:10:19Z",
   "priority": "high",
   "relationships_out": [],
@@ -34,6 +40,6 @@
   "tags": null,
   "title": "Relocate pretext link from home to /archive (remove from home page)",
   "type": "task",
-  "updated_at": "2026-04-29T15:10:19Z",
+  "updated_at": "2026-04-29T16:06:27Z",
   "urgency": null
 }
