@@ -1,0 +1,3 @@
+# ASMV-98: Refactor: extract shared pointer-release helper used by InfiniteCanvas + MasonryLayout
+
+When opening an artifact popover from /archive, both InfiniteCanvas.tsx and MasonryLayout.tsx duplicate the same pointer-cleanup logic: iterate captured pointers, release each, clear the map, reset isDragging/isPinching/hasDragged/velocity/velocityHistory. Extract into a shared helper (e.g., src/lib/canvas-pointer-cleanup.ts or a hook). Surfaced as a non-blocking observation during ASMV-92 review (PR #100). Plan explicitly scoped the refactor out, so it stayed duplicated; capturing here so we don't lose it.
