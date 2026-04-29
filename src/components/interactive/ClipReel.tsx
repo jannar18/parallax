@@ -388,6 +388,33 @@ function MobileClipReel() {
           {isRiso ? "cover" : `${current + 1} / ${total}`}
         </p>
       </div>
+
+      {/* Rotate-phone hint — portrait only, never on desktop (this component
+          is mobile-only). Disappears when the device is rotated to landscape
+          via Tailwind's built-in orientation variants. */}
+      <div
+        className="absolute top-4 left-1/2 -translate-x-1/2 z-20 portrait:flex landscape:hidden items-center gap-2 text-paper/60 pointer-events-none"
+        aria-hidden="true"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
+          <rect x="7" y="3" width="10" height="18" rx="1.5" />
+          <path d="M3 8a9 9 0 0 1 6-3" />
+          <path d="M5 5l-2 3 3 1" />
+        </svg>
+        <p
+          className="font-mono uppercase tracking-wider"
+          style={{ fontSize: "0.65rem" }}
+        >
+          rotate for full view
+        </p>
+      </div>
     </div>
   );
 }
