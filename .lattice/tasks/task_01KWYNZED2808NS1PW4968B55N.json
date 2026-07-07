@@ -1,0 +1,32 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 1,
+  "complexity": null,
+  "created_at": "2026-07-07T16:18:31Z",
+  "created_by": "agent:claude-recapture-03",
+  "custom_fields": {},
+  "description": null,
+  "done_at": "2026-07-07T20:03:28Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KWZ2VAW5ARDQBS53AD5Z07QN",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
+  "id": "task_01KWYNZED2808NS1PW4968B55N",
+  "last_event_id": "ev_01KWZ2VAYDZQHWK50JH4VR7ZHH",
+  "last_status_changed_at": "2026-07-07T20:03:28Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-105",
+  "status": "done",
+  "tags": null,
+  "title": "Recapture: append Vellum + Secret Garden works.json entries",
+  "type": "task",
+  "updated_at": "2026-07-07T20:03:28Z",
+  "urgency": null
+}

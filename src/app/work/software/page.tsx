@@ -1,63 +1,37 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { getAllSoftwareProjects } from "@/lib/content";
+import { getAllWorks } from "@/lib/content";
+import LabGallery from "@/components/lab/LabGallery";
 
 export const metadata: Metadata = {
   title: "Software",
   description:
-    "Software portfolio — products, tools, and experiments in code and AI.",
+    "A running log of software prototypes — products, tools, and experiments in code and AI, each captured as a looping GIF.",
 };
 
+/**
+ * Software — a GIF-first "lab" gallery.
+ *
+ * Deliberately low-friction "posted work" rather than the polished MDX
+ * case-study look: each work leads with its GIF (the thumbnail), and a
+ * click opens a lightbox with the media larger plus links. Fed by the
+ * /post-prototype pipeline via getAllWorks() (sorted newest-first).
+ */
 export default function SoftwarePage() {
-  const projects = getAllSoftwareProjects();
+  const works = getAllWorks();
 
   return (
-    <div className="mx-auto px-[5vw]">
+    <div className="mx-auto max-w-content px-5">
       <div className="py-24">
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-x-16 md:gap-y-10">
-          {projects.map((project) => (
-            <Link
-              key={project.slug}
-              href={`/work/software/${project.slug}`}
-              className="group flex flex-col md:flex-row md:gap-6"
-            >
-              {/* Text — right side on md+ */}
-              <div className="order-2 mt-4 flex flex-col justify-between text-left md:order-2 md:mt-0 md:w-[25%] md:flex-shrink-0 md:py-4">
-                <h2 className="text-xl font-light text-ink transition-colors group-hover:text-scarlet">
-                  {project.title}
-                </h2>
-                {project.description && (
-                  <p className="mt-2 text-sm leading-relaxed text-ink-light">
-                    {project.description}
-                  </p>
-                )}
-                {project.stack && (
-                  <ul className="mt-3 space-y-0.5">
-                    {project.stack.map((tech) => (
-                      <li key={tech} className="font-mono text-xs text-ink-lighter">
-                        {tech}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+        <header className="mb-14 max-w-text">
+          <p className="font-mono text-xs uppercase tracking-wider text-ink-lighter">
+            Prototypes, Experiments &amp; Ships
+          </p>
+          <h1 className="mt-4 font-serif text-4xl font-normal italic tracking-tighter text-ink md:text-5xl">
+            A running log of things I&rsquo;m building
+          </h1>
+        </header>
 
-              {/* Image — right side on md+ */}
-              {(project.thumbImage || project.heroImage) && (
-                <div className="relative order-1 aspect-[3/2] overflow-hidden bg-surface md:order-1 md:flex-1">
-                  <Image
-                    src={project.thumbImage ?? project.heroImage!}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                    style={project.thumbPosition ? { objectPosition: project.thumbPosition } : undefined}
-                  />
-                </div>
-              )}
-            </Link>
-          ))}
-        </div>
+        <LabGallery works={works} />
       </div>
     </div>
   );

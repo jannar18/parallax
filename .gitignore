@@ -18,6 +18,11 @@ build/
 .env.test.local
 .env.production.local
 
+# Prototype-publishing pipeline (migrated from prototypes repo)
+pipeline/.env
+pipeline/.tmp/
+pipeline/node_modules/
+
 # Vercel
 .vercel
 

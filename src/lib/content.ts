@@ -70,6 +70,53 @@ export interface SoftwareProject {
   content: string;
 }
 
+/* ── Works (Lab / prototype gallery) ── */
+
+/**
+ * A "work" is a published prototype from the /post-prototype pipeline.
+ * Backed by src/data/works.json (a flat manifest, not MDX). GIF-first:
+ * the `gif` IS the thumbnail. See the merge CONTRACT for the data model.
+ */
+export interface Work {
+  id: string;
+  number: number;
+  label?: string;
+  title: string;
+  description?: string;
+  gif: string;
+  repo?: string;
+  url?: string;
+  date?: string;
+  tags?: string[];
+  screenshots?: string[];
+}
+
+const worksManifestPath = path.join(
+  process.cwd(),
+  "src",
+  "data",
+  "works.json"
+);
+
+/**
+ * Read src/data/works.json and return the works sorted newest-first
+ * (by `number` descending). Returns [] if the manifest is missing.
+ */
+export function getAllWorks(): Work[] {
+  if (!fs.existsSync(worksManifestPath)) return [];
+  const raw = fs.readFileSync(worksManifestPath, "utf8");
+  const parsed = JSON.parse(raw) as { works?: Work[] };
+  const works = Array.isArray(parsed.works) ? parsed.works : [];
+  // Newest first: sort by date DESC, tie-break by number DESC (so same-day
+  // prototypes keep their sequence). Keeps ships + prototypes in one log.
+  return works.slice().sort((a, b) => {
+    const ad = a.date ?? "";
+    const bd = b.date ?? "";
+    if (ad !== bd) return ad < bd ? 1 : -1;
+    return (b.number ?? 0) - (a.number ?? 0);
+  });
+}
+
 /* ── Generic Helpers ── */
 
 function getContentFiles(collection: string): string[] {

@@ -10,7 +10,7 @@ A personal website for Julianna at the quality level of an Asimov Collective sit
 - **Content:** MDX files in `src/content/`, loaded via `gray-matter` + `next-mdx-remote`
 - **Package manager:** pnpm
 - **Fonts:** Jost (body/nav, stand-in for Futura PT) + Cormorant Garamond (headings, semibold italic) + DM Mono (stand-in for Degular Mono) via `next/font/google`; see `brand-guide.md` §4
-- **Brand:** "Parallax" / parallax.studio — full brand guide in `brand-guide.md`
+- **Brand:** "Parallax" / parallax.haus — full brand guide in `brand-guide.md`
 
 Research, PRD, and task tracking remain in their original locations.
 
@@ -97,7 +97,7 @@ Research, PRD, and task tracking remain in their original locations.
 | Deployment | Vercel (not yet connected) | First-party Next.js support, image optimization CDN, preview deploys |
 | Tech stack | Next.js 15 (App Router) + Tailwind CSS 3 + pnpm | Matches Asimov Collective stack; RSC by default, client islands for interactivity |
 | Site name | Parallax | Single word — captures shifting perspective across disciplines |
-| Domain | parallax.studio | Short, memorable, studio connotation |
+| Domain | parallax.haus | Short, memorable, single-word (supersedes parallax.studio) |
 | Typography | Cormorant Garamond (headings, semibold italic) + Futura PT (body/nav) + Degular Mono (code) | Calligraphic warmth for headings, geometric precision for body; see `brand-guide.md` §4 |
 | Design philosophy | "The site IS the bridge" | PRD §8 — architecture × software demonstrated, not explained |
 
