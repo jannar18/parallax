@@ -1,0 +1,32 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 1,
+  "complexity": null,
+  "created_at": "2026-07-07T16:18:39Z",
+  "created_by": "agent:claude-recapture-2",
+  "custom_fields": {},
+  "description": null,
+  "done_at": "2026-07-07T16:25:48Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KWYPCS3H7NDAPWTWVWM6CQH8",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
+  "id": "task_01KWYNZPHWAPJAJ4EDTAR096V9",
+  "last_event_id": "ev_01KWYPCS5W8XCESXY00J0C3FHY",
+  "last_status_changed_at": "2026-07-07T16:25:48Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-106",
+  "status": "done",
+  "tags": null,
+  "title": "Recapture Stem + Relief Hover GIFs at 1000px pipeline quality (overwrite prototype-01/02)",
+  "type": "task",
+  "updated_at": "2026-07-07T16:25:48Z",
+  "urgency": null
+}

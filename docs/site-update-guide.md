@@ -1,6 +1,6 @@
 # Site Update Guide
 
-A checklist-driven guide for updating parallax.studio. Covers four pipelines: daily studio desk entries, site health checks, portfolio updates, and blog posts.
+A checklist-driven guide for updating parallax.haus. Covers four pipelines: daily studio desk entries, site health checks, portfolio updates, and blog posts.
 
 **Who this is for:** Julianna (human operator) and any Claude agent running `/update-site` or maintaining the site. The universal templates are forkable for other projects; the parallax-specific appendix has the concrete paths and conventions.
 
@@ -158,7 +158,7 @@ Per-artifact:
 | `date` | `YYYY-MM-DD` (shared) |
 | `time` | `HH:MM` 24-hour — from file metadata or filename timestamp |
 | `mood` | One of: `building`, `refining`, `exploring`, `sketching`, `grinding`, `resting`, `documenting` |
-| `project` | One of: `parallax.studio`, `architecture`, `personal` |
+| `project` | One of: `parallax`, `architecture`, `personal` |
 | `tags` | 2-3 tags specific to the artifact content |
 | `description` | One-line caption — specific, concrete, not flowery |
 | `image` | `/images/studio-desk-archive/YYYY-MM-DD/<short-name>.<ext>` |
@@ -179,7 +179,7 @@ time: "14:00"
 mood: "building"
 tags: ["homepage", "hero"]
 image: "/images/studio-desk-archive/2026-03-06/hero-full.png"
-project: "parallax.studio"
+project: "parallax"
 description: "Full homepage hero — brick wall photo cycling behind the wire network"
 ---
 
@@ -445,7 +445,7 @@ interface NowEntry {
   mood?: string;       // building | refining | exploring | sketching | grinding | resting | documenting
   tags?: string[];     // 2-3 content tags
   image?: string;      // /images/studio-desk-archive/YYYY-MM-DD/<name>.<ext>
-  project?: string;    // parallax.studio | architecture | personal
+  project?: string;    // parallax | architecture | personal
   description?: string; // one-line artifact caption
   content: string;     // MDX body — DO NOT include in frontmatter
 }
@@ -521,7 +521,7 @@ interface SoftwareProject {
 
 | Project | Scope |
 |---------|-------|
-| `parallax.studio` | Site work |
+| `parallax` | Site work |
 | `architecture` | Architecture practice |
 | `personal` | Personal projects, reading, thinking |
 

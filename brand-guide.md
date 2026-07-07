@@ -32,7 +32,7 @@ The single word stands on its own — no qualifier needed. It is a practice, a s
 
 ### Domain
 
-**`parallax.studio`** — Decided. Short, memorable, and carries the right connotation: a place where work happens.
+**`parallax.haus`** — Decided (live). Short, memorable, and carries the right connotation: a house where the work lives. (Supersedes the earlier `parallax.studio`.)
 
 ### Usage in Context
 
@@ -43,7 +43,7 @@ The single word stands on its own — no qualifier needed. It is a practice, a s
 | **Page title / meta** | `Parallax — [Page Name]` (title case for meta tags) |
 | **Conversation / speech** | "Parallax" (title case when spoken) |
 | **Social handles** | `@parallaxstudio` (one word, lowercase) |
-| **Email** | `julianna@parallax.studio` |
+| **Email** | `julianna@parallax.haus` |
 | **Favicon / monogram** | `p` lettermark (see Section 5) |
 
 ---
@@ -585,7 +585,7 @@ The following token system is the brand standard. The values below match `src/st
 | Decision | Status | Notes |
 |----------|--------|-------|
 | Name: Parallax | Decided | Confirmed by Julianna |
-| Primary domain | Decided | `parallax.studio` |
+| Primary domain | Decided | `parallax.haus` (live; supersedes `parallax.studio`) |
 | Positioning statement | Pending | 3 finalists presented — Julianna to choose |
 | Color palette | Formalized | Riso palette — Paper, Oxblood, Scarlet, Olive, Moss, Spruce. WCAG tested. |
 | Primary accent | Formalized | Scarlet (`#f65058`) |
