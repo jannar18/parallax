@@ -43,9 +43,21 @@ export default function Header() {
   const [navOpen, setNavOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [brandRevealed, setBrandRevealed] = useState(false);
-  // True when a dark full-bleed section ([data-nav-dark]) sits behind the header.
-  const [onDark, setOnDark] = useState(false);
+  // Which nav elements currently sit over a dark ([data-nav-dark]) region.
+  // Detection is per-element because a single section can be split — e.g. the
+  // clip reel has a cream strip behind the wordmark but a dark video behind the
+  // cross/links, so they must colour independently.
+  const [light, setLight] = useState({
+    wordmark: false,
+    cross: false,
+    left: false,
+    right: false,
+  });
   const pathname = usePathname();
+  const wordmarkRef = useRef<HTMLAnchorElement>(null);
+  const crossRef = useRef<HTMLButtonElement>(null);
+  const leftNavRef = useRef<HTMLElement>(null);
+  const rightNavRef = useRef<HTMLElement>(null);
   const inHeroRef = useRef(true);
   const lastScrollYRef = useRef(0);
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -120,35 +132,66 @@ export default function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, [isMobile, mobileMenuOpen]);
 
-  // Detect whether a dark section is behind the header, and recolor the nav.
-  // Scans [data-nav-dark] elements against a thin band at the header's vertical
-  // center (~44px from top). Re-runs on scroll, resize, and route change so it
-  // works site-wide (e.g. the footer) and after client-side navigation.
+  // Detect which nav elements sit over a dark region and recolour them. For each
+  // element we test whether any [data-nav-dark] box covers its own centre point,
+  // so a split section (cream behind the wordmark, dark behind the cross) colours
+  // each element by what's actually behind it. Re-runs on scroll, resize, route
+  // change, and DOM mutations (the clip reel mounts on the client after hydration).
   useEffect(() => {
-    const HEADER_BAND = 44; // px from viewport top — roughly the cross's center
+    const rectsOf = (selector: string) =>
+      Array.from(document.querySelectorAll<HTMLElement>(selector)).map((el) =>
+        el.getBoundingClientRect()
+      );
+
     const detect = () => {
-      const darkEls = document.querySelectorAll<HTMLElement>("[data-nav-dark]");
-      let dark = false;
-      darkEls.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= HEADER_BAND && rect.bottom >= HEADER_BAND) dark = true;
-      });
-      setOnDark(dark);
+      // Genuinely dark full-bleed sections (e.g. the footer) — these recolour the
+      // wordmark too. Dark *media* (the clip-reel video on its cream section) only
+      // recolours the cross/links, never the wordmark, which the user wants ink.
+      const sectionRects = rectsOf("[data-nav-dark]");
+      const mediaRects = rectsOf("[data-nav-dark-media]");
+
+      const over = (el: HTMLElement | null, rects: DOMRect[]) => {
+        if (!el) return false;
+        const r = el.getBoundingClientRect();
+        if (r.width === 0 && r.height === 0) return false;
+        const x = (r.left + r.right) / 2;
+        const y = (r.top + r.bottom) / 2;
+        return rects.some(
+          (d) => d.left <= x && d.right >= x && d.top <= y && d.bottom >= y
+        );
+      };
+      const chromeRects = [...sectionRects, ...mediaRects];
+
+      const next = {
+        wordmark: over(wordmarkRef.current, sectionRects),
+        cross: over(crossRef.current, chromeRects),
+        left: over(leftNavRef.current, chromeRects),
+        right: over(rightNavRef.current, chromeRects),
+      };
+      // Only re-render when something actually changed (scroll fires often).
+      setLight((prev) =>
+        prev.wordmark === next.wordmark &&
+        prev.cross === next.cross &&
+        prev.left === next.left &&
+        prev.right === next.right
+          ? prev
+          : next
+      );
     };
 
-    // Run after paint so freshly-navigated DOM is measured correctly.
+    // Run after paint so freshly-navigated / freshly-mounted DOM is measured.
     const raf = requestAnimationFrame(detect);
     window.addEventListener("scroll", detect, { passive: true });
     window.addEventListener("resize", detect);
 
-    // Some sections toggle their darkness in place without any scroll — e.g. the
-    // clip reel becomes a full-bleed dark video when a clip plays. Watch for
-    // data-nav-dark being added/removed so the nav recolors immediately.
+    // The clip reel mounts client-side after hydration, and sections can toggle
+    // their darkness in place — re-detect on any relevant DOM change.
     const observer = new MutationObserver(detect);
     observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["data-nav-dark"],
+      childList: true,
       subtree: true,
+      attributes: true,
+      attributeFilter: ["data-nav-dark", "data-nav-dark-media"],
     });
 
     return () => {
@@ -160,8 +203,12 @@ export default function Header() {
   }, [pathname]);
 
   // The mobile overlay is a light surface that sits above any dark section, so
-  // the header should stay ink-dark while it's open.
-  const useLightNav = onDark && !mobileMenuOpen;
+  // the header stays ink-dark while it's open.
+  const overlay = mobileMenuOpen;
+  const wordmarkLight = light.wordmark && !overlay;
+  const crossLight = light.cross && !overlay;
+  const leftLinksLight = light.left && !overlay;
+  const rightLinksLight = light.right && !overlay;
 
   const handleMouseEnter = () => {
     if (closeTimeout.current) {
@@ -197,10 +244,11 @@ export default function Header() {
       <header className="fixed top-0 left-0 right-0 z-50 py-5 pointer-events-none">
         {/* Parallax wordmark — absolutely positioned, vertically centered with cross */}
         <Link
+          ref={wordmarkRef}
           href="/"
           className={`absolute left-[2.5vw] top-1/2 -translate-y-1/2 no-underline pointer-events-auto transition-[opacity,color] duration-700 ${
             brandRevealed
-              ? useLightNav
+              ? wordmarkLight
                 ? "text-white/90 opacity-100 hover:text-white"
                 : "text-ink/80 opacity-100 hover:text-ink"
               : "opacity-0"
@@ -226,6 +274,7 @@ export default function Header() {
         >
           {/* Left links — expand outward from center (desktop only) */}
           <nav
+            ref={leftNavRef}
             className={`hidden md:flex items-center justify-end gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
               navOpen
                 ? "opacity-100 pointer-events-auto"
@@ -237,7 +286,7 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 className={`whitespace-nowrap font-sans transition-colors ${
-                  useLightNav
+                  leftLinksLight
                     ? "text-white/70 hover:text-white"
                     : "text-ink/70 hover:text-ink"
                 }`}
@@ -255,9 +304,10 @@ export default function Header() {
 
           {/* Center cross — always visible, pinned to center grid column */}
           <button
+            ref={crossRef}
             onClick={handleCrossClick}
             className={`group relative flex items-center justify-center justify-self-center w-10 h-10 cursor-pointer bg-transparent border-none transition-colors duration-500 pointer-events-auto ${
-              useLightNav
+              crossLight
                 ? "text-white/60 hover:text-white/80 md:text-white/45 md:hover:text-white/70"
                 : "text-ink/50 hover:text-ink/70 md:text-ink/25 md:hover:text-ink/40"
             }`}
@@ -284,6 +334,7 @@ export default function Header() {
 
           {/* Right links — expand outward from center (desktop only) */}
           <nav
+            ref={rightNavRef}
             className={`hidden md:flex items-center justify-start gap-[2vw] overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
               navOpen
                 ? "opacity-100 pointer-events-auto"
@@ -295,7 +346,7 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 className={`whitespace-nowrap font-sans transition-colors ${
-                  useLightNav
+                  rightLinksLight
                     ? "text-white/70 hover:text-white"
                     : "text-ink/70 hover:text-ink"
                 }`}

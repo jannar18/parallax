@@ -129,19 +129,16 @@ function DesktopClipReel() {
   ];
 
   return (
-    <section
-      // The riso cover and the clips are both dark, full-bleed imagery, so flag
-      // the whole section dark to flip the nav white over it (the wordmark sits
-      // over the thin cream strip on the left and reads faint there — accepted).
-      data-nav-dark
-      className="relative h-screen bg-paper overflow-hidden"
-    >
+    <section className="relative h-screen bg-paper overflow-hidden">
       {/* Video stage — click to play/pause */}
       <div
         className="absolute inset-0 flex items-center justify-end cursor-pointer"
         onClick={handleVideoClick}
       >
-        <div className="relative h-full">
+        {/* Flag the dark media as "media" (not a full dark section): it recolours
+            the nav cross/links white but deliberately leaves the wordmark ink,
+            since the section itself is the light cream paper. */}
+        <div data-nav-dark-media className="relative h-full">
           <video
             ref={videoRef}
             muted
