@@ -35,11 +35,21 @@ gallery is now MP4 (no GIFs left).
   the live, working deploy `jannar18.github.io/renoverse-ai-website/` (hero.mp4 → 206, all assets
   load). The `.png`→`.mp4` swap still stands regardless: a still of the scrim-heavy hero reads as
   empty, so the scroll-through video shows the product better.
-- **Secret Garden** — screenshots were all the same cottage view. Replaced with a **loading-screen +
-  GUI-panel** shot and one rendered scene frame. NOTE: the three.js/draco garden **will not render
-  in headless** (SwiftShader software-GL blocks the page thread; the loading overlay never clears),
-  so a GUI-panel-over-rendered-scene shot needs a **headful capture on a real GPU**. The existing
-  `secret-garden.mp4` was clearly captured that way.
+- **Fractal NYC** — the old clip scrolled the editorial landing page. Re-shot to showcase the
+  **interactive 3D fractal-octahedron**: drag to spin it (net-zero out-and-back so it returns to
+  rest), then click the green **Campus node** (routes to `/campus`) to land on the Campus page
+  (`pipeline/fractal-nyc.mjs`). Renders fine headless, BUT raycasting the octahedron on every
+  synthetic pointermove costs ~0.8s/step — so use very few `mouse.move` steps (a 40-step drag
+  produced a 60s clip). Ran the local `~/Dev/fractal-nyc` Vite server.
+- **Secret Garden** — screenshots were all the same cottage view (and the "scene" still duplicated
+  the main mp4). Replaced with a **loading-screen + GUI-panel** shot and a **flowers-changing video**:
+  dragging the GUI's **"Total Flowers"** slider (not the Singles "%", which is only a ratio) thins
+  and fills the meadow (`pipeline/secret-garden.mjs`). Gotchas: the three.js/draco garden **only
+  renders headful** (`--headful`; headless SwiftShader stalls the page thread); `page.screenshot`
+  hangs on the WebGL compositor so use `recordVideo` (or CDP `Page.captureScreenshot` + `process.exit`);
+  the FPS `PointerLockControls` camera + the "Howl's Secret Garden" face preset bury the spawn camera
+  inside the flowers, so the capture edits the *throwaway clone* to expose `window.__cam` and the
+  interaction script holds a pulled-back camera every frame via rAF.
 
 ## 2. Capture pipeline (`pipeline/capture.mjs`) learnings & ideas
 
@@ -58,6 +68,9 @@ Learned while re-capturing **Fractal Campus** from its published Framer site:
   `hero.mp4` made `waitUntil:'load'` take ~7s of dead footage. Added a **`--goto-wait <cond>`**
   flag (`load` | `domcontentloaded` | `networkidle` | `commit`). Use `--goto-wait domcontentloaded`
   for pages with large media so recording starts as soon as the DOM is ready.
+- **Some WebGL apps only render on a real GPU.** Headless Chromium's SwiftShader software renderer
+  stalls draco/three.js scenes (the page thread blocks; loads never finish). Added a **`--headful`**
+  flag so `recordVideo` runs against the real GPU. Used for the Secret Garden flower field.
 
 Ideas worth adding to `capture.mjs` (not yet done):
 - **`--target-duration <sec>` / `--speed <n>`**: auto time-compress (`setpts`) so output always

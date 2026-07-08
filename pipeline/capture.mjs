@@ -408,7 +408,9 @@ async function main() {
 
     // --- Launch Playwright + record video ----------------------------------
     console.log(`[capture] Launching chromium (viewport ${viewWidth}x${viewHeight}, dsf 2, gif width ${outWidth})...`);
-    browser = await chromium.launch({ headless: true });
+    // Headful (real GPU) is required for some WebGL apps that stall under the
+    // headless SwiftShader software renderer (e.g. draco-compressed three.js scenes).
+    browser = await chromium.launch({ headless: !args.headful });
     context = await browser.newContext({
       viewport: { width: viewWidth, height: viewHeight },
       deviceScaleFactor: 2,
