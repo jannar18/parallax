@@ -22,14 +22,15 @@ ffmpeg -y -i in.gif -vf "scale=1000:-2:flags=lanczos,format=yuv420p" \
 gallery is now MP4 (no GIFs left).
 
 ### Re-captures done in the same pass
-- **Stem** — re-captured from the local `github.com/jannar18/stem` (Vite) dev server. The whole
-  hero (heading + tulip + shortener input) fits a 1440×900 frame, so the showcase pastes a long
-  URL **on the hero with no scrolling**, then Trim → short URL → Copy (`pipeline/stem.mjs`).
-  → **Real prototype gap:** Stem's "Trim" button is currently a **no-op** (the input isn't even
-  controlled; nothing is generated). To show the trimmed result in the clip, the capture edits the
-  *throwaway clone*'s `LinkBox` to add controlled state + a `stem.link/tulip` result pill with a
-  Copy button. Worth adding that (~15 lines) to the real `jannar18/stem` repo so the live demo
-  actually shortens links. The paste is instant (`input.fill`), not typed.
+- **Stem** — captured from the **real, working** app, which lives in the systems-engineering
+  monorepo at `~/Users/fractalos/systems-engineering/url-shortener` (Fastify API + Postgres/Redis +
+  Vite web). The standalone `jannar18/stem` GitHub repo was an earlier *static* version whose Trim
+  was a no-op — that repo was deleted to avoid confusion, and the portfolio `repo` link now points
+  at `systems-engineering/tree/main/url-shortener`. To capture: `docker-compose up -d db redis`
+  (override to publish 5432/6379), run the API on `:3100` with **`BASE_URL=https://stem.link`** so
+  it stamps a branded short link, run the web on `:5173` with `VITE_API_BASE=http://localhost:3100`.
+  The clip pastes a long URL instantly (`input.fill`) on the hero (no scroll), clicks Trim → the
+  API returns a real `https://stem.link/…` link → Copy (`pipeline/stem.mjs`).
 - **Fractal Campus** — the earlier version looked glitchy because scrolling a Framer site fires
   its lazy-load / scroll-reveal animations mid-capture. Re-shot **hero-only** (just the cursor-light
   gliding across the reliefs), fully settled before recording (`pipeline/fractal-campus.mjs`).
