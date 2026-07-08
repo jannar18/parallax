@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 /**
  * Header — Axis navigation.
@@ -42,6 +43,9 @@ export default function Header() {
   const [navOpen, setNavOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [brandRevealed, setBrandRevealed] = useState(false);
+  // True when a dark full-bleed section ([data-nav-dark]) sits behind the header.
+  const [onDark, setOnDark] = useState(false);
+  const pathname = usePathname();
   const inHeroRef = useRef(true);
   const lastScrollYRef = useRef(0);
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -116,6 +120,37 @@ export default function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, [isMobile, mobileMenuOpen]);
 
+  // Detect whether a dark section is behind the header, and recolor the nav.
+  // Scans [data-nav-dark] elements against a thin band at the header's vertical
+  // center (~44px from top). Re-runs on scroll, resize, and route change so it
+  // works site-wide (e.g. the footer) and after client-side navigation.
+  useEffect(() => {
+    const HEADER_BAND = 44; // px from viewport top — roughly the cross's center
+    const detect = () => {
+      const darkEls = document.querySelectorAll<HTMLElement>("[data-nav-dark]");
+      let dark = false;
+      darkEls.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= HEADER_BAND && rect.bottom >= HEADER_BAND) dark = true;
+      });
+      setOnDark(dark);
+    };
+
+    // Run after paint so freshly-navigated DOM is measured correctly.
+    const raf = requestAnimationFrame(detect);
+    window.addEventListener("scroll", detect, { passive: true });
+    window.addEventListener("resize", detect);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", detect);
+      window.removeEventListener("resize", detect);
+    };
+  }, [pathname]);
+
+  // The mobile overlay is a light surface that sits above any dark section, so
+  // the header should stay ink-dark while it's open.
+  const useLightNav = onDark && !mobileMenuOpen;
+
   const handleMouseEnter = () => {
     if (closeTimeout.current) {
       clearTimeout(closeTimeout.current);
@@ -151,9 +186,11 @@ export default function Header() {
         {/* Parallax wordmark — absolutely positioned, vertically centered with cross */}
         <Link
           href="/"
-          className={`absolute left-[2.5vw] top-1/2 -translate-y-1/2 no-underline pointer-events-auto transition-opacity duration-700 ${
+          className={`absolute left-[2.5vw] top-1/2 -translate-y-1/2 no-underline pointer-events-auto transition-[opacity,color] duration-700 ${
             brandRevealed
-              ? "text-ink/80 opacity-100 hover:text-ink"
+              ? useLightNav
+                ? "text-white/90 opacity-100 hover:text-white"
+                : "text-ink/80 opacity-100 hover:text-ink"
               : "opacity-0"
           }`}
           style={{
@@ -187,7 +224,11 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="whitespace-nowrap font-sans text-ink/70 transition-colors hover:text-ink"
+                className={`whitespace-nowrap font-sans transition-colors ${
+                  useLightNav
+                    ? "text-white/70 hover:text-white"
+                    : "text-ink/70 hover:text-ink"
+                }`}
                 style={{
                   fontSize: "clamp(0.775rem, 1vw, 0.925rem)",
                   letterSpacing: "var(--tracking-wide)",
@@ -203,7 +244,11 @@ export default function Header() {
           {/* Center cross — always visible, pinned to center grid column */}
           <button
             onClick={handleCrossClick}
-            className="group relative flex items-center justify-center justify-self-center w-10 h-10 cursor-pointer bg-transparent border-none transition-colors duration-500 text-ink/50 hover:text-ink/70 md:text-ink/25 md:hover:text-ink/40 pointer-events-auto"
+            className={`group relative flex items-center justify-center justify-self-center w-10 h-10 cursor-pointer bg-transparent border-none transition-colors duration-500 pointer-events-auto ${
+              useLightNav
+                ? "text-white/60 hover:text-white/80 md:text-white/45 md:hover:text-white/70"
+                : "text-ink/50 hover:text-ink/70 md:text-ink/25 md:hover:text-ink/40"
+            }`}
             aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"}
             aria-expanded={mobileMenuOpen || navOpen}
           >
@@ -237,7 +282,11 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="whitespace-nowrap font-sans text-ink/70 transition-colors hover:text-ink"
+                className={`whitespace-nowrap font-sans transition-colors ${
+                  useLightNav
+                    ? "text-white/70 hover:text-white"
+                    : "text-ink/70 hover:text-ink"
+                }`}
                 style={{
                   fontSize: "clamp(0.775rem, 1vw, 0.925rem)",
                   letterSpacing: "var(--tracking-wide)",

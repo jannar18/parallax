@@ -309,7 +309,7 @@ function MobileClipReel() {
   };
 
   return (
-    <div className="relative w-full bg-black" style={{ height: "100dvh" }}>
+    <div data-nav-dark className="relative w-full bg-black" style={{ height: "100dvh" }}>
       {/* Single persistent video element — hidden when showing riso cover */}
       <video
         ref={videoRef}

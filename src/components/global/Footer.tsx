@@ -14,7 +14,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative flex h-screen flex-col justify-between bg-ink overflow-hidden">
+    <footer data-nav-dark className="relative flex h-screen flex-col justify-between bg-ink overflow-hidden">
       {/* Background: brick wall photo */}
       <Image
         src="/images/home/hero/hero.raw.1.jpg"
