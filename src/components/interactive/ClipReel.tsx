@@ -130,9 +130,10 @@ function DesktopClipReel() {
 
   return (
     <section
-      // The riso cover is a light print (leave the nav ink); a playing clip is a
-      // full-bleed dark screen recording, so flag it dark to flip the nav white.
-      {...(!isCover ? { "data-nav-dark": "" } : {})}
+      // The riso cover and the clips are both dark, full-bleed imagery, so flag
+      // the whole section dark to flip the nav white over it (the wordmark sits
+      // over the thin cream strip on the left and reads faint there — accepted).
+      data-nav-dark
       className="relative h-screen bg-paper overflow-hidden"
     >
       {/* Video stage — click to play/pause */}
