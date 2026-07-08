@@ -146,7 +146,7 @@
       "label": "Ship",
       "title": "The Schelling Point",
       "description": "A multiplayer party game where friends try to think alike, based on Schelling’s focal point theory.",
-      "gif": "/images/software/schelling-points/schelling-points.recording.1.mp4",
+      "gif": "/images/software/schelling-points/schelling-points.demo.1.mp4",
       "repo": "",
       "url": "",
       "date": "2026-02-15",
@@ -224,7 +224,7 @@
       "label": "Prototype",
       "title": "Secret Garden",
       "description": "A WebGL/Three.js virtual environment — a Ghibli-styled cottage in a flower meadow — built as a calm space to hang out and chat with a partner across the distance.",
-      "gif": "/lab/secret-garden.mp4",
+      "gif": "/lab/shots/secret-garden-flowers.mp4",
       "repo": "https://github.com/jannar18/secret-garden",
       "url": "",
       "date": "2026-03-29",
@@ -235,7 +235,7 @@
       ],
       "screenshots": [
         "/lab/shots/secret-garden-loading.png",
-        "/lab/shots/secret-garden-flowers.mp4"
+        "/lab/secret-garden.mp4"
       ]
     }
   ]
