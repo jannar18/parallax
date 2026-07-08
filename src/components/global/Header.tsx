@@ -140,10 +140,22 @@ export default function Header() {
     const raf = requestAnimationFrame(detect);
     window.addEventListener("scroll", detect, { passive: true });
     window.addEventListener("resize", detect);
+
+    // Some sections toggle their darkness in place without any scroll — e.g. the
+    // clip reel becomes a full-bleed dark video when a clip plays. Watch for
+    // data-nav-dark being added/removed so the nav recolors immediately.
+    const observer = new MutationObserver(detect);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-nav-dark"],
+      subtree: true,
+    });
+
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", detect);
       window.removeEventListener("resize", detect);
+      observer.disconnect();
     };
   }, [pathname]);
 
