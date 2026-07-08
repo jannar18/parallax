@@ -2,14 +2,15 @@
  * fractal-campus.mjs
  * ------------------
  * Interaction script for the Fractal Campus Framer landing page.
- * Signature: a warm light follows the cursor across neoclassical reliefs as you
- * scroll. So we keep the cursor in continuous, deliberate motion (sweeping arcs)
- * while progressively scrolling the page, so the light stays alive on the reliefs.
+ * Signature: a warm light follows the cursor across neoclassical reliefs.
  *
- * NOTE: this page runs a heavy cursor-following light effect, so every synthetic
- * input event is expensive (~130ms per mouse-move step, ~475ms per wheel tick).
- * Wall-clock == recorded video length, so the motion budget below is kept tight
- * (~10s total). Prefer few, long sweeps over many small steps.
+ * IMPORTANT — keep it on the HERO. Scrolling a Framer site fires its lazy-load and
+ * scroll-reveal entrance animations, which look glitchy/half-loaded when captured
+ * mid-scroll. The hero + its cursor-light effect is the strongest, most stable shot,
+ * so we stay put and just glide the warm light across the reliefs. No scrolling.
+ *
+ * The page runs a heavy cursor-following light shader, so every synthetic mouse-move
+ * step is expensive (~130-250ms). Keep the sweeps short; wall-clock == video length.
  */
 
 export default async function interaction(page) {
@@ -21,28 +22,23 @@ export default async function interaction(page) {
     await page.mouse.move(toX, toY, { steps });
   };
 
-  // Brief settle so the hero's intro animation plays.
-  await page.waitForTimeout(500);
+  // The capture harness already waited for the page to settle; a short extra beat.
+  await page.waitForTimeout(400);
 
-  // 1) Hero: glide the warm light left -> right across the reliefs, drifting down.
-  await sweep(vw * 0.14, vh * 0.42, vw * 0.86, vh * 0.58, 20);
+  // 1) Glide the warm light left -> right across the reliefs (upper band).
+  await sweep(vw * 0.55, vh * 0.42, vw * 0.9, vh * 0.5, 16);
   await page.waitForTimeout(250);
 
-  // 3) Scroll down ~1.5 viewports (few, large wheel ticks — each is costly).
-  for (let t = 0; t < 4; t++) {
-    await page.mouse.wheel(0, vh * 0.42);
-    await page.waitForTimeout(60);
-  }
-
-  // 4) Sweep the light across the freshly revealed section.
-  await sweep(vw * 0.22, vh * 0.45, vw * 0.80, vh * 0.5, 16);
+  // 2) Sweep back across and down over the seated figures, lighting them.
+  await sweep(vw * 0.9, vh * 0.5, vw * 0.5, vh * 0.7, 18);
   await page.waitForTimeout(250);
 
-  // 5) A touch more scroll + a short return sweep for a calm closing frame.
-  for (let t = 0; t < 2; t++) {
-    await page.mouse.wheel(0, vh * 0.4);
-    await page.waitForTimeout(60);
-  }
-  await sweep(vw * 0.78, vh * 0.5, vw * 0.5, vh * 0.44, 12);
-  await page.waitForTimeout(500);
+  // 3) A slow circular drift so the light lingers and pools on the relief.
+  await sweep(vw * 0.5, vh * 0.7, vw * 0.72, vh * 0.55, 12);
+  await sweep(vw * 0.72, vh * 0.55, vw * 0.82, vh * 0.72, 12);
+  await page.waitForTimeout(300);
+
+  // 4) Ease the light back toward center for a calm resting frame.
+  await sweep(vw * 0.82, vh * 0.72, vw * 0.62, vh * 0.52, 14);
+  await page.waitForTimeout(600);
 }
