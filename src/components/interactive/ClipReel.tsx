@@ -135,7 +135,10 @@ function DesktopClipReel() {
         className="absolute inset-0 flex items-center justify-end cursor-pointer"
         onClick={handleVideoClick}
       >
-        <div className="relative h-full">
+        {/* Flag the dark media as "media" (not a full dark section): it recolours
+            the nav cross/links white but deliberately leaves the wordmark ink,
+            since the section itself is the light cream paper. */}
+        <div data-nav-dark-media className="relative h-full">
           <video
             ref={videoRef}
             muted
@@ -309,7 +312,7 @@ function MobileClipReel() {
   };
 
   return (
-    <div className="relative w-full bg-black" style={{ height: "100dvh" }}>
+    <div data-nav-dark className="relative w-full bg-black" style={{ height: "100dvh" }}>
       {/* Single persistent video element — hidden when showing riso cover */}
       <video
         ref={videoRef}
