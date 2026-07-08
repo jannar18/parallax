@@ -24,7 +24,12 @@ gallery is now MP4 (no GIFs left).
 ### Re-captures done in the same pass
 - **Stem** — re-captured from the local `github.com/jannar18/stem` (Vite) dev server. The whole
   hero (heading + tulip + shortener input) fits a 1440×900 frame, so the showcase pastes a long
-  URL **on the hero with no scrolling** (`pipeline/stem.mjs`).
+  URL **on the hero with no scrolling**, then Trim → short URL → Copy (`pipeline/stem.mjs`).
+  → **Real prototype gap:** Stem's "Trim" button is currently a **no-op** (the input isn't even
+  controlled; nothing is generated). To show the trimmed result in the clip, the capture edits the
+  *throwaway clone*'s `LinkBox` to add controlled state + a `stem.link/tulip` result pill with a
+  Copy button. Worth adding that (~15 lines) to the real `jannar18/stem` repo so the live demo
+  actually shortens links. The paste is instant (`input.fill`), not typed.
 - **Fractal Campus** — the earlier version looked glitchy because scrolling a Framer site fires
   its lazy-load / scroll-reveal animations mid-capture. Re-shot **hero-only** (just the cursor-light
   gliding across the reliefs), fully settled before recording (`pipeline/fractal-campus.mjs`).

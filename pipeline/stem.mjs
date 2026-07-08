@@ -24,20 +24,35 @@ export default async function interaction(page) {
   // Move the cursor to the input (visible motion) and focus it.
   await page.mouse.move(box.x + 40, box.y + box.height / 2, { steps: 18 });
   await input.click();
-  await page.waitForTimeout(300);
+  await page.waitForTimeout(400);
 
-  // Paste the long, cluttered URL — typed with a small per-key delay so it reads on video.
-  await input.type(LONG_URL, { delay: 22 });
-  await page.waitForTimeout(500);
+  // Paste the long, cluttered URL instantly (like ⌘V) — nobody types these out.
+  await input.fill(LONG_URL);
+  await page.waitForTimeout(650);
 
-  // Drift to the "Trim" button and hover (subtle scale/colour transition).
+  // Move to "Trim" and click it to shorten the link.
   const trim = page.locator('button[type=submit]');
   const tb = await trim.boundingBox();
   if (tb) {
     await page.mouse.move(tb.x + tb.width / 2, tb.y + tb.height / 2, { steps: 16 });
-    await page.waitForTimeout(700);
+    await page.waitForTimeout(300);
+    await trim.click();
   }
 
-  // Final hold on the composed hero for a clean resting frame.
-  await page.waitForTimeout(700);
+  // The trimmed short URL appears — hold so it reads.
+  await page.waitForTimeout(1100);
+
+  // Copy it (the button flips to "Copied ✓").
+  const copy = page.getByRole('button', { name: /copy/i });
+  if (await copy.count()) {
+    const cb = await copy.first().boundingBox();
+    if (cb) {
+      await page.mouse.move(cb.x + cb.width / 2, cb.y + cb.height / 2, { steps: 12 });
+      await page.waitForTimeout(250);
+      await copy.first().click();
+    }
+  }
+
+  // Final hold on the trimmed result.
+  await page.waitForTimeout(1300);
 }
