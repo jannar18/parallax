@@ -349,6 +349,11 @@ async function main() {
   // never reach networkidle, so the default 60s timeout is burned as dead footage
   // at the head of the recording. Pass a smaller value (or 0 to skip entirely).
   const netIdleMs = Number.isFinite(parseInt(args['net-idle'], 10)) ? parseInt(args['net-idle'], 10) : 60000;
+  // The page.goto() wait condition. Defaults to 'load', but a heavy hero video or
+  // other large resource can make the 'load' event take many seconds — recorded as
+  // dead footage. Pass --goto-wait domcontentloaded to start as soon as the DOM is ready.
+  const gotoWaitRaw = typeof args['goto-wait'] === 'string' ? args['goto-wait'] : 'load';
+  const gotoWait = ['load', 'domcontentloaded', 'networkidle', 'commit'].includes(gotoWaitRaw) ? gotoWaitRaw : 'load';
 
   const ffmpeg = resolveFfmpeg();
 
@@ -412,7 +417,7 @@ async function main() {
     const page = await context.newPage();
 
     console.log(`[capture] Navigating to ${targetUrl}`);
-    await page.goto(targetUrl, { waitUntil: 'load', timeout: 60000 });
+    await page.goto(targetUrl, { waitUntil: gotoWait, timeout: 60000 });
     if (netIdleMs > 0) {
       await page.waitForLoadState('networkidle', { timeout: netIdleMs }).catch(() => {
         console.warn(`[capture] networkidle not reached in ${netIdleMs}ms; continuing.`);

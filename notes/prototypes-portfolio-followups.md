@@ -3,24 +3,42 @@
 Follow-ups captured while shipping the lab/prototypes portfolio (`/work/software`).
 None are blocking; the page is live and healthy. Pick these up in a future pass.
 
-## 1. Media weight optimizations (highest value)
+## 1. Media weight optimizations — ✅ DONE
 
-The gallery still has a few heavy assets. Targets, newest-first:
+All three heavy assets were optimized (GIF→MP4 / re-encode to 1000px H.264):
 
-| Work | Current | Action | Target |
-|------|---------|--------|--------|
-| **Snails vs Garden** | `public/videos/software/snails-vs-garden/game-1.mp4` — **11 MB** 1080p original demo | Re-encode (H.264, crf ~24, scale to 1000px, `-an`, `+faststart`) | ~1–2 MB, same perceived quality |
-| **Stem** | `public/lab/prototype-01.gif` — ~3.6 MB 1000px GIF | Convert GIF → MP4 | well under 1 MB |
-| **Relief Hover** | `public/lab/prototype-02.gif` — ~4.7 MB 1000px GIF | Convert GIF → MP4 | well under 1 MB |
+| Work | Was | Now |
+|------|-----|-----|
+| **Snails vs Garden** | 11 MB 1080p60 mp4 | **~490 KB** (1000px/30fps, re-encoded in place at `game-1.mp4`) |
+| **Stem** | 3.5 MB 1000px GIF | **~195 KB** mp4 (also re-captured — hero-only, see below) |
+| **Relief Hover** | 4.5 MB 1000px GIF | **~270 KB** mp4 |
 
-GIF→MP4 recipe (matches the rest of the gallery):
+GIF→MP4 recipe (kept for reference):
 ```bash
 ffmpeg -y -i in.gif -vf "scale=1000:-2:flags=lanczos,format=yuv420p" \
   -c:v libx264 -crf 24 -preset slow -an -movflags +faststart out.mp4
 ```
-Then update the entry's `gif` field in `src/data/works.json` to the `.mp4` path and delete
-the old GIF. `LabMedia.tsx` already renders `.mp4`/`.webm` via `<video>` (see `isVideoSrc`),
-so no component changes are needed — this is exactly how Fractal NYC / Fractal Campus work now.
+`LabMedia.tsx` renders `.mp4`/`.webm` via `<video>` (see `isVideoSrc`); the whole `public/lab/`
+gallery is now MP4 (no GIFs left).
+
+### Re-captures done in the same pass
+- **Stem** — re-captured from the local `github.com/jannar18/stem` (Vite) dev server. The whole
+  hero (heading + tulip + shortener input) fits a 1440×900 frame, so the showcase pastes a long
+  URL **on the hero with no scrolling** (`pipeline/stem.mjs`).
+- **Fractal Campus** — the earlier version looked glitchy because scrolling a Framer site fires
+  its lazy-load / scroll-reveal animations mid-capture. Re-shot **hero-only** (just the cursor-light
+  gliding across the reliefs), fully settled before recording (`pipeline/fractal-campus.mjs`).
+- **Renoverse AI** — the GitHub Pages hero looks empty because `hero.mp4` **404s on the deploy**
+  (present locally in `~/Dev/renoverse-ai-website/assets/`). Re-shot as a short **video** from the
+  local static site: hero (video bg visible) → "One workspace" product mockup → feature cards
+  (`pipeline/renoverse.mjs`). Entry switched from `.png` to `.mp4`.
+  → **Deploy fix worth doing:** commit/upload `hero.mp4` (and the `feature-*.png` images, also
+  broken) to the `renoverse-marketing-site` Pages deploy so the live site isn't broken.
+- **Secret Garden** — screenshots were all the same cottage view. Replaced with a **loading-screen +
+  GUI-panel** shot and one rendered scene frame. NOTE: the three.js/draco garden **will not render
+  in headless** (SwiftShader software-GL blocks the page thread; the loading overlay never clears),
+  so a GUI-panel-over-rendered-scene shot needs a **headful capture on a real GPU**. The existing
+  `secret-garden.mp4` was clearly captured that way.
 
 ## 2. Capture pipeline (`pipeline/capture.mjs`) learnings & ideas
 
@@ -35,6 +53,10 @@ Learned while re-capturing **Fractal Campus** from its published Framer site:
 - **Framer / analytics / streaming sites never reach `networkidle`.** The old hardcoded 60s
   `waitForLoadState('networkidle')` was being recorded as dead footage at the head of the clip.
   Added a **`--net-idle <ms>`** flag (0 = skip). Use `--net-idle 0` for Framer captures.
+- **`goto` waited on the `load` event, which blocks on a heavy hero video.** Renoverse's 13 MB
+  `hero.mp4` made `waitUntil:'load'` take ~7s of dead footage. Added a **`--goto-wait <cond>`**
+  flag (`load` | `domcontentloaded` | `networkidle` | `commit`). Use `--goto-wait domcontentloaded`
+  for pages with large media so recording starts as soon as the DOM is ready.
 
 Ideas worth adding to `capture.mjs` (not yet done):
 - **`--target-duration <sec>` / `--speed <n>`**: auto time-compress (`setpts`) so output always

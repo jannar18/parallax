@@ -6,7 +6,7 @@
       "label": "Prototype 01",
       "title": "Stem",
       "description": "An elegant URL shortener that trims, brands, and tracks every link — even on your own domain — without the clutter.",
-      "gif": "/lab/prototype-01.gif",
+      "gif": "/lab/prototype-01.mp4",
       "repo": "https://github.com/jannar18/stem",
       "url": "",
       "date": "2026-07-02",
@@ -24,7 +24,7 @@
       "label": "Prototype 02",
       "title": "Relief Hover",
       "description": "A WebGL tool for designing a metallic, light-follows-cursor hover-reveal effect and exporting it as a ready-to-use Framer component.",
-      "gif": "/lab/prototype-02.gif",
+      "gif": "/lab/prototype-02.mp4",
       "repo": "https://github.com/jannar18/wild-week-rebuild",
       "url": "",
       "date": "2026-07-02",
@@ -188,7 +188,7 @@
       "label": "Ship",
       "title": "Renoverse AI",
       "description": "The marketing site for Renoverse — an AI-native communication platform that keeps architects’ drawings, decisions, and team in one place.",
-      "gif": "/lab/renoverse-ai.png",
+      "gif": "/lab/renoverse-ai.mp4",
       "repo": "https://github.com/jannar18/renoverse-ai-website",
       "url": "https://renoverseai.github.io/renoverse-marketing-site/",
       "date": "2026-05-10",
@@ -234,8 +234,8 @@
         "multiplayer"
       ],
       "screenshots": [
-        "/lab/shots/secret-garden-cottage.png",
-        "/lab/shots/secret-garden-meadow.png"
+        "/lab/shots/secret-garden-loading.png",
+        "/lab/shots/secret-garden-scene.png"
       ]
     }
   ]
