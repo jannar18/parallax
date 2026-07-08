@@ -28,12 +28,13 @@ gallery is now MP4 (no GIFs left).
 - **Fractal Campus** — the earlier version looked glitchy because scrolling a Framer site fires
   its lazy-load / scroll-reveal animations mid-capture. Re-shot **hero-only** (just the cursor-light
   gliding across the reliefs), fully settled before recording (`pipeline/fractal-campus.mjs`).
-- **Renoverse AI** — the GitHub Pages hero looks empty because `hero.mp4` **404s on the deploy**
-  (present locally in `~/Dev/renoverse-ai-website/assets/`). Re-shot as a short **video** from the
-  local static site: hero (video bg visible) → "One workspace" product mockup → feature cards
-  (`pipeline/renoverse.mjs`). Entry switched from `.png` to `.mp4`.
-  → **Deploy fix worth doing:** commit/upload `hero.mp4` (and the `feature-*.png` images, also
-  broken) to the `renoverse-marketing-site` Pages deploy so the live site isn't broken.
+- **Renoverse AI** — re-shot as a short **video** from the local static site: hero (video bg
+  visible) → "One workspace" product mockup → feature cards (`pipeline/renoverse.mjs`). Entry
+  switched from `.png` to `.mp4`. Also fixed the entry's `url`: it pointed at a stale deploy
+  (`renoverseai.github.io/renoverse-marketing-site/`, which is missing `hero.mp4`); corrected to
+  the live, working deploy `jannar18.github.io/renoverse-ai-website/` (hero.mp4 → 206, all assets
+  load). The `.png`→`.mp4` swap still stands regardless: a still of the scrim-heavy hero reads as
+  empty, so the scroll-through video shows the product better.
 - **Secret Garden** — screenshots were all the same cottage view. Replaced with a **loading-screen +
   GUI-panel** shot and one rendered scene frame. NOTE: the three.js/draco garden **will not render
   in headless** (SwiftShader software-GL blocks the page thread; the loading overlay never clears),
