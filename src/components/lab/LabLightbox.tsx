@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Work } from "@/lib/content";
 import LabMedia from "./LabMedia";
+import ArrowUpRight from "@/components/ui/ArrowUpRight";
+import CarouselArrow from "@/components/ui/CarouselArrow";
 
 interface LabLightboxProps {
   work: Work;
@@ -130,18 +132,18 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                 onClick={() => go(-1)}
                 disabled={atStart}
                 aria-label="Previous"
-                className="absolute left-1 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/15 text-2xl text-paper backdrop-blur transition-all hover:bg-paper/35 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper disabled:pointer-events-none disabled:opacity-0 sm:-left-2"
+                className="absolute left-1 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/15 text-paper backdrop-blur transition-all hover:bg-paper/35 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper disabled:pointer-events-none disabled:opacity-0 sm:-left-2"
               >
-                ←
+                <CarouselArrow direction="left" />
               </button>
               <button
                 type="button"
                 onClick={() => go(1)}
                 disabled={atEnd}
                 aria-label="Next"
-                className="absolute right-1 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/15 text-2xl text-paper backdrop-blur transition-all hover:bg-paper/35 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper disabled:pointer-events-none disabled:opacity-0 sm:-right-2"
+                className="absolute right-1 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/15 text-paper backdrop-blur transition-all hover:bg-paper/35 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper disabled:pointer-events-none disabled:opacity-0 sm:-right-2"
               >
-                →
+                <CarouselArrow direction="right" />
               </button>
             </>
           )}
@@ -198,9 +200,9 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                     href={work.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="border-b border-paper/40 pb-px text-sm text-paper transition-colors hover:border-scarlet hover:text-scarlet"
+                    className="inline-flex items-center gap-1 border-b border-paper/40 pb-px text-sm text-paper transition-colors hover:border-scarlet hover:text-scarlet"
                   >
-                    Live ↗
+                    Live <ArrowUpRight />
                   </a>
                 )}
                 {work.repo && (
@@ -208,9 +210,9 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                     href={work.repo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="border-b border-paper/40 pb-px text-sm text-paper transition-colors hover:border-scarlet hover:text-scarlet"
+                    className="inline-flex items-center gap-1 border-b border-paper/40 pb-px text-sm text-paper transition-colors hover:border-scarlet hover:text-scarlet"
                   >
-                    View repo ↗
+                    View repo <ArrowUpRight />
                   </a>
                 )}
               </div>
