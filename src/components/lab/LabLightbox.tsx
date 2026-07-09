@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Work } from "@/lib/content";
 import LabMedia from "./LabMedia";
+import ArrowUpRight from "@/components/ui/ArrowUpRight";
 
 interface LabLightboxProps {
   work: Work;
@@ -198,9 +199,9 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                     href={work.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="border-b border-paper/40 pb-px text-sm text-paper transition-colors hover:border-scarlet hover:text-scarlet"
+                    className="inline-flex items-center gap-1 border-b border-paper/40 pb-px text-sm text-paper transition-colors hover:border-scarlet hover:text-scarlet"
                   >
-                    Live ↗
+                    Live <ArrowUpRight />
                   </a>
                 )}
                 {work.repo && (
@@ -208,9 +209,9 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                     href={work.repo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="border-b border-paper/40 pb-px text-sm text-paper transition-colors hover:border-scarlet hover:text-scarlet"
+                    className="inline-flex items-center gap-1 border-b border-paper/40 pb-px text-sm text-paper transition-colors hover:border-scarlet hover:text-scarlet"
                   >
-                    View repo ↗
+                    View repo <ArrowUpRight />
                   </a>
                 )}
               </div>

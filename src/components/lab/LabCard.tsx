@@ -2,6 +2,7 @@
 
 import type { Work } from "@/lib/content";
 import LabMedia from "./LabMedia";
+import ArrowUpRight from "@/components/ui/ArrowUpRight";
 
 interface LabCardProps {
   work: Work;
@@ -76,9 +77,9 @@ export default function LabCard({ work, onOpen, priority }: LabCardProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className="border-b border-transparent text-sm text-ink-light transition-colors hover:border-scarlet hover:text-scarlet"
+                  className="inline-flex items-center gap-1 border-b border-transparent text-sm text-ink-light transition-colors hover:border-scarlet hover:text-scarlet"
                 >
-                  Live ↗
+                  Live <ArrowUpRight />
                 </a>
               )}
               {work.repo && (
@@ -87,9 +88,9 @@ export default function LabCard({ work, onOpen, priority }: LabCardProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className="border-b border-transparent text-sm text-ink-light transition-colors hover:border-scarlet hover:text-scarlet"
+                  className="inline-flex items-center gap-1 border-b border-transparent text-sm text-ink-light transition-colors hover:border-scarlet hover:text-scarlet"
                 >
-                  Repo ↗
+                  Repo <ArrowUpRight />
                 </a>
               )}
             </div>
