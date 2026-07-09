@@ -161,7 +161,7 @@ async function main() {
   // --- validate compose inputs -------------------------------------------
   if (!args.number || args.number === true) fail('--number <n> is required.');
   if (!args.title || args.title === true) fail('--title "<Title>" is required.');
-  const text = composeText({
+  const opts = {
     number: args.number,
     title: String(args.title),
     description: args.description && args.description !== true ? String(args.description) : '',
@@ -170,10 +170,22 @@ async function main() {
     style: args.style && args.style !== true ? String(args.style) : 'hybrid',
     site: args.site && args.site !== true ? String(args.site) : '',
     tags: args.tags && args.tags !== true ? String(args.tags) : '',
-  });
+  };
 
-  if (text.length > 280) {
-    console.warn(`[tweet] ⚠ composed text is ${text.length} chars (>280). It may be rejected.`);
+  // Compose, then auto-fit to 280 by trimming ONLY the description (the site card
+  // keeps the full text). The GIF is attached as media and doesn't count; the text does.
+  const MAX = 280;
+  let text = composeText(opts);
+  if (text.length > MAX && opts.description) {
+    const over = text.length - MAX + 1; // +1 leaves room for the ellipsis
+    let desc = opts.description.slice(0, Math.max(0, opts.description.length - over));
+    desc = desc.replace(/\s+\S*$/, '').trimEnd() + '…'; // cut back to a word boundary
+    text = composeText({ ...opts, description: desc });
+    // Belt-and-braces: if still over (edge cases), hard-trim the whole thing.
+    if (text.length > MAX) text = text.slice(0, MAX - 1).trimEnd() + '…';
+    console.warn(`[tweet] ℹ description auto-trimmed to fit ${MAX} chars (now ${text.length}).`);
+  } else if (text.length > MAX) {
+    console.warn(`[tweet] ⚠ composed text is ${text.length} chars (>${MAX}) and has no description to trim. It may be rejected.`);
   }
 
   // --- --dry-run: print and stop -----------------------------------------

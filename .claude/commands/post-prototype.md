@@ -107,10 +107,11 @@ node pipeline/publish.mjs \
 Other styles: `clean` (`prototype 001 — Title`), `console` (terminal only, no site/tags),
 `full` (plain, with site + hashtags). Set with `--tweet-style`.
 
-**Keep it ≤280 characters.** The GIF is attached as media (X renders it as a looping video),
-so it does not count against the limit — but the composed text does. `tweet.mjs` warns when the
-text exceeds 280; if it does, tighten the **description** (the site card keeps the full version)
-until it fits, then re-run.
+**≤280 characters, handled automatically.** The GIF is attached as media (X renders it as a
+looping video), so it does not count against the limit — but the composed text does. `tweet.mjs`
+auto-fits to 280 by trimming **only the description** back to a word boundary with an ellipsis
+(the site card keeps the full version); it prints an `ℹ description auto-trimmed` note when it
+does. No manual editing needed.
 
 ## Direct script use (no orchestration)
 
