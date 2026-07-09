@@ -128,6 +128,21 @@ node pipeline/tweet.mjs --check         # verify X credentials
 node pipeline/tweet.mjs ... --dry-run   # print composed text only (no GIF/auth needed)
 ```
 
+**Batch an existing set** straight from the manifest (`src/data/works.json`) — text/repo/tags
+always match the live site — via `pipeline/post-lab.mjs`:
+
+```bash
+# Preview every prototype's tweet (no auth needed):
+node pipeline/post-lab.mjs --gifdir ~/Dev/prototypes/gifs --dry-run
+# Stage drafts for all of them:
+node pipeline/post-lab.mjs --all --draft --gifdir ~/Dev/prototypes/gifs
+# REAL-post one (needs pipeline/.env keys, ~$0.20):
+node pipeline/post-lab.mjs --number 1 --post --gifdir ~/Dev/prototypes/gifs
+```
+
+Selection: default = the `prototype-NN` entries; `--number 1,3` = those numbers; `--all` = every
+work. Mode: `--dry-run` (default) / `--draft` / `--post`. GIFs resolve as `<gifdir>/<id>.gif`.
+
 ## Requirements
 
 Node 22+, `ffmpeg`, Playwright Chromium, and (for real posting only) the 4 X API keys in
