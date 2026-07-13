@@ -25,7 +25,7 @@
       "title": "Relief Hover",
       "description": "A WebGL tool for designing a metallic, light-follows-cursor hover-reveal effect and exporting it as a ready-to-use Framer component.",
       "gif": "/lab/prototype-02.mp4",
-      "repo": "https://github.com/jannar18/wild-week-rebuild",
+      "repo": "https://github.com/jannar18/relief-hover",
       "url": "",
       "date": "2026-07-02",
       "tags": [
@@ -41,7 +41,7 @@
       "number": 3,
       "label": "Prototype 03",
       "title": "Running Log",
-      "description": "A self-updating log where each prototype is captured as a looping GIF of its best moment and published with a single command.",
+      "description": "A self-updating log where my prototypes are captured as a GIF and published with a single command.",
       "gif": "/lab/prototype-03.mp4",
       "repo": "https://github.com/jannar18/prototypes",
       "url": "",
@@ -58,7 +58,7 @@
       "number": 4,
       "label": "Prototype 04",
       "title": "Fractal Campus",
-      "description": "A Framer landing page for a Williamsburg coworking space for builders, where a warm light follows your cursor across neoclassical reliefs as you scroll.",
+      "description": "A mockup redesign of Fractal Campus's onboarding page — light trails your cursor over neoclassical reliefs.",
       "gif": "/lab/prototype-04.mp4",
       "repo": "",
       "url": "https://chocolate-future-637117.framer.app/",
@@ -183,6 +183,7 @@
     },
     {
       "id": "renoverse-ai",
+      "hidden": true,
       "number": 10,
       "label": "Ship",
       "title": "Renoverse AI",
@@ -203,7 +204,7 @@
     {
       "id": "vellum",
       "number": 11,
-      "label": "Prototype",
+      "label": "Prototype 05",
       "title": "Vellum",
       "description": "A real-time explorer for a translucent-paper effect, layering drifting vellum sheets with adjustable grain, opacity, and edge softness over any image.",
       "gif": "/lab/vellum.mp4",

@@ -89,6 +89,8 @@ export interface Work {
   date?: string;
   tags?: string[];
   screenshots?: string[];
+  /** When true, the work is excluded from the software gallery (e.g. NDA hold). */
+  hidden?: boolean;
 }
 
 const worksManifestPath = path.join(
@@ -106,7 +108,9 @@ export function getAllWorks(): Work[] {
   if (!fs.existsSync(worksManifestPath)) return [];
   const raw = fs.readFileSync(worksManifestPath, "utf8");
   const parsed = JSON.parse(raw) as { works?: Work[] };
-  const works = Array.isArray(parsed.works) ? parsed.works : [];
+  const works = (Array.isArray(parsed.works) ? parsed.works : []).filter(
+    (work) => !work.hidden,
+  );
   // Newest first: sort by date DESC, tie-break by number DESC (so same-day
   // prototypes keep their sequence). Keeps ships + prototypes in one log.
   return works.slice().sort((a, b) => {
