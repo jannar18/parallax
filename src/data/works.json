@@ -3,7 +3,7 @@
     {
       "id": "prototype-01",
       "number": 1,
-      "label": "Prototype 01",
+      "label": "Prototype 001",
       "title": "Stem",
       "description": "An elegant URL shortener that trims, brands, and tracks every link — even on your own domain — without the clutter.",
       "gif": "/lab/prototype-01.mp4",
@@ -21,7 +21,7 @@
     {
       "id": "prototype-02",
       "number": 2,
-      "label": "Prototype 02",
+      "label": "Prototype 002",
       "title": "Relief Hover",
       "description": "A WebGL tool for designing a metallic, light-follows-cursor hover-reveal effect and exporting it as a ready-to-use Framer component.",
       "gif": "/lab/prototype-02.mp4",
@@ -39,7 +39,7 @@
     {
       "id": "prototype-03",
       "number": 3,
-      "label": "Prototype 03",
+      "label": "Prototype 003",
       "title": "Running Log",
       "description": "A self-updating log where my prototypes are captured as a GIF and published with a single command.",
       "gif": "/lab/prototype-03.mp4",
@@ -56,7 +56,7 @@
     {
       "id": "prototype-04",
       "number": 4,
-      "label": "Prototype 04",
+      "label": "Prototype 004",
       "title": "Fractal Campus",
       "description": "A mockup redesign of Fractal Campus's onboarding page — light trails your cursor over neoclassical reliefs.",
       "gif": "/lab/prototype-04.mp4",
@@ -204,13 +204,13 @@
     {
       "id": "vellum",
       "number": 11,
-      "label": "Prototype 05",
+      "label": "Prototype 005",
       "title": "Vellum",
       "description": "A real-time explorer for a translucent-paper effect, layering drifting vellum sheets with adjustable grain, opacity, and edge softness over any image.",
       "gif": "/lab/vellum.mp4",
       "repo": "",
       "url": "",
-      "date": "2026-06-20",
+      "date": "2026-07-13",
       "tags": [
         "webgl",
         "shader",

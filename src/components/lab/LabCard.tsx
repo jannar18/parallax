@@ -21,7 +21,7 @@ interface LabCardProps {
  * minimal so the media carries the card.
  */
 export default function LabCard({ work, onOpen, priority }: LabCardProps) {
-  const label = work.label ?? `Prototype ${String(work.number).padStart(2, "0")}`;
+  const label = work.label ?? `Prototype ${String(work.number).padStart(3, "0")}`;
   const tags = work.tags ?? [];
 
   return (

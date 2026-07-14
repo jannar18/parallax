@@ -21,7 +21,7 @@ interface LabLightboxProps {
  * scroll is locked while open; focus moves to the close button.
  */
 export default function LabLightbox({ work, onClose }: LabLightboxProps) {
-  const label = work.label ?? `Prototype ${String(work.number).padStart(2, "0")}`;
+  const label = work.label ?? `Prototype ${String(work.number).padStart(3, "0")}`;
   const screenshots = work.screenshots ?? [];
   // The carousel = the lead gif/video followed by any screenshots.
   const views = [work.gif, ...screenshots];
