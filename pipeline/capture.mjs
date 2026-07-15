@@ -415,6 +415,13 @@ async function main() {
       viewport: { width: viewWidth, height: viewHeight },
       deviceScaleFactor: 2,
       recordVideo: { dir: videoTmpDir, size: { width: viewWidth, height: viewHeight } },
+      // Opt-in: start the context under prefers-reduced-motion. The Fractal NYC
+      // octahedron gates its auto-rotation on this (rotation.y stays 0), which
+      // freezes the scene at a deterministic orientation so an interaction
+      // script can hover a 3D nav node by exact pixel coordinate. The script is
+      // free to toggle it back off mid-run (page.emulateMedia) before it wants
+      // motion again. No effect on any capture that doesn't set the env.
+      ...(process.env.CAPTURE_REDUCED_MOTION ? { reducedMotion: 'reduce' } : {}),
     });
     const page = await context.newPage();
 
