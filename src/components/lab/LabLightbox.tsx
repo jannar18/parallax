@@ -16,9 +16,11 @@ interface LabLightboxProps {
  *
  * When a work carries `screenshots[]` (e.g. fractal-nyc, ships), the media
  * becomes a carousel: the lead GIF followed by each still, navigated with
- * clear left/right arrows (and ← / → keys). The active slide is centered with
- * the adjacent slides peeking in at the edges. Escape / backdrop close; body
- * scroll is locked while open; focus moves to the close button.
+ * clear left/right arrows (and ← / → keys). Slides step a full viewport width
+ * at a time so browser-sized videos display edge-to-edge on mobile and as
+ * large as the 75vh cap allows on desktop, letterboxed by the oxblood
+ * backdrop. Escape / backdrop close; body scroll is locked while open;
+ * focus moves to the close button.
  */
 export default function LabLightbox({ work, onClose }: LabLightboxProps) {
   const label = work.label ?? `Prototype ${String(work.number).padStart(3, "0")}`;
@@ -58,7 +60,7 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[80] grid place-items-center overflow-y-auto bg-oxblood/70 p-6 backdrop-blur-md sm:p-10"
+      className="fixed inset-0 z-[80] flex flex-col overflow-hidden bg-oxblood/70 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-label={work.title}
@@ -71,20 +73,22 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
         type="button"
         onClick={onClose}
         aria-label="Close"
-        className="fixed right-5 top-5 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-paper/15 text-lg text-paper transition-colors hover:bg-paper/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper"
+        className="fixed right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-paper/15 text-lg text-paper backdrop-blur transition-colors hover:bg-paper/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper"
       >
         ✕
       </button>
 
-      <figure className="m-0 w-full max-w-4xl">
-        {/* Carousel viewport */}
-        <div className="relative">
-          <div className="overflow-hidden">
+      {/* Figure pins caption to the bottom of the viewport: media flexes to
+          fill whatever height is left over so the label/description/links stay
+          in view without scrolling. */}
+      <figure className="m-0 flex h-full w-full flex-col pt-16 sm:p-10">
+        <div className="relative flex min-h-0 flex-1 flex-col">
+          <div className="h-full overflow-hidden">
             <div
-              className="flex items-center transition-transform duration-500 ease-out"
+              className="flex h-full items-center transition-transform duration-500 ease-out"
               style={{
                 transform: hasCarousel
-                  ? `translateX(calc(8% - ${index * 84}%))`
+                  ? `translateX(-${index * 100}%)`
                   : undefined,
               }}
             >
@@ -93,13 +97,11 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                 return (
                   <div
                     key={src}
-                    className={`flex flex-shrink-0 justify-center ${
-                      hasCarousel ? "w-[84%] px-2" : "w-full"
-                    }`}
+                    className="flex h-full w-full flex-shrink-0 items-center justify-center"
                     aria-hidden={hasCarousel && !isActive}
                   >
                     <div
-                      className={`max-w-full overflow-hidden rounded-lg shadow-[18px_26px_60px_-30px_rgba(0,0,0,0.7)] transition-opacity duration-500 ${
+                      className={`flex max-w-full items-center justify-center overflow-hidden transition-opacity duration-500 sm:rounded-lg ${
                         hasCarousel && !isActive
                           ? "cursor-pointer opacity-35"
                           : "opacity-100"
@@ -108,14 +110,17 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                         hasCarousel && !isActive ? () => setIndex(i) : undefined
                       }
                     >
-                      {/* Only the active slide autoplays its video (perf) */}
+                      {/* Only the active slide autoplays its video (perf).
+                          Explicit viewport-relative max-h reserves room for
+                          the caption/dots + top padding so nothing gets
+                          pushed off-screen. */}
                       <LabMedia
                         key={`${src}-${isActive}`}
                         src={src}
                         alt={`${work.title} — view ${i + 1}`}
                         priority={isActive}
                         active={isActive}
-                        className="block max-h-[64vh] w-auto max-w-full"
+                        className="block h-auto max-h-[calc(100dvh-20rem)] w-auto max-w-full object-contain sm:max-h-[calc(100dvh-17rem)]"
                       />
                     </div>
                   </div>
@@ -132,7 +137,7 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                 onClick={() => go(-1)}
                 disabled={atStart}
                 aria-label="Previous"
-                className="absolute left-1 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/15 text-paper backdrop-blur transition-all hover:bg-paper/35 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper disabled:pointer-events-none disabled:opacity-0 sm:-left-2"
+                className="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-oxblood/50 text-paper backdrop-blur transition-all hover:bg-oxblood/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper disabled:pointer-events-none disabled:opacity-0"
               >
                 <CarouselArrow direction="left" />
               </button>
@@ -141,7 +146,7 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                 onClick={() => go(1)}
                 disabled={atEnd}
                 aria-label="Next"
-                className="absolute right-1 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-paper/15 text-paper backdrop-blur transition-all hover:bg-paper/35 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper disabled:pointer-events-none disabled:opacity-0 sm:-right-2"
+                className="absolute right-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-oxblood/50 text-paper backdrop-blur transition-all hover:bg-oxblood/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-paper disabled:pointer-events-none disabled:opacity-0"
               >
                 <CarouselArrow direction="right" />
               </button>
@@ -151,7 +156,7 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
 
         {/* Position dots */}
         {hasCarousel && (
-          <div className="mt-4 flex items-center justify-center gap-2">
+          <div className="mt-4 flex shrink-0 items-center justify-center gap-2">
             {views.map((src, i) => (
               <button
                 key={src}
@@ -167,7 +172,7 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
           </div>
         )}
 
-        <figcaption className="mt-5">
+        <figcaption className="mx-auto mt-5 w-full max-w-4xl shrink-0 px-5 pb-6 sm:px-0 sm:pb-0">
           <span className="font-mono text-xs uppercase tracking-wider text-scarlet">
             {label}
           </span>
