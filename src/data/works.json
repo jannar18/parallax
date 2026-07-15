@@ -76,11 +76,11 @@
       "number": 5,
       "label": "Project",
       "title": "Fractal NYC",
-      "description": "A community site for Fractal — a Brooklyn network of coliving houses, campus, events, education, and publications — organized as six themed \"houses,\" each with its own crest and palette, behind an interactive fractal-octahedron homepage.",
+      "description": "Proposed design for the relaunched Fractal community site — a Brooklyn network of coliving houses, campus, events, education, and publications — organized as six themed \"houses,\" each with its own crest and palette, behind an interactive fractal-octahedron homepage.",
       "gif": "/lab/fractal-nyc.mp4",
       "repo": "https://github.com/jannar18/fractal-nyc",
       "url": "https://fractal-nyc.netlify.app/",
-      "date": "2026-06-15",
+      "date": "2026-07-14",
       "tags": [
         "react",
         "typescript",
@@ -88,6 +88,7 @@
         "editorial"
       ],
       "screenshots": [
+        "/lab/shots/fractal-nyc-mobile.mp4",
         "/lab/shots/fractal-nyc-visit.mp4",
         "/lab/shots/fractal-nyc-events.mp4",
         "/lab/shots/fractal-nyc-campus.mp4",
