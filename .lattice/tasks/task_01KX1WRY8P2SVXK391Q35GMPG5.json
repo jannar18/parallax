@@ -1,0 +1,49 @@
+{
+  "assigned_to": null,
+  "branch_links": [
+    {
+      "branch": "feature/ASMV-108-nav-adaptive-color",
+      "linked_at": "2026-07-08T22:15:43Z",
+      "linked_by": "agent:claude-opus-4",
+      "repo": null
+    }
+  ],
+  "comment_count": 4,
+  "complexity": null,
+  "created_at": "2026-07-08T22:15:01Z",
+  "created_by": "agent:claude-opus-4",
+  "custom_fields": {},
+  "description": null,
+  "done_at": "2026-07-08T22:40:50Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KX1WZZPSDS72Q77ZJXN581FD",
+      "role": "review",
+      "source_type": "comment"
+    },
+    {
+      "id": "ev_01KX1Y86R6XC9S7BT5NYNDVNTF",
+      "role": "review",
+      "source_type": "comment"
+    },
+    {
+      "id": "ev_01KX1ZDYY7TKQ8RABDFEWKJY0B",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
+  "id": "task_01KX1WRY8P2SVXK391Q35GMPG5",
+  "last_event_id": "ev_01KX1ZDYY7TKQ8RABDFEWKJY0B",
+  "last_status_changed_at": "2026-07-08T22:40:50Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 1,
+  "schema_version": 1,
+  "short_id": "ASMV-108",
+  "status": "done",
+  "tags": null,
+  "title": "Nav bar adapts color to light/dark backgrounds",
+  "type": "task",
+  "updated_at": "2026-07-08T23:01:27Z",
+  "urgency": null
+}

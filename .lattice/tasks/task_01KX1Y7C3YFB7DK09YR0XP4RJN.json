@@ -1,0 +1,39 @@
+{
+  "assigned_to": null,
+  "branch_links": [
+    {
+      "branch": "feature/ASMV-109-fractal-entrance-clips",
+      "linked_at": "2026-07-08T22:41:09Z",
+      "linked_by": "agent:claude-opus-fractal",
+      "repo": null
+    }
+  ],
+  "comment_count": 1,
+  "complexity": null,
+  "created_at": "2026-07-08T22:40:23Z",
+  "created_by": "agent:claude-opus-fractal",
+  "custom_fields": {},
+  "description": null,
+  "done_at": "2026-07-08T22:42:45Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KX1YBQC0PTRQ8H1BES5WAZ60",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
+  "id": "task_01KX1Y7C3YFB7DK09YR0XP4RJN",
+  "last_event_id": "ev_01KX1YBQE8B1A4FXDW5XZP0BHC",
+  "last_status_changed_at": "2026-07-08T22:42:45Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-109",
+  "status": "done",
+  "tags": null,
+  "title": "Replace Fractal NYC software-post screenshots with per-page entrance video clips",
+  "type": "task",
+  "updated_at": "2026-07-08T22:42:45Z",
+  "urgency": null
+}

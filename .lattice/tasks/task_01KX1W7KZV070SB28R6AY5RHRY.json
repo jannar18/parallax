@@ -1,0 +1,39 @@
+{
+  "assigned_to": null,
+  "branch_links": [
+    {
+      "branch": "feature/ASMV-107-lab-thumbnails",
+      "linked_at": "2026-07-08T22:12:38Z",
+      "linked_by": "agent:claude-opus-4-impl",
+      "repo": null
+    }
+  ],
+  "comment_count": 1,
+  "complexity": null,
+  "created_at": "2026-07-08T22:05:34Z",
+  "created_by": "agent:claude-opus-4-orchestrator",
+  "custom_fields": {},
+  "description": null,
+  "done_at": "2026-07-08T22:19:39Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KX1X1DWV0K0MR6TMNG650MK4",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
+  "id": "task_01KX1W7KZV070SB28R6AY5RHRY",
+  "last_event_id": "ev_01KX1X1DZ3S25EJ0X0QMBKVDDP",
+  "last_status_changed_at": "2026-07-08T22:19:39Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-107",
+  "status": "done",
+  "tags": null,
+  "title": "Re-thumbnail Secret Garden (flowers) + generate Schelling Points landscape demo",
+  "type": "task",
+  "updated_at": "2026-07-08T22:19:39Z",
+  "urgency": null
+}

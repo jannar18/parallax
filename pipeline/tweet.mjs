@@ -2,22 +2,46 @@
 /**
  * tweet.mjs
  * ---------
- * Posts a prototype to X (Twitter) in a console-log style, with its GIF attached.
+ * Posts a prototype to X (Twitter) in a console-log style, with its media attached.
  * Reads OAuth 1.0a credentials from pipeline/.env (gitignored).
  *
- * Modes:
+ * ── CANONICAL TWEET FORMAT ────────────────────────────────────────────────
+ * This is the ONE documented format the pipeline emits on every publish. It is
+ * the `hybrid` style (the default) and it always carries BOTH links — the repo
+ * AND the live site page — so every prototype tweet reads identically:
+ *
+ *   > prototype[NNN] <Title>
+ *     ↳ <one-sentence description>
+ *     ↳ <github repo, https:// stripped>            (work.repo, from works.json)
+ *     ↳ parallax.haus/work/software                 (the site's software gallery)
+ *     #tag1 #tag2 #tag3 …                           (the work's tags)
+ *
+ * Both links and the tag line mirror the card on parallax.haus/work/software.
+ * publish.mjs wires this up automatically (--style hybrid, --repo work.repo,
+ * --site https://parallax.haus/work/software, --tags …); do not hand-assemble a
+ * different shape. Keep the description tight — with a long repo path the tweet
+ * can approach the 280-char limit.
+ *
+ * ── MEDIA ─────────────────────────────────────────────────────────────────
+ * --gif accepts a GIF *or* a video (.mp4/.mov) — the mimeType is chosen from the
+ * file extension, so the exact clip that's live on the site (public/lab/<id>.mp4)
+ * can be posted natively, no GIF conversion needed.
+ *
+ * ── MODES ─────────────────────────────────────────────────────────────────
  *   --check                      Verify credentials only (calls /2/users/me), print handle, exit.
  *   --dry-run                    Compose + print the tweet text, do NOT post (no auth needed).
- *   --draft                      Compose the tweet + stage the GIF, write both to .tmp/ for manual
+ *   --draft                      Compose the tweet + stage the media, write both to .tmp/ for manual
  *                                posting, do NOT hit the API.
- *   (default)                    Upload the GIF and post the tweet for real.
+ *   (default)                    Upload the media and post the tweet for real.
  *
- * Usage:
+ * Usage (canonical — matches what publish.mjs runs):
  *   node tweet.mjs --check
- *   node tweet.mjs --number 3 --title "Grain Explorer" \
- *     --description "A live WebGL grain field that reacts to your cursor." \
- *     --repo https://github.com/jannar18/grain-explorer \
- *     --gif .tmp/out.gif [--dry-run|--draft] [--pad 3] [--site https://jannar18.github.io/prototypes/]
+ *   node tweet.mjs --number 1 --title "Stem" \
+ *     --description "An elegant URL shortener that trims, brands, and tracks every link…" \
+ *     --repo https://github.com/jannar18/systems-engineering/tree/main/url-shortener \
+ *     --site https://parallax.haus/work/software \
+ *     --tags "react,typescript,vite,product" \
+ *     --style hybrid --gif ../public/lab/prototype-01.mp4 [--dry-run|--draft] [--pad 3]
  *
  * Dependency: twitter-api-v2 (installed in this pipeline package).
  */
@@ -213,8 +237,15 @@ async function main() {
   const client = requireCreds(env);
   let mediaId;
   if (gifPath) {
-    console.log('[tweet] uploading GIF…');
-    mediaId = await client.v1.uploadMedia(gifPath, { mimeType: 'image/gif' });
+    const ext = path.extname(gifPath).toLowerCase();
+    const mimeType =
+      ext === '.mp4' ? 'video/mp4' :
+      ext === '.mov' ? 'video/quicktime' :
+      ext === '.png' ? 'image/png' :
+      (ext === '.jpg' || ext === '.jpeg') ? 'image/jpeg' :
+      'image/gif';
+    console.log(`[tweet] uploading media (${mimeType})…`);
+    mediaId = await client.v1.uploadMedia(gifPath, { mimeType });
   }
   console.log('[tweet] posting…');
   const res = await client.v2.tweet(text, mediaId ? { media: { media_ids: [mediaId] } } : {});

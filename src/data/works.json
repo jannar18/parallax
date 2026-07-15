@@ -97,23 +97,45 @@
       ]
     },
     {
-      "id": "snails-vs-garden",
-      "number": 9,
+      "id": "rainbow-crawler",
+      "number": 6,
       "label": "Ship",
-      "title": "Snails vs Garden",
-      "description": "A multiplayer tic-tac-toe variant with pixel art, real-time chat, and lobby system.",
-      "gif": "/videos/software/snails-vs-garden/game-1.mp4",
+      "title": "Rainbow Crawler",
+      "description": "A dungeon crawler with procedural level generation, built as a solo project with PixiJS.",
+      "gif": "/videos/software/rainbow-crawler/demo-trimmed.mp4",
       "repo": "",
-      "url": "https://tic-tac-toe-sp-2026-anna-fj3n3.sevalla.app",
-      "date": "2026-03-24",
+      "url": "https://enchanted-rainbow-dungeon-crawler.netlify.app",
+      "date": "2026-01-15",
       "tags": [
         "game",
-        "multiplayer",
-        "pixel-art"
+        "procedural-generation"
       ],
       "screenshots": [
-        "/images/software/snails-vs-garden/screenshot-1.png",
-        "/images/software/snails-vs-garden/screenshot-2.png"
+        "/images/software/rainbow-crawler/screenshot-1.png",
+        "/images/software/rainbow-crawler/screenshot-2.png",
+        "/images/software/rainbow-crawler/screenshot-3.png",
+        "/images/software/rainbow-crawler/screenshot-4.png",
+        "/images/software/rainbow-crawler/screenshot-5.png"
+      ]
+    },
+    {
+      "id": "schelling-points",
+      "number": 7,
+      "label": "Ship",
+      "title": "The Schelling Point",
+      "description": "A multiplayer party game where friends try to think alike, based on Schelling’s focal point theory.",
+      "gif": "/images/software/schelling-points/schelling-points.demo.1.mp4",
+      "repo": "",
+      "url": "",
+      "date": "2026-02-15",
+      "tags": [
+        "game-theory",
+        "multiplayer",
+        "mobile"
+      ],
+      "screenshots": [
+        "/images/software/schelling-points/schelling-points.raw.1.png",
+        "/images/software/schelling-points/schelling-points.raw.2.png"
       ]
     },
     {
@@ -141,45 +163,23 @@
       ]
     },
     {
-      "id": "schelling-points",
-      "number": 7,
+      "id": "snails-vs-garden",
+      "number": 9,
       "label": "Ship",
-      "title": "The Schelling Point",
-      "description": "A multiplayer party game where friends try to think alike, based on Schelling’s focal point theory.",
-      "gif": "/images/software/schelling-points/schelling-points.demo.1.mp4",
+      "title": "Snails vs Garden",
+      "description": "A multiplayer tic-tac-toe variant with pixel art, real-time chat, and lobby system.",
+      "gif": "/videos/software/snails-vs-garden/game-1.mp4",
       "repo": "",
-      "url": "",
-      "date": "2026-02-15",
-      "tags": [
-        "game-theory",
-        "multiplayer",
-        "mobile"
-      ],
-      "screenshots": [
-        "/images/software/schelling-points/schelling-points.raw.1.png",
-        "/images/software/schelling-points/schelling-points.raw.2.png"
-      ]
-    },
-    {
-      "id": "rainbow-crawler",
-      "number": 6,
-      "label": "Ship",
-      "title": "Rainbow Crawler",
-      "description": "A dungeon crawler with procedural level generation, built as a solo project with PixiJS.",
-      "gif": "/videos/software/rainbow-crawler/demo-trimmed.mp4",
-      "repo": "",
-      "url": "https://enchanted-rainbow-dungeon-crawler.netlify.app",
-      "date": "2026-01-15",
+      "url": "https://tic-tac-toe-sp-2026-anna-fj3n3.sevalla.app",
+      "date": "2026-03-24",
       "tags": [
         "game",
-        "procedural-generation"
+        "multiplayer",
+        "pixel-art"
       ],
       "screenshots": [
-        "/images/software/rainbow-crawler/screenshot-1.png",
-        "/images/software/rainbow-crawler/screenshot-2.png",
-        "/images/software/rainbow-crawler/screenshot-3.png",
-        "/images/software/rainbow-crawler/screenshot-4.png",
-        "/images/software/rainbow-crawler/screenshot-5.png"
+        "/images/software/snails-vs-garden/screenshot-1.png",
+        "/images/software/snails-vs-garden/screenshot-2.png"
       ]
     },
     {
@@ -238,6 +238,24 @@
         "/lab/shots/secret-garden-loading.png",
         "/lab/secret-garden.mp4"
       ]
+    },
+    {
+      "id": "prototype-13",
+      "number": 13,
+      "label": "Prototype 13",
+      "title": "Fractal NYC",
+      "description": "The homepage for a Brooklyn coliving network, navigated through a rotating Three.js octahedron whose color-coded vertices link out to each house and section.",
+      "gif": "/lab/prototype-13.gif",
+      "repo": "https://github.com/jannar18/fractal-nyc",
+      "url": "https://fractalnyc.com",
+      "date": "2026-07-15",
+      "tags": [
+        "three.js",
+        "webgl",
+        "interactive",
+        "react"
+      ],
+      "screenshots": []
     }
   ]
 }
