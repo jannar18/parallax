@@ -60,7 +60,7 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[80] grid place-items-center overflow-y-auto bg-oxblood/70 py-16 backdrop-blur-md sm:p-10"
+      className="fixed inset-0 z-[80] flex flex-col overflow-hidden bg-oxblood/70 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-label={work.title}
@@ -78,14 +78,14 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
         ✕
       </button>
 
-      <figure className="m-0 w-full">
-        {/* Carousel viewport — media stretches edge-to-edge; each slide is one
-            full-viewport step so the active browser video shows as large as
-            possible. */}
-        <div className="relative">
-          <div className="overflow-hidden">
+      {/* Figure pins caption to the bottom of the viewport: media flexes to
+          fill whatever height is left over so the label/description/links stay
+          in view without scrolling. */}
+      <figure className="m-0 flex h-full w-full flex-col pt-16 sm:p-10">
+        <div className="relative flex min-h-0 flex-1 flex-col">
+          <div className="h-full overflow-hidden">
             <div
-              className="flex items-center transition-transform duration-500 ease-out"
+              className="flex h-full items-center transition-transform duration-500 ease-out"
               style={{
                 transform: hasCarousel
                   ? `translateX(-${index * 100}%)`
@@ -97,11 +97,11 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                 return (
                   <div
                     key={src}
-                    className="flex w-full flex-shrink-0 items-center justify-center"
+                    className="flex h-full w-full flex-shrink-0 items-center justify-center"
                     aria-hidden={hasCarousel && !isActive}
                   >
                     <div
-                      className={`overflow-hidden transition-opacity duration-500 sm:rounded-lg sm:shadow-[18px_26px_60px_-30px_rgba(0,0,0,0.7)] ${
+                      className={`flex max-w-full items-center justify-center overflow-hidden transition-opacity duration-500 sm:rounded-lg sm:shadow-[18px_26px_60px_-30px_rgba(0,0,0,0.7)] ${
                         hasCarousel && !isActive
                           ? "cursor-pointer opacity-35"
                           : "opacity-100"
@@ -110,14 +110,17 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                         hasCarousel && !isActive ? () => setIndex(i) : undefined
                       }
                     >
-                      {/* Only the active slide autoplays its video (perf) */}
+                      {/* Only the active slide autoplays its video (perf).
+                          Explicit viewport-relative max-h reserves room for
+                          the caption/dots + top padding so nothing gets
+                          pushed off-screen. */}
                       <LabMedia
                         key={`${src}-${isActive}`}
                         src={src}
                         alt={`${work.title} — view ${i + 1}`}
                         priority={isActive}
                         active={isActive}
-                        className="block h-auto max-h-[75vh] w-auto max-w-full object-contain"
+                        className="block h-auto max-h-[calc(100dvh-20rem)] w-auto max-w-full object-contain sm:max-h-[calc(100dvh-17rem)]"
                       />
                     </div>
                   </div>
@@ -153,7 +156,7 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
 
         {/* Position dots */}
         {hasCarousel && (
-          <div className="mt-4 flex items-center justify-center gap-2">
+          <div className="mt-4 flex shrink-0 items-center justify-center gap-2">
             {views.map((src, i) => (
               <button
                 key={src}
@@ -169,7 +172,7 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
           </div>
         )}
 
-        <figcaption className="mx-auto mt-5 max-w-4xl px-5 sm:px-0">
+        <figcaption className="mx-auto mt-5 w-full max-w-4xl shrink-0 px-5 pb-6 sm:px-0 sm:pb-0">
           <span className="font-mono text-xs uppercase tracking-wider text-scarlet">
             {label}
           </span>
