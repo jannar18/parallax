@@ -1,0 +1,39 @@
+{
+  "assigned_to": null,
+  "branch_links": [
+    {
+      "branch": "feature/ASMV-110-fractal-shot-hover",
+      "linked_at": "2026-07-15T04:20:20Z",
+      "linked_by": "human:fractalos",
+      "repo": null
+    }
+  ],
+  "comment_count": 1,
+  "complexity": null,
+  "created_at": "2026-07-15T04:14:15Z",
+  "created_by": "human:fractalos",
+  "custom_fields": {},
+  "description": null,
+  "done_at": "2026-07-15T05:02:28Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KXJ2F9VT9G8V8PSBVPY6RYXD",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
+  "id": "task_01KXHZQ0PPGEV42DXMH483EXZZ",
+  "last_event_id": "ev_01KXJ2F9Y21CGG16WX2RXVRXKP",
+  "last_status_changed_at": "2026-07-15T05:02:28Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-110",
+  "status": "done",
+  "tags": null,
+  "title": "Re-edit Fractal NYC page shots: hover/spin the octahedron node before entering each house page",
+  "type": "task",
+  "updated_at": "2026-07-15T05:02:28Z",
+  "urgency": null
+}
