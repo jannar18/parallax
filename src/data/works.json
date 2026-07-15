@@ -238,24 +238,6 @@
         "/lab/shots/secret-garden-loading.png",
         "/lab/secret-garden.mp4"
       ]
-    },
-    {
-      "id": "prototype-13",
-      "number": 13,
-      "label": "Prototype 13",
-      "title": "Fractal NYC",
-      "description": "The homepage for a Brooklyn coliving network, navigated through a rotating Three.js octahedron whose color-coded vertices link out to each house and section.",
-      "gif": "/lab/prototype-13.gif",
-      "repo": "https://github.com/jannar18/fractal-nyc",
-      "url": "https://fractalnyc.com",
-      "date": "2026-07-15",
-      "tags": [
-        "three.js",
-        "webgl",
-        "interactive",
-        "react"
-      ],
-      "screenshots": []
     }
   ]
 }
