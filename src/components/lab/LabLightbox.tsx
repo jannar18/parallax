@@ -101,7 +101,7 @@ export default function LabLightbox({ work, onClose }: LabLightboxProps) {
                     aria-hidden={hasCarousel && !isActive}
                   >
                     <div
-                      className={`flex max-w-full items-center justify-center overflow-hidden transition-opacity duration-500 sm:rounded-lg sm:shadow-[18px_26px_60px_-30px_rgba(0,0,0,0.7)] ${
+                      className={`flex max-w-full items-center justify-center overflow-hidden transition-opacity duration-500 sm:rounded-lg ${
                         hasCarousel && !isActive
                           ? "cursor-pointer opacity-35"
                           : "opacity-100"
