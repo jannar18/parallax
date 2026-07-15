@@ -1,0 +1,39 @@
+{
+  "assigned_to": null,
+  "branch_links": [
+    {
+      "branch": "feature/ASMV-111-fractal-nyc-figma-shot",
+      "linked_at": "2026-07-15T20:12:51Z",
+      "linked_by": "agent:claude-opus-4",
+      "repo": null
+    }
+  ],
+  "comment_count": 1,
+  "complexity": null,
+  "created_at": "2026-07-15T20:11:53Z",
+  "created_by": "agent:claude-opus-4",
+  "custom_fields": {},
+  "description": null,
+  "done_at": "2026-07-15T20:14:09Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KXKPMMKXTDMDA770VCDECWCR",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
+  "id": "task_01KXKPGFV9N7WMQJK85AW0PCG4",
+  "last_event_id": "ev_01KXKPMMP3Z3Y8MYYCJ3N51371",
+  "last_status_changed_at": "2026-07-15T20:14:09Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-111",
+  "status": "done",
+  "tags": null,
+  "title": "Add Figma-file walkthrough clip as final Fractal NYC page-shot",
+  "type": "task",
+  "updated_at": "2026-07-15T20:14:09Z",
+  "urgency": null
+}
