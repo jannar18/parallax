@@ -55,3 +55,6 @@ _raw/*
 # Sibling worktrees created by scripts/new-lattice-worktree.sh
 # (siblings live outside the repo so this is belt-and-braces)
 worktree-*/
+
+# Source portfolio PDF (33MB) — redundant with rendered book images; host separately
+public/roberts-selected-works-2022-2024.pdf
