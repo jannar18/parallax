@@ -1,6 +1,13 @@
 {
   "assigned_to": null,
-  "branch_links": [],
+  "branch_links": [
+    {
+      "branch": "feature/resume-may-2026-update",
+      "linked_at": "2026-07-17T19:36:59Z",
+      "linked_by": "agent:claude-opus-4",
+      "repo": null
+    }
+  ],
   "comment_count": 1,
   "complexity": null,
   "created_at": "2026-07-17T19:23:09Z",
@@ -16,7 +23,7 @@
     }
   ],
   "id": "task_01KXRRGPXQMG124FDZNN0J8C08",
-  "last_event_id": "ev_01KXRRKRYKQ6XM8YB23H2FK2PB",
+  "last_event_id": "ev_01KXRSA1PCMNSGMGSP5ZJA3DC6",
   "last_status_changed_at": "2026-07-17T19:24:50Z",
   "priority": "medium",
   "relationships_out": [],
@@ -27,6 +34,6 @@
   "tags": null,
   "title": "Update resume: add Renoverse entry, retitle Fractal role, close open-ended dates",
   "type": "task",
-  "updated_at": "2026-07-17T19:24:50Z",
+  "updated_at": "2026-07-17T19:36:59Z",
   "urgency": null
 }
