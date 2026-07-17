@@ -1,0 +1,32 @@
+{
+  "assigned_to": null,
+  "branch_links": [],
+  "comment_count": 1,
+  "complexity": null,
+  "created_at": "2026-07-17T19:33:51Z",
+  "created_by": "human:julianna",
+  "custom_fields": {},
+  "description": null,
+  "done_at": "2026-07-17T19:34:34Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KXRS5KZ1P9CJC64DHX5009WC",
+      "role": "review",
+      "source_type": "comment"
+    }
+  ],
+  "id": "task_01KXRS49W9QSKKW5ZPDB01E37W",
+  "last_event_id": "ev_01KXRS5M1D3GDZZ9CQFVBBNDAF",
+  "last_status_changed_at": "2026-07-17T19:34:34Z",
+  "priority": "medium",
+  "relationships_out": [],
+  "reopened_count": 0,
+  "schema_version": 1,
+  "short_id": "ASMV-113",
+  "status": "done",
+  "tags": null,
+  "title": "Refresh Fractal Tech metrics to final May 2026 totals; unify website + PDF wording",
+  "type": "task",
+  "updated_at": "2026-07-17T19:34:34Z",
+  "urgency": null
+}
