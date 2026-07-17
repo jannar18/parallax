@@ -47,8 +47,8 @@ const pdf = React.createElement(Document, { title: "Julianna Roberts \u2014 Resu
     React.createElement(View, { style: s.section },
       React.createElement(Text, { style: s.sectionTitle }, "Experience"),
       ...[
-        { role: "AI Engineer Intern", org: "Renoverse AI", dates: "Apr 2026 \u2014 May 2026", desc: "Building AI-powered product experiences for architects" },
-        { role: "Software Developer", org: "Fractal Tech NYC", dates: "Feb 2026 \u2014 present", desc: "Built and shipped 10+ full-stack apps, software tools, and AI research projects with 528+ commits and 370+ PRs \u2014 created RhinoMCP (an MCP server bridging Rhino 3D and AI agents for computational design), multiplayer games, 3D environments, dungeon crawlers, and AI-powered tools using React, Next.js, TypeScript, Python, Three.js, and WebSockets, with a focus on 3D modeling, architecture-software integration, and Claude Code research" },
+        { role: "Design Engineering Intern", org: "Renoverse AI", dates: "May 2026", desc: "Owned an end-to-end website revamp for an AI renovation/home-construction startup, replacing a no-code Squarespace landing page with a hand-built, responsive site \u2014 designed Figma mockups and interactive prototypes, translated designs into production HTML using Paper with Claude, established a reusable design system via Google's design.md protocol, and shipped a live site in ~24 hours after re-strategizing to hit the client's end goal; authored a team handoff guide for editing and scaling the site with Claude going forward" },
+        { role: "Software/AI Engineer", org: "Fractal Tech NYC", dates: "Feb 2026 \u2014 May 2026", desc: "Built and shipped 10+ full-stack apps, software tools, and AI research projects with 1,000+ commits and 400+ PRs \u2014 created RhinoMCP (an MCP server bridging Rhino 3D and AI agents for computational design), multiplayer games, 3D environments, dungeon crawlers, and AI-powered tools using React, Next.js, TypeScript, Python, Three.js, and WebSockets, with a focus on 3D modeling, architecture-software integration, and Claude Code research" },
         { role: "Architectural Intern", org: "Studio KZ + Scottsdale Design Build", dates: "May 2022 \u2014 Jul 2023", desc: "Developed drawing sets through the CD & CA phases for both residential & commercial projects, built 3D SketchUp models for client presentations, participated in on-site field & construction work, assisted with contractual review, collaborated on structural calculations and detail design, drafted plans, elevations, sections & details for custom homes" },
         { role: "Gallery Educator + Greeter", org: "Wrightwood 659", dates: "Apr 2024 \u2014 Jul 2024", desc: "Engaged & educated visitors on architecture & artworks, developed research & \u201Ceducator talk\u201D on artist" },
         { role: "Gallery Service Assistant", org: "Gallery 1957 | Expo Chicago", dates: "Apr 2023", desc: "Engaged with potential clients, learned artists & their works quickly, promoted & represented artists to the public" },
@@ -108,7 +108,7 @@ const pdf = React.createElement(Document, { title: "Julianna Roberts \u2014 Resu
           ...[
             ["Dwight T. Black Memorial Scholarship Nomination", "2024"],
             ["U.S. Solar Decathlon Finalist", "2024"],
-            ["Anderson Presidential Scholarship", "2022 \u2014 present"],
+            ["Anderson Presidential Scholarship", "2022 \u2014 May 2025"],
             ["Camras Scholarship", "2020 \u2014 2025"],
             ["Dean's List", "2021 \u2014 2025"],
           ].map(([l, y], i) => React.createElement(View, { key: i, style: s.recognitionItem },
