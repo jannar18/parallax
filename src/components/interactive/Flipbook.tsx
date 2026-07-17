@@ -7,46 +7,75 @@ import type { PageFlip as PageFlipType } from "page-flip";
 /**
  * Flipbook — Julianna's architecture portfolio as a book you turn.
  *
- * The source PDF is already laid out as a cover + 19 facing-page spreads.
- * We pre-render two asset sets (see /public/images/architecture-book):
- *   • leaf-000…leaf-039  — cover, each spread split at the gutter into two
- *     portrait leaves, plus a plain back cover. Fed to StPageFlip so the
- *     visitor turns one leaf at a time, exactly like the printed book.
- *   • page-01…page-20    — full cover + full spreads, shown as a vertical
- *     scroll on mobile where a page-curl would be awkward.
+ * The source PDF is a cover + 19 facing-page spreads. We pre-render two WebP
+ * asset sets at 300dpi (see /public/images/architecture-book):
+ *   • leaf-000…leaf-039 — cover, each spread split at the gutter into two
+ *     portrait leaves, plus a plain back cover. Turned one leaf at a time on
+ *     desktop, exactly like the printed book.
+ *   • page-01…page-20   — full cover + full spreads, shown as a vertical
+ *     scroll on mobile.
  *
- * Desktop uses the vanilla `page-flip` (StPageFlip) library, which owns its
- * own DOM — so it never fights React reconciliation.
+ * Desktop uses `page-flip` (StPageFlip) in **HTML mode** (`loadFromHTML`), so
+ * each page is a real <img> the browser scales crisply on retina — the canvas
+ * (`loadFromImages`) path rasterises at CSS pixels and looks soft on 2× screens.
+ * The page DOM is injected imperatively into a JSX-childless host, so React's
+ * reconciler never touches the subtree StPageFlip owns.
  */
 
 const BOOK_DIR = "/images/architecture-book";
 
 // 40 leaves: cover (000) + 19 spreads × 2 (001–038) + back cover (039).
 const LEAVES: string[] = [
-  `${BOOK_DIR}/leaf-000.jpg`,
-  ...Array.from({ length: 38 }, (_, i) => `${BOOK_DIR}/leaf-${String(i + 1).padStart(3, "0")}.jpg`),
-  `${BOOK_DIR}/leaf-039.png`,
+  `${BOOK_DIR}/leaf-000.webp`,
+  ...Array.from({ length: 38 }, (_, i) => `${BOOK_DIR}/leaf-${String(i + 1).padStart(3, "0")}.webp`),
+  `${BOOK_DIR}/leaf-039.webp`,
 ];
 
 // Mobile: full cover + 19 full spreads (facing-page compositions preserved).
 const SPREADS: { src: string; cover: boolean }[] = [
-  { src: `${BOOK_DIR}/page-01.jpg`, cover: true },
+  { src: `${BOOK_DIR}/page-01.webp`, cover: true },
   ...Array.from({ length: 19 }, (_, i) => ({
-    src: `${BOOK_DIR}/page-${String(i + 2).padStart(2, "0")}.jpg`,
+    src: `${BOOK_DIR}/page-${String(i + 2).padStart(2, "0")}.webp`,
     cover: false,
   })),
 ];
 
-const TOTAL_SPREADS = 19;
+// Navigable "openings": cover + 19 spreads + back cover.
+const TOTAL_VIEWS = (LEAVES.length - 2) / 2 + 2;
 
-function spreadLabel(leafIndex: number): string {
-  if (leafIndex <= 0) return "Cover";
-  if (leafIndex >= LEAVES.length - 1) return "Back cover";
-  return `Spread ${Math.ceil(leafIndex / 2)} / ${TOTAL_SPREADS}`;
+// 1-based position of the current opening, from the left-page leaf index.
+function bookPosition(leafIndex: number): number {
+  if (leafIndex <= 0) return 1;
+  if (leafIndex >= LEAVES.length - 1) return TOTAL_VIEWS;
+  return (leafIndex + 1) / 2 + 1;
+}
+
+// Which edge of a leaf meets the spine (so we can shade the gutter).
+//   cover (0): sits on the right → gutter on its left
+//   back cover (last): sits on the left → gutter on its right
+//   interior: odd index = left page (gutter right), even = right page (gutter left)
+function gutterSide(i: number): "left" | "right" {
+  if (i === 0) return "left";
+  if (i === LEAVES.length - 1) return "right";
+  return i % 2 === 1 ? "right" : "left";
+}
+
+// Build the page DOM StPageFlip will adopt. Covers are "hard" (rigid).
+// Each page carries a soft shadow baked onto its spine-side edge — visible at
+// rest (the two halves meet as a center-fold shadow) and, because it's part of
+// the page, it turns and lifts with the page instead of sitting as a fixed band.
+function buildPagesHTML(): string {
+  return LEAVES.map((src, i) => {
+    const density = i === 0 || i === LEAVES.length - 1 ? "hard" : "soft";
+    const side = gutterSide(i);
+    const dir = side === "right" ? "right" : "left";
+    const gutter = `<div style="position:absolute;top:0;bottom:0;${side}:0;width:9%;pointer-events:none;background:linear-gradient(to ${dir}, rgba(71,31,32,0) 0%, rgba(71,31,32,0.10) 100%)"></div>`;
+    return `<div class="fb-page" data-density="${density}"><img src="${src}" alt="" draggable="false" style="width:100%;height:100%;display:block;object-fit:cover" />${gutter}</div>`;
+  }).join("");
 }
 
 export default function Flipbook() {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const hostRef = useRef<HTMLDivElement | null>(null);
   const flipRef = useRef<PageFlipType | null>(null);
   const [isDesktop, setIsDesktop] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -66,8 +95,9 @@ export default function Flipbook() {
 
   // Initialise / tear down the flipbook when we're in desktop mode.
   useEffect(() => {
-    if (!isDesktop || !containerRef.current) return;
+    if (!isDesktop || !hostRef.current) return;
 
+    const host = hostRef.current;
     let disposed = false;
     let pageFlip: PageFlipType | null = null;
     let fallback = 0;
@@ -75,31 +105,31 @@ export default function Flipbook() {
 
     (async () => {
       const { PageFlip } = await import("page-flip");
-      if (disposed || !containerRef.current) return;
+      if (disposed || !host) return;
 
-      pageFlip = new PageFlip(containerRef.current, {
+      host.innerHTML = buildPagesHTML();
+
+      pageFlip = new PageFlip(host, {
         size: "stretch",
         width: 550,
         height: 712,
-        minWidth: 300,
-        maxWidth: 600,
-        minHeight: 388,
-        maxHeight: 777,
+        minWidth: 320,
+        maxWidth: 640,
+        minHeight: 414,
+        maxHeight: 828,
         showCover: true,
         usePortrait: false,
         drawShadow: true,
-        maxShadowOpacity: 0.4,
+        maxShadowOpacity: 0.4, // native StPageFlip fold + gutter shadow
         flippingTime: 750,
         mobileScrollSupport: false,
       });
 
       flipRef.current = pageFlip;
-      pageFlip.loadFromImages(LEAVES);
+      pageFlip.loadFromHTML(host.querySelectorAll(".fb-page"));
       pageFlip.on("flip", (e) => !disposed && setLeafIndex(e.data));
 
-      // StPageFlip fires `init` almost immediately (before any JPEG paints),
-      // so gate the reveal on the first-visible leaves actually loading —
-      // that's what "Binding the book…" should wait for.
+      // Reveal once the first-visible leaves have actually painted.
       const markReady = () => !disposed && setReady(true);
       const preload = [LEAVES[0], LEAVES[1], LEAVES[2]].map(
         (src) =>
@@ -111,7 +141,6 @@ export default function Flipbook() {
           }),
       );
       Promise.all(preload).then(markReady);
-      // Backstop in case a load event never resolves.
       fallback = window.setTimeout(markReady, 3000);
     })();
 
@@ -124,6 +153,7 @@ export default function Flipbook() {
         /* already gone */
       }
       flipRef.current = null;
+      host.innerHTML = "";
     };
   }, [isDesktop]);
 
@@ -138,7 +168,7 @@ export default function Flipbook() {
     return () => window.removeEventListener("keydown", onKey);
   }, [isDesktop]);
 
-  // Lightbox escape.
+  // Lightbox escape (mobile).
   useEffect(() => {
     if (!lightbox) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setLightbox(null);
@@ -166,13 +196,13 @@ export default function Flipbook() {
             <button
               key={s.src}
               onClick={() => setLightbox(s.src)}
-              className="block w-full overflow-hidden rounded-sm shadow-md ring-1 ring-border transition-transform active:scale-[0.99]"
+              className="block w-full overflow-hidden rounded-sm shadow-sm ring-1 ring-border transition-transform active:scale-[0.99]"
             >
               <Image
                 src={s.src}
                 alt={s.cover ? "Portfolio cover" : "Portfolio spread"}
-                width={s.cover ? 1700 : 3400}
-                height={2200}
+                width={s.cover ? 2550 : 5100}
+                height={3300}
                 sizes="100vw"
                 className="h-auto w-full"
               />
@@ -198,8 +228,8 @@ export default function Flipbook() {
             <Image
               src={lightbox}
               alt="Portfolio page"
-              width={3400}
-              height={2200}
+              width={5100}
+              height={3300}
               sizes="100vw"
               className="h-auto max-h-[92vh] w-auto max-w-full object-contain"
             />
@@ -209,10 +239,10 @@ export default function Flipbook() {
     );
   }
 
-  // ── Desktop: page-curl flipbook ──
+  // ── Desktop: page-curl flipbook (HTML mode, crisp on retina) ──
   return (
     <div className="flex flex-col items-center">
-      <div className="relative w-full" style={{ maxWidth: "1180px" }}>
+      <div className="relative w-full" style={{ maxWidth: "1220px" }}>
         {!ready && (
           <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
             <p className="font-mono text-[0.7rem] uppercase tracking-wider text-ink-lighter">
@@ -221,40 +251,32 @@ export default function Flipbook() {
           </div>
         )}
         <div
-          ref={containerRef}
+          ref={hostRef}
           className="mx-auto w-full transition-opacity duration-700"
           style={{ opacity: ready ? 1 : 0 }}
         />
       </div>
 
-      {/* Controls */}
-      <div className="mt-8 flex items-center gap-6">
+      {/* Minimal control row: ‹ 1/21 › */}
+      <div className="mt-8 flex items-center gap-4 font-mono text-xs tracking-wider text-ink-lighter">
         <button
           onClick={flipPrev}
           aria-label="Previous page"
-          className="group flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-border transition-colors hover:bg-ink/[0.04]"
+          className="select-none px-1 text-lg leading-none transition-colors hover:text-ink"
         >
-          <span className="text-lg text-ink-light transition-colors group-hover:text-ink">
-            ‹
-          </span>
+          ‹
         </button>
-        <span className="min-w-[9rem] text-center font-mono text-[0.7rem] uppercase tracking-wider text-ink-lighter">
-          {spreadLabel(leafIndex)}
+        <span className="tabular-nums">
+          {bookPosition(leafIndex)}/{TOTAL_VIEWS}
         </span>
         <button
           onClick={flipNext}
           aria-label="Next page"
-          className="group flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-border transition-colors hover:bg-ink/[0.04]"
+          className="select-none px-1 text-lg leading-none transition-colors hover:text-ink"
         >
-          <span className="text-lg text-ink-light transition-colors group-hover:text-ink">
-            ›
-          </span>
+          ›
         </button>
       </div>
-
-      <p className="mt-4 font-sans text-xs italic text-ink-lighter">
-        Drag a corner or use ← → to turn the page
-      </p>
     </div>
   );
 }
