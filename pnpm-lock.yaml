@@ -20,6 +20,9 @@ importers:
       next-mdx-remote:
         specifier: ^6.0.0
         version: 6.0.0(@types/react@19.2.14)(react@19.2.4)
+      page-flip:
+        specifier: ^2.0.7
+        version: 2.0.7
       react:
         specifier: ^19.1.0
         version: 19.2.4
@@ -2265,6 +2268,9 @@ packages:
   p-locate@5.0.0:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
+
+  page-flip@2.0.7:
+    resolution: {integrity: sha512-96lQFUUz7r/LZzEUZJ3yBIMEKU9+m8HMFDzTvTdD6P7Ag/wXINjp9n0W7b4wanwnDbQETo4uNUoL3zMqpFxwGA==}
 
   pako@0.2.9:
     resolution: {integrity: sha512-NUcwaKxUxWrZLpDG+z/xZaCgQITkA/Dv4V/T6bw7VON6l1Xz/VnrBqrYjZQ12TamKHzITTfOEIYUj48y2KXImA==}
@@ -5543,6 +5549,8 @@ snapshots:
   p-locate@5.0.0:
     dependencies:
       p-limit: 3.1.0
+
+  page-flip@2.0.7: {}
 
   pako@0.2.9: {}
 
