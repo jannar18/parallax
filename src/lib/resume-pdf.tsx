@@ -271,16 +271,16 @@ export function ResumePDF() {
         <View style={s.section}>
           <Text style={s.sectionTitle}>Experience</Text>
           <Entry
-            role="AI Engineer Intern"
+            role="AI and Design Engineer Intern"
             org="Renoverse AI"
-            dates="Apr 2026 — May 2026"
-            description="Building AI-powered product experiences for architects"
+            dates="May 2026"
+            description="Owned an end-to-end website revamp for an AI renovation/home-construction startup, replacing a no-code Squarespace landing page with a hand-built, responsive site — designed Figma mockups and interactive prototypes, translated designs into production HTML using Paper with Claude, established a reusable design system via Google's design.md protocol, and shipped a live site in ~24 hours after re-strategizing to hit the client's end goal; authored a team handoff guide for editing and scaling the site with Claude going forward"
           />
           <Entry
-            role="Software Developer"
+            role="Software/AI Engineer"
             org="Fractal Tech NYC"
-            dates="Feb 2026 — present"
-            description="Built and shipped 10+ full-stack apps, software tools, and AI research projects with 528+ commits and 370+ PRs — created RhinoMCP (an MCP server bridging Rhino 3D and AI agents for computational design), multiplayer games, 3D environments, dungeon crawlers, and AI-powered tools using React, Next.js, TypeScript, Python, Three.js, and WebSockets, with a focus on 3D modeling, architecture-software integration, and Claude Code research"
+            dates="Feb 2026 — May 2026"
+            description="Built and shipped 10+ full-stack apps, software tools, and AI research projects with 1,000+ commits and 400+ PRs — created RhinoMCP (an MCP server bridging Rhino 3D and AI agents for computational design), multiplayer games, 3D environments, dungeon crawlers, and AI-powered tools using React, Next.js, TypeScript, Python, Three.js, and WebSockets, with a focus on 3D modeling, architecture-software integration, and Claude Code research"
           />
           <Entry
             role="Architectural Intern"
@@ -344,7 +344,7 @@ export function ResumePDF() {
               <Text style={s.recognitionLabel}>Awards & Honors</Text>
               <RecItem label="Dwight T. Black Memorial Scholarship Nomination" year="2024" />
               <RecItem label="U.S. Solar Decathlon Finalist" year="2024" />
-              <RecItem label="Anderson Presidential Scholarship" year="2022 — present" />
+              <RecItem label="Anderson Presidential Scholarship" year="2022 — 2025" />
               <RecItem label="Camras Scholarship" year="2020 — 2025" />
               <RecItem label="Dean's List" year="2021 — 2025" />
             </View>

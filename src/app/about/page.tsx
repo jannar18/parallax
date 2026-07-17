@@ -61,10 +61,16 @@ export default function AboutPage() {
         </h2>
         <div className="mt-4 space-y-5">
           <ExperienceEntry
-            role="Software Developer"
+            role="AI and Design Engineer Intern"
+            organization="Renoverse AI"
+            dates="May 2026"
+            description="Owned an end-to-end website revamp for an AI renovation/home-construction startup, replacing a no-code Squarespace landing page with a hand-built, responsive site — designed Figma mockups and interactive prototypes, translated designs into production HTML using Paper with Claude, established a reusable design system via Google's design.md protocol, and shipped a live site in ~24 hours after re-strategizing to hit the client's end goal; authored a team handoff guide for editing and scaling the site with Claude going forward"
+          />
+          <ExperienceEntry
+            role="Software/AI Engineer"
             organization="Fractal Tech NYC"
-            dates="Feb 2026 — present"
-            description="Built and shipped 6+ full-stack apps, software tools, and AI research projects with 451+ commits and 168+ PRs — designed and built multiplayer games, MCP servers, dungeon crawlers, and AI-powered tools using React, Next.js, TypeScript, Python, WebSockets, and Three.js, with a focus on Claude Code research and harnessing AI as a development partner"
+            dates="Feb 2026 — May 2026"
+            description="Built and shipped 10+ full-stack apps, software tools, and AI research projects with 1,000+ commits and 400+ PRs — created RhinoMCP (an MCP server bridging Rhino 3D and AI agents for computational design), multiplayer games, 3D environments, dungeon crawlers, and AI-powered tools using React, Next.js, TypeScript, Python, Three.js, and WebSockets, with a focus on 3D modeling, architecture-software integration, and Claude Code research"
           />
           <ExperienceEntry
             role="Architectural Intern"
@@ -157,7 +163,7 @@ export default function AboutPage() {
             <ul className="mt-4 space-y-0.5">
               <RecognitionItem label="Dwight T. Black Memorial Scholarship Nomination" year="2024" />
               <RecognitionItem label="U.S. Solar Decathlon Finalist" year="2024" />
-              <RecognitionItem label="Anderson Presidential Scholarship" year="2022 — present" />
+              <RecognitionItem label="Anderson Presidential Scholarship" year="2022 — 2025" />
               <RecognitionItem label="Camras Scholarship" year="2020 — 2025" />
               <RecognitionItem label="Dean's List" year="2021 — 2025" />
             </ul>
