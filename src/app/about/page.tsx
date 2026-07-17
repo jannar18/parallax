@@ -61,7 +61,7 @@ export default function AboutPage() {
         </h2>
         <div className="mt-4 space-y-5">
           <ExperienceEntry
-            role="Design Engineering Intern"
+            role="AI and Design Engineer Intern"
             organization="Renoverse AI"
             dates="May 2026"
             description="Owned an end-to-end website revamp for an AI renovation/home-construction startup, replacing a no-code Squarespace landing page with a hand-built, responsive site — designed Figma mockups and interactive prototypes, translated designs into production HTML using Paper with Claude, established a reusable design system via Google's design.md protocol, and shipped a live site in ~24 hours after re-strategizing to hit the client's end goal; authored a team handoff guide for editing and scaling the site with Claude going forward"
@@ -163,7 +163,7 @@ export default function AboutPage() {
             <ul className="mt-4 space-y-0.5">
               <RecognitionItem label="Dwight T. Black Memorial Scholarship Nomination" year="2024" />
               <RecognitionItem label="U.S. Solar Decathlon Finalist" year="2024" />
-              <RecognitionItem label="Anderson Presidential Scholarship" year="2022 — May 2025" />
+              <RecognitionItem label="Anderson Presidential Scholarship" year="2022 — 2025" />
               <RecognitionItem label="Camras Scholarship" year="2020 — 2025" />
               <RecognitionItem label="Dean's List" year="2021 — 2025" />
             </ul>
