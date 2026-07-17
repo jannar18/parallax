@@ -70,6 +70,7 @@ export default function Flipbook() {
 
     let disposed = false;
     let pageFlip: PageFlipType | null = null;
+    let fallback = 0;
     setReady(false);
 
     (async () => {
@@ -94,17 +95,29 @@ export default function Flipbook() {
 
       flipRef.current = pageFlip;
       pageFlip.loadFromImages(LEAVES);
-
-      const markReady = () => !disposed && setReady(true);
-      pageFlip.on("changeState", markReady);
-      pageFlip.on("init", markReady);
       pageFlip.on("flip", (e) => !disposed && setLeafIndex(e.data));
-      // Fallback in case no event fires before images paint.
-      window.setTimeout(markReady, 1200);
+
+      // StPageFlip fires `init` almost immediately (before any JPEG paints),
+      // so gate the reveal on the first-visible leaves actually loading —
+      // that's what "Binding the book…" should wait for.
+      const markReady = () => !disposed && setReady(true);
+      const preload = [LEAVES[0], LEAVES[1], LEAVES[2]].map(
+        (src) =>
+          new Promise<void>((resolve) => {
+            const img = new window.Image();
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
+            img.src = src;
+          }),
+      );
+      Promise.all(preload).then(markReady);
+      // Backstop in case a load event never resolves.
+      fallback = window.setTimeout(markReady, 3000);
     })();
 
     return () => {
       disposed = true;
+      window.clearTimeout(fallback);
       try {
         pageFlip?.destroy();
       } catch {
@@ -169,9 +182,19 @@ export default function Flipbook() {
 
         {lightbox && (
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Portfolio page, enlarged"
             className="fixed inset-0 z-[70] flex items-center justify-center bg-ink/70 p-4 backdrop-blur-sm"
             onClick={() => setLightbox(null)}
           >
+            <button
+              aria-label="Close"
+              onClick={() => setLightbox(null)}
+              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-paper/90 text-lg text-ink shadow-md"
+            >
+              ✕
+            </button>
             <Image
               src={lightbox}
               alt="Portfolio page"
