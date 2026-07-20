@@ -79,7 +79,7 @@
       "description": "Proposed design for the relaunched Fractal community site — a Brooklyn network of coliving houses, campus, events, education, and publications — organized as six themed \"houses,\" each with its own crest and palette, behind an interactive fractal-octahedron homepage.",
       "gif": "/lab/fractal-nyc.mp4",
       "repo": "https://github.com/jannar18/fractal-nyc",
-      "url": "https://fractal-nyc.netlify.app/",
+      "url": "https://fractalnyc.com/",
       "date": "2026-07-14",
       "tags": [
         "react",
