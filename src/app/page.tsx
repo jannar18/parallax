@@ -1,202 +1,203 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getAllNowEntries } from "@/lib/content";
-
-const paths = [
-  {
-    number: "01",
-    title: "Software + AI",
-    description:
-      "Tools, prototypes, and experiments at the edge of design and computation.",
-    href: "/work/software",
-  },
-  {
-    number: "02",
-    title: "Architecture",
-    description:
-      "Spatial work, drawings, models, and questions about how we make places.",
-    href: "/work/architecture",
-  },
-  {
-    number: "03",
-    title: "Writing",
-    description:
-      "Notes on building, learning, design, cities, and working with intelligence.",
-    href: "/writing",
-  },
-  {
-    number: "04",
-    title: "The archive",
-    description:
-      "A living studio desk: fragments, process, references, and work in progress.",
-    href: "/archive",
-  },
-];
-
+import HeroBrandVisual from "@/components/interactive/HeroBrandVisual";
+import ArtifactBar from "@/components/interactive/ArtifactBar";
+import SplitViewMerge from "@/components/interactive/SplitViewMerge";
+import ClipReel from "@/components/interactive/ClipReel";
+import ScrollLine from "@/components/ui/ScrollLine";
+/**
+ * Home page — viewport-fitted sections ("slides").
+ *
+ * Each section fills exactly 100vh so the page reads like a sequence
+ * of full-screen views, matching the Asimov Collective pattern.
+ * Typography and spacing use viewport units to scale with the window.
+ */
 export default function HomePage() {
-  const artifacts = getAllNowEntries()
-    .filter((entry) => entry.image)
-    .slice(0, 6);
+  const nowEntries = getAllNowEntries();
+  const artifacts = nowEntries
+    .filter((e) => e.image)
+    .map(({ slug, date, mood, image, project, description }) => ({
+      slug,
+      date,
+      mood,
+      image: image!,
+      project,
+      description,
+    }));
 
   return (
-    <main className="bg-paper text-ink">
-      <section className="relative flex min-h-screen flex-col justify-between px-[5vw] pb-[7vh] pt-[22vh]">
-        <div className="max-w-[76rem]">
-          <p className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-ink-light md:text-xs">
-            Julianna Roberts · architect + AI-native designer/builder
-          </p>
-          <h1 className="mt-6 max-w-[14ch] font-serif text-[clamp(3.5rem,10vw,9.5rem)] font-semibold italic leading-[0.84] tracking-[-0.045em] text-ink">
-            Welcome to my living studio.
-          </h1>
-        </div>
+    <div>
+      {/* ─── Section 1: Hero ─── */}
+      <HeroBrandVisual />
 
-        <div className="mt-20 grid gap-10 border-t border-ink/20 pt-6 md:grid-cols-12">
-          <p className="max-w-[36rem] text-[clamp(1rem,1.45vw,1.3rem)] leading-relaxed text-ink-light md:col-span-7">
-            I trained as an architect and now build with AI. This is where
-            spatial thinking, software, research, and unfinished ideas live
-            together—not as separate careers, but as one evolving practice.
-          </p>
-          <p className="font-mono text-xs uppercase leading-relaxed tracking-wider text-ink-lighter md:col-span-3 md:col-start-10">
-            Built in public
-            <br />
-            Edited as I learn
-            <br />
-            Never quite finished
-          </p>
+      {/* ─── Spacer: Hero → Section 2 ─── */}
+      <div className="h-[25vh] bg-paper flex items-end">
+        <ScrollLine origin="right" />
+      </div>
+
+      {/* ─── Section 2: Split A — text left, software right ─── */}
+      <section className="grid grid-cols-1 md:h-screen md:grid-cols-2">
+        <div className="flex items-center bg-paper px-[5vw] py-[5vh]">
+          <div>
+            <p
+              className="font-mono uppercase tracking-wider text-ink-light"
+              style={{ fontSize: "clamp(0.7rem, 0.9vw, 0.825rem)" }}
+            >
+              World 02
+            </p>
+            <h2
+              className="mt-[1.5vh] font-serif font-bold italic text-ink md:whitespace-nowrap"
+              style={{ fontSize: "clamp(1.35rem, 3.2vw, 3.25rem)" }}
+            >
+              Software Development + AI Research
+            </h2>
+            <p
+              className="mt-[2vh] max-w-text text-ink-light leading-relaxed font-sans"
+              style={{ fontSize: "clamp(0.875rem, 1.3vw, 1.2rem)" }}
+            >
+              I spend 10 hours a day 6/7 days a week working with Claude Code,
+              building software and strengthening my harness.
+            </p>
+            <Link
+              href="/work/software"
+              className="mt-[3vh] inline-flex items-center gap-2 font-mono uppercase tracking-wide text-scarlet transition-colors hover:text-ink"
+              style={{ fontSize: "clamp(0.7rem, 0.9vw, 0.825rem)" }}
+            >
+              View Software Work <span>&rarr;</span>
+            </Link>
+          </div>
+        </div>
+        <div className="relative aspect-square overflow-hidden md:aspect-auto md:h-full">
+          <Image
+            src="/images/home/software-split.riso.1.png"
+            alt="Software split view"
+            fill
+            className="object-cover"
+            unoptimized
+          />
         </div>
       </section>
 
-      <section className="border-t border-ink/20 px-[5vw] py-[12vh]">
-        <div className="grid gap-16 md:grid-cols-12">
-          <div className="md:col-span-4">
-            <p className="font-mono text-xs uppercase tracking-wider text-scarlet">
-              Start anywhere
-            </p>
-            <h2 className="mt-4 max-w-[9ch] font-serif text-[clamp(2.5rem,5vw,5rem)] font-semibold italic leading-none">
-              Four doors into my world.
-            </h2>
-          </div>
+      {/* ─── Line: Section 2 → Section 3 ─── */}
+      <div className="bg-paper">
+        <ScrollLine origin="left" />
+      </div>
 
-          <nav className="md:col-span-7 md:col-start-6">
-            {paths.map((path) => (
-              <Link
-                key={path.href}
-                href={path.href}
-                className="group grid grid-cols-[2.5rem_1fr_auto] gap-3 border-t border-ink/20 py-7 transition-colors last:border-b hover:text-scarlet"
-              >
-                <span className="font-mono text-xs text-ink-lighter">
-                  {path.number}
-                </span>
-                <span>
-                  <span className="block font-serif text-[clamp(1.8rem,3vw,3rem)] font-semibold italic leading-none">
-                    {path.title}
-                  </span>
-                  <span className="mt-2 block max-w-[34rem] text-sm leading-relaxed text-ink-light md:text-base">
-                    {path.description}
-                  </span>
-                </span>
-                <span className="text-xl transition-transform group-hover:translate-x-1">
-                  &rarr;
-                </span>
-              </Link>
-            ))}
+      {/* ─── Section 3 + Merge: Split B → software visual slides in ─── */}
+      <SplitViewMerge />
+
+      {/* ─── Spacer: SplitViewMerge → Video ─── */}
+      <div className="h-[25vh] bg-paper flex items-end">
+        <ScrollLine origin="center" />
+      </div>
+
+      {/* ─── Section 5: Arch Voice clip reel (vertical scroll) ─── */}
+      <section className="relative bg-paper">
+        <ClipReel />
+      </section>
+
+      {/* ─── Sections 7+8: Text → Links (shared) → Studio Desk ───
+          This is ONE continuous block, not two h-screen sections.
+          The links are a single element at the seam:
+            - Body text:  ~66vh (top 2/3 of "slide 7")
+            - Links:      ~33vh (bottom 1/3 of "slide 7" = top 1/3 of "slide 8")
+            - Studio desk: ~66vh (bottom 2/3 of "slide 8")
+          Total: ~166vh. The links naturally belong to both views as you scroll. */}
+      <section className="bg-background">
+        {/* Separator line at viewport boundary */}
+        <ScrollLine origin="center" />
+
+        {/* Body text — upper 2/3 of virtual slide 7 */}
+        <div className="flex h-[74vh] items-center justify-center px-[5vw]">
+          <div className="max-w-[85vw] md:max-w-[58vw] text-center">
+            <p
+              className="font-serif font-bold italic text-ink leading-snug"
+              style={{ fontSize: "clamp(1.35rem, 3.5vw, 3.75rem)" }}
+            >
+              I&rsquo;m taking the time to look into the future and predict
+              the skills I will need to be successful in the future version of
+              my field.
+            </p>
+            <Link
+              href="/archive"
+              className="block font-mono text-scarlet uppercase tracking-wide mt-[3vh] transition-colors hover:text-ink"
+              style={{ fontSize: "clamp(0.75rem, 1vw, 0.875rem)" }}
+            >
+              This site collects my ongoing work, experiments, research notes
+              and observations.
+            </Link>
+          </div>
+        </div>
+
+        {/* Links — shared 1/3 zone (bottom of slide 7 = top of slide 8) */}
+        <ScrollLine origin="center" />
+        <div className="h-[30vh] flex items-center justify-center">
+          <nav className="flex gap-[4vw]">
+            <Link
+              href="/work/architecture"
+              className="group flex items-center gap-2 font-mono uppercase text-ink transition-colors hover:text-scarlet"
+              style={{
+                fontSize: "clamp(0.75rem, 1vw, 0.95rem)",
+                letterSpacing: "var(--tracking-wider)",
+              }}
+            >
+              Architecture
+              <span className="text-ink-lighter transition-transform group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </Link>
+            <Link
+              href="/work/software"
+              className="group flex items-center gap-2 font-mono uppercase text-ink transition-colors hover:text-scarlet"
+              style={{
+                fontSize: "clamp(0.75rem, 1vw, 0.95rem)",
+                letterSpacing: "var(--tracking-wider)",
+              }}
+            >
+              Software
+              <span className="text-ink-lighter transition-transform group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </Link>
+            <Link
+              href="/writing"
+              className="group flex items-center gap-2 font-mono uppercase text-ink transition-colors hover:text-scarlet"
+              style={{
+                fontSize: "clamp(0.75rem, 1vw, 0.95rem)",
+                letterSpacing: "var(--tracking-wider)",
+              }}
+            >
+              Writing
+              <span className="text-ink-lighter transition-transform group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </Link>
           </nav>
         </div>
-      </section>
 
-      <section className="bg-oxblood px-[5vw] py-[14vh] text-paper" data-nav-dark>
-        <p className="font-mono text-xs uppercase tracking-wider text-paper/55">
-          What I keep returning to
-        </p>
-        <p className="mt-10 max-w-[18ch] font-serif text-[clamp(2.7rem,7vw,7rem)] font-semibold italic leading-[0.98]">
-          The interface between people, space, and intelligent tools.
-        </p>
-        <div className="mt-20 grid gap-8 border-t border-paper/25 pt-8 text-sm leading-relaxed text-paper/70 md:grid-cols-3 md:text-base">
-          <p>
-            Architecture taught me to hold systems, stories, materials, and
-            human behavior in the same frame.
-          </p>
-          <p>
-            Software lets me turn those frames into things people can touch,
-            test, change, and use.
-          </p>
-          <p>
-            AI makes the boundary between imagining and building unusually
-            thin. I want to learn what belongs on the other side.
-          </p>
-        </div>
-      </section>
-
-      <section className="px-[5vw] py-[12vh]">
-        <div className="flex flex-col gap-5 border-b border-ink/20 pb-8 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-wider text-scarlet">
-              From the studio desk
-            </p>
-            <h2 className="mt-3 font-serif text-[clamp(2.5rem,5vw,5rem)] font-semibold italic leading-none">
-              Recent fragments
-            </h2>
-          </div>
+        {/* Studio desk — artifact bar (lower 2/3 of virtual slide 8) */}
+        <div className="relative">
           <Link
             href="/archive"
-            className="font-mono text-xs uppercase tracking-wider text-ink-light transition-colors hover:text-scarlet"
+            className="group absolute top-0 left-0 right-0 z-30 text-center -translate-y-1/2 transition-colors"
           >
-            Enter the full archive &rarr;
-          </Link>
-        </div>
-
-        <div className="grid gap-x-6 gap-y-12 pt-8 sm:grid-cols-2 lg:grid-cols-3">
-          {artifacts.map((artifact) => (
-            <Link
-              key={artifact.slug}
-              href={`/archive#${artifact.slug}`}
-              className="group"
+            <p
+              className="font-serif font-bold italic text-ink group-hover:text-scarlet transition-colors"
+              style={{ fontSize: "clamp(1.75rem, 3.5vw, 3.5rem)" }}
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-ink/5">
-                <Image
-                  src={artifact.image!}
-                  alt={artifact.description || artifact.project || "Studio artifact"}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                  unoptimized
-                />
-              </div>
-              <div className="mt-4 flex items-start justify-between gap-4">
-                <div>
-                  <p className="font-serif text-2xl font-semibold italic leading-tight group-hover:text-scarlet">
-                    {artifact.project || artifact.mood}
-                  </p>
-                  {artifact.description && (
-                    <p className="mt-1 text-sm leading-relaxed text-ink-light">
-                      {artifact.description}
-                    </p>
-                  )}
-                </div>
-                <time className="shrink-0 font-mono text-[0.65rem] uppercase tracking-wider text-ink-lighter">
-                  {artifact.date}
-                </time>
-              </div>
-            </Link>
-          ))}
+              the studio desk
+            </p>
+            <p
+              className="mt-2 font-mono uppercase tracking-wider text-ink-lighter group-hover:text-ink transition-colors"
+              style={{ fontSize: "clamp(0.6rem, 0.8vw, 0.75rem)" }}
+            >
+              click-in to enter the archives
+            </p>
+          </Link>
+          <ArtifactBar artifacts={artifacts} />
         </div>
       </section>
-
-      <section className="border-t border-ink/20 px-[5vw] py-[14vh]">
-        <div className="max-w-[64rem]">
-          <p className="font-serif text-[clamp(2.5rem,6vw,6rem)] font-semibold italic leading-[1.02]">
-            I’m interested in work that makes the future feel more human,
-            spatial, useful, and alive.
-          </p>
-          <div className="mt-12 flex flex-wrap gap-x-8 gap-y-4 font-mono text-xs uppercase tracking-wider">
-            <Link href="/about" className="text-scarlet hover:text-ink">
-              More about me &rarr;
-            </Link>
-            <Link href="/work" className="text-scarlet hover:text-ink">
-              Selected work &rarr;
-            </Link>
-          </div>
-        </div>
-      </section>
-    </main>
+    </div>
   );
 }
