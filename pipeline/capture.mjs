@@ -9,6 +9,7 @@
  *   node capture.mjs --out <path.gif> [--url <url>] [--serve <dir>] [--file <path.html>]
  *      [--start "<cmd>"] [--port <n>] [--cwd <dir>] [--script <interaction.mjs>]
  *      [--view-width 1280] [--width 1000] [--fps 24] [--duration 6] [--wait 1500]
+ *      [--browser-path "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"]
  *
  * --view-width is the browser viewport we render & record at (full desktop
  * width, so the whole app layout is visible). --width is the GIF's output
@@ -354,6 +355,13 @@ async function main() {
   // dead footage. Pass --goto-wait domcontentloaded to start as soon as the DOM is ready.
   const gotoWaitRaw = typeof args['goto-wait'] === 'string' ? args['goto-wait'] : 'load';
   const gotoWait = ['load', 'domcontentloaded', 'networkidle', 'commit'].includes(gotoWaitRaw) ? gotoWaitRaw : 'load';
+  const browserPath =
+    args['browser-path'] && args['browser-path'] !== true
+      ? path.resolve(String(args['browser-path']))
+      : null;
+  if (browserPath && !fs.existsSync(browserPath)) {
+    fail(`Browser executable not found: ${browserPath}`);
+  }
 
   const ffmpeg = resolveFfmpeg();
 
@@ -410,7 +418,10 @@ async function main() {
     console.log(`[capture] Launching chromium (viewport ${viewWidth}x${viewHeight}, dsf 2, gif width ${outWidth})...`);
     // Headful (real GPU) is required for some WebGL apps that stall under the
     // headless SwiftShader software renderer (e.g. draco-compressed three.js scenes).
-    browser = await chromium.launch({ headless: !args.headful });
+    browser = await chromium.launch({
+      headless: !args.headful,
+      ...(browserPath ? { executablePath: browserPath } : {}),
+    });
     context = await browser.newContext({
       viewport: { width: viewWidth, height: viewHeight },
       deviceScaleFactor: 2,
