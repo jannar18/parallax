@@ -1,0 +1,19 @@
+{
+  "created_at": "2026-07-27T22:03:14Z",
+  "created_by": "agent:codex-root",
+  "custom_fields": {},
+  "id": "art_01KYJSN0Q48A29K4WPHNFBMNYN",
+  "model": null,
+  "payload": {
+    "content_type": "text/markdown",
+    "file": "art_01KYJSN0Q48A29K4WPHNFBMNYN.md",
+    "size_bytes": 735
+  },
+  "schema_version": 1,
+  "sensitive": false,
+  "summary": "Shipped Parallax Haus to the live Software gallery as a Ship via PR #119 (merge ed4eddd). Final order verified live as Parallax Haus \u2192 Snails vs Garden \u2192 Arch Voice MCP with all other entries preservi",
+  "tags": [],
+  "title": "Review findings",
+  "token_usage": null,
+  "type": "note"
+}
