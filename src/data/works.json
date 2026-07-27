@@ -239,6 +239,39 @@
         "/lab/shots/secret-garden-loading.png",
         "/lab/secret-garden.mp4"
       ]
+    },
+    {
+      "id": "parallax-haus",
+      "number": 13,
+      "label": "Ship",
+      "title": "Parallax Haus",
+      "description": "An editorial portfolio that brings architecture, software, and an evolving studio archive into one identity—built with a generative canvas hero, book-like project browsing, responsive motion, and a tactile Riso-inspired visual system.",
+      "gif": "/lab/parallax-haus/hero-animation.mp4",
+      "repo": "https://github.com/jannar18/parallax",
+      "url": "https://parallax.haus/",
+      "date": "2026-07-27",
+      "tags": [
+        "next.js",
+        "react",
+        "canvas",
+        "editorial"
+      ],
+      "screenshots": [
+        "/lab/parallax-haus/home-scroll.mp4",
+        "/lab/parallax-haus/home-hero.png",
+        "/lab/parallax-haus/home-software.png",
+        "/lab/parallax-haus/home-architecture.png",
+        "/lab/parallax-haus/home-merge.png",
+        "/lab/parallax-haus/home-clip-reel.png",
+        "/lab/parallax-haus/home-manifesto.png",
+        "/lab/parallax-haus/home-studio-desk.png",
+        "/lab/parallax-haus/home-footer.png",
+        "/lab/parallax-haus/page-software.png",
+        "/lab/parallax-haus/page-architecture.png",
+        "/lab/parallax-haus/page-archive.png",
+        "/lab/parallax-haus/page-writing.png",
+        "/lab/parallax-haus/page-about.png"
+      ]
     }
   ]
 }
