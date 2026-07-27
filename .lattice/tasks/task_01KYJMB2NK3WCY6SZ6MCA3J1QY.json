@@ -1,0 +1,54 @@
+{
+  "assigned_to": null,
+  "branch_links": [
+    {
+      "branch": "feature/ASMV-115-parallax-haus-post",
+      "linked_at": "2026-07-27T20:37:22Z",
+      "linked_by": "agent:codex-root",
+      "repo": null
+    }
+  ],
+  "comment_count": 7,
+  "complexity": null,
+  "created_at": "2026-07-27T20:30:25Z",
+  "created_by": "agent:codex-root",
+  "custom_fields": {},
+  "description": "Capture the live parallax.haus hero animation, a full homepage scroll-through, every major homepage section, and each top-level page; then publish a rich Software portfolio entry that presents the site as a complete shipped architecture \u00d7 software identity project rather than a prototype. Do not click through every architecture project. Verify media and the live build.",
+  "done_at": "2026-07-27T22:03:14Z",
+  "evidence_refs": [
+    {
+      "id": "ev_01KYJRBRDTYMHYHHF29AV3RNBN",
+      "role": "review",
+      "source_type": "comment"
+    },
+    {
+      "id": "ev_01KYJS8RN10JXY0Z2CP34A93ZH",
+      "role": "review",
+      "source_type": "comment"
+    },
+    {
+      "id": "ev_01KYJSN0Q48A29K4WPHNFBMNYP",
+      "role": "review",
+      "source_type": "comment"
+    },
+    {
+      "id": "art_01KYJSN0Q48A29K4WPHNFBMNYN",
+      "role": "review",
+      "source_type": "artifact"
+    }
+  ],
+  "id": "task_01KYJMB2NK3WCY6SZ6MCA3J1QY",
+  "last_event_id": "ev_01KYJSN0Q48A29K4WPHNFBMNYR",
+  "last_status_changed_at": "2026-07-27T22:03:14Z",
+  "priority": "high",
+  "relationships_out": [],
+  "reopened_count": 2,
+  "schema_version": 1,
+  "short_id": "ASMV-115",
+  "status": "done",
+  "tags": null,
+  "title": "Document Parallax Haus as a full software project post",
+  "type": "task",
+  "updated_at": "2026-07-27T22:03:14Z",
+  "urgency": null
+}
