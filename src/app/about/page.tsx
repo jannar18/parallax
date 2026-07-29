@@ -51,6 +51,50 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ─── Check out my ─── */}
+      <section className="border-t border-border py-6 md:py-8">
+        <h2
+          className="font-serif font-bold italic text-ink"
+          style={{ fontSize: "clamp(1.5rem, 2.5vw, 1.875rem)" }}
+        >
+          Check out my…
+        </h2>
+        <div className="mt-5 grid gap-x-12 gap-y-6 md:grid-cols-2">
+          <div>
+            <h3
+              className="font-mono uppercase tracking-wider text-ink-lighter"
+              style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
+            >
+              Work
+            </h3>
+            <ul className="mt-3 space-y-3">
+              <AboutLink href="/work/software" label="Software log" />
+              <AboutLink
+                href="https://fractalnyc.com/"
+                label="Fractal NYC"
+                note="Website and brand design for the Fractal community"
+                external
+              />
+              <AboutLink href="/work/architecture" label="Architecture portfolio" />
+            </ul>
+          </div>
+          <div>
+            <h3
+              className="font-mono uppercase tracking-wider text-ink-lighter"
+              style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.75rem)" }}
+            >
+              Growing here
+            </h3>
+            <ul className="mt-3 space-y-2 text-ink-light" style={{ fontSize: "clamp(0.875rem, 1.1vw, 1rem)" }}>
+              <li>Guides</li>
+              <li>Book notes</li>
+              <li>Podcast, course &amp; event notes</li>
+              <li>Design resources</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* ─── Section 3: Experience ─── */}
       <section className="border-t border-border py-6 md:py-8">
         <h2
@@ -193,6 +237,38 @@ export default function AboutPage() {
 }
 
 /* ── Helper Components (co-located, not exported) ── */
+
+function AboutLink({
+  href,
+  label,
+  note,
+  external = false,
+}: {
+  href: string;
+  label: string;
+  note?: string;
+  external?: boolean;
+}) {
+  return (
+    <li>
+      <a
+        href={href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        className="group inline-flex flex-col text-ink transition-colors hover:text-scarlet"
+      >
+        <span className="font-serif font-bold italic underline decoration-border underline-offset-4 group-hover:decoration-scarlet">
+          {label} <span aria-hidden="true">↗</span>
+        </span>
+        {note ? (
+          <span className="mt-1 font-sans text-ink-lighter" style={{ fontSize: "clamp(0.75rem, 1vw, 0.875rem)" }}>
+            {note}
+          </span>
+        ) : null}
+      </a>
+    </li>
+  );
+}
 
 function ExperienceEntry({
   role,
