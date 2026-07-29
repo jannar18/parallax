@@ -41,7 +41,7 @@ const demos = [
 export default function PretextPage() {
   return (
     <div className="mx-auto max-w-content px-5">
-      <section className="pb-24 pt-40">
+      <section className="pb-16 pt-24 md:pb-24 md:pt-40">
         <p
           className="mt-4 max-w-text text-ink-light leading-relaxed font-sans"
           style={{ fontSize: "clamp(0.875rem, 1.3vw, 1.2rem)" }}
@@ -59,15 +59,15 @@ export default function PretextPage() {
           layout.
         </p>
 
-        <div className="mt-16 grid gap-8 md:grid-cols-2">
+        <div className="mt-10 grid gap-6 md:mt-16 md:gap-8 md:grid-cols-2">
           {demos.map((demo) => (
             <a
               key={demo.slug}
               href={demo.file}
-              className="group block rounded-sm border border-border bg-surface p-8 transition-all duration-300 hover:border-scarlet/40 hover:shadow-lg"
+              className="group block rounded-sm border border-border bg-surface p-5 md:p-8 transition-all duration-300 hover:border-scarlet/40 hover:shadow-lg"
             >
               {/* Dark preview strip */}
-              <div className="mb-6 flex h-32 items-center justify-center rounded-sm bg-[#111111]">
+              <div className="mb-4 flex h-24 items-center justify-center rounded-sm bg-[#111111] md:mb-6 md:h-32">
                 <span
                   className="font-mono uppercase tracking-widest text-[#fdf0d5]/30 transition-colors group-hover:text-[#cc2936]/60"
                   style={{ fontSize: "0.65rem" }}

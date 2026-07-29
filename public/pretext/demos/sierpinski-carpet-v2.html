@@ -174,6 +174,70 @@
   .streaming #carpet {
     animation: breathe 6s ease-in-out infinite;
   }
+
+  /* ── Mobile ─────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    html, body { overflow-y: auto; }
+
+    .layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: 50vh 50vh auto auto;
+      height: auto;
+      min-height: 100vh;
+    }
+
+    .field-panel {
+      border-right: none;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    .panel-label {
+      font-size: 8px;
+      letter-spacing: 4px;
+      padding: 10px 14px 8px;
+    }
+
+    .stats-bar {
+      gap: 16px;
+      font-size: 8px;
+      padding: 6px 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .controls {
+      padding: 10px 12px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .controls button {
+      font-size: 9px;
+      padding: 8px 14px;
+    }
+
+    #slider {
+      min-width: 0;
+      width: 100%;
+      flex: 1 1 100%;
+      order: 10;
+      height: 4px;
+    }
+    #slider::-webkit-slider-thumb {
+      width: 20px; height: 20px;
+    }
+    #slider::-moz-range-thumb {
+      width: 20px; height: 20px;
+    }
+
+    #level-display {
+      font-size: 8px;
+      min-width: auto;
+      order: 11;
+      width: 100%;
+      text-align: center;
+    }
+  }
 </style>
 </head>
 <body>
@@ -326,7 +390,8 @@ const BG_COLOR = '#111111';
 
 function drawField(progress) {
   const panel  = document.querySelector('.field-panel');
-  const pad    = 60;
+  const isMobile = window.innerWidth <= 768;
+  const pad    = isMobile ? 30 : 60;
   const maxDim = Math.min(panel.clientWidth - pad, panel.clientHeight - pad);
   const cell   = Math.max(1, Math.floor(maxDim / SIZE));
   const total  = cell * SIZE;
@@ -402,8 +467,9 @@ function renderCarpet(progress, textOffset) {
 
 function resizeCarpet() {
   const panel = document.querySelector('.carpet-panel');
-  const maxW  = panel.clientWidth - 40;
-  const maxH  = panel.clientHeight - 50;
+  const isMobile = window.innerWidth <= 768;
+  const maxW  = panel.clientWidth - (isMobile ? 16 : 40);
+  const maxH  = panel.clientHeight - (isMobile ? 30 : 50);
   const fzW   = maxW / (SIZE * 0.602);
   const fzH   = maxH / SIZE;
   carpetEl.style.fontSize = Math.max(3, Math.min(fzW, fzH, 20)).toFixed(2) + 'px';
